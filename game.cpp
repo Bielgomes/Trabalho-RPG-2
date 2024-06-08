@@ -19,16 +19,32 @@ Game::Game()
 
 Game::~Game()
 {
-    this->window->close();
     delete this->window;
+}
+
+void Game::pollEvents()
+{
+    while (this->window->pollEvent(this->event))
+    {
+        switch (this->event.type)
+        {
+            case sf::Event::Closed:
+                this->window->close();
+                break;
+        }
+    }
 }
 
 void Game::update()
 {
-
+    this->pollEvents();
 }
 
 void Game::render()
 {
+    this->window->clear();
 
+    // Render game
+
+    this->window->display();
 }

@@ -3,8 +3,9 @@
 class Game
 {
     private:
-        sf::VideoMode videoMode;
         sf::RenderWindow* window;
+        sf::VideoMode videoMode;
+        sf::Event event;
 
     public:
         // Accessors
@@ -12,8 +13,9 @@ class Game
 
         // Constructor and Destructor
         Game();
-        ~Game();
+        virtual ~Game();
 
+        void pollEvents();
         void update();
 
         void render();
