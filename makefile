@@ -1,104 +1,109 @@
 ### Linux
 # Nome do executável
-EXECUTABLE = main
+# EXECUTABLE = main
 
-# Diretórios
-BUILD_DIR = build
-INCLUDE_DIR = include
+# # Diretórios
+# BUILD_DIR = build
+# SRC_DIR = src/sources
+# INCLUDE_DIR = src/headers
 
-# Arquivos fonte
-SOURCES = $(wildcard *.cpp)
+# # Arquivos fonte
+# SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
 
-# Arquivos objeto
-OBJECTS = $(SOURCES:%.cpp=$(BUILD_DIR)/%.o)
+# # Arquivos objeto
+# OBJECTS = $(SOURCES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 
-# Compilador e flags
-CXX = g++
-CXXFLAGS = -Wall -Wextra -I$(INCLUDE_DIR) -std=c++11
+# # Compilador e flags
+# CXX = g++
+# CXXFLAGS = -Wall -Wextra -I$(INCLUDE_DIR) -std=c++11
 
-# Bibliotecas SFML
-LIBS = -lsfml-graphics -lsfml-window -lsfml-system
+# # Bibliotecas SFML
+# LIBS = -lsfml-graphics -lsfml-window -lsfml-system
 
-# Regra padrão
-all: $(BUILD_DIR) $(EXECUTABLE)
+# # Regra padrão
+# all: $(BUILD_DIR) $(EXECUTABLE)
 
-# Regra para criar o diretório de build
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+# # Regra para criar o diretório de build
+# $(BUILD_DIR):
+# 	mkdir -p $(BUILD_DIR)
 
-# Regra para compilar o executável
-$(EXECUTABLE): $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $@ $(LIBS)
+# # Regra para compilar o executável
+# $(EXECUTABLE): $(OBJECTS)
+# 	$(CXX) $(OBJECTS) -o $@ $(LIBS)
 
-# Regra para compilar os arquivos objeto
-$(BUILD_DIR)/%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+# # Regra para compilar os arquivos objeto
+# $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+# 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Regra para rodar o programa
-run: $(EXECUTABLE)
-	 ./$(EXECUTABLE)
+# # Regra para rodar o programa
+# run: $(EXECUTABLE)
+# 	 ./$(EXECUTABLE)
 
-# Regra para limpar os arquivos gerados
-clean: rm -rf $(BUILD_DIR) $(EXECUTABLE)
+# # Regra para limpar os arquivos gerados
+# clean:
+# 	rm -rf $(BUILD_DIR) $(EXECUTABLE)
 
-# Regra de limpeza completa
-distclean: clean
+# # Regra de limpeza completa
+# distclean: clean
 
-.PHONY: all clean distclean run
+# .PHONY: all clean distclean run
+########
+
+
 
 
 
 
 # ## WINDOWS
 # # Compiler
-# CXX = g++
+CXX = g++
 
-# # Directories
-# INCDIR = C:/SFML-2.6.1/include
-# LIBDIR = C:/SFML-2.6.1/lib
+# Directories
+INCDIR = C:/SFML-2.6.1/include
+LIBDIR = C:/SFML-2.6.1/lib
+SRCDIR = src/sources
+BUILDDIR = build
 
-# # Libraries
-# LIBS = -lsfml-graphics -lsfml-system -lsfml-window
+# Libraries
+LIBS = -lsfml-graphics -lsfml-system -lsfml-window
 
-# # Compiler flags
-# CXXFLAGS = -I$(INCDIR)
-# LDFLAGS = -L$(LIBDIR)
+# Compiler flags
+CXXFLAGS = -I$(INCDIR)
+LDFLAGS = -L$(LIBDIR)
 
-# # Source and object files
-# SRCS = $(wildcard *.cpp)
-# OBJS = $(SRCS:.cpp=.o)
+# Source and object files
+SRCS = $(wildcard $(SRCDIR)/*.cpp)
+OBJS = $(patsubst $(SRCDIR)/%.cpp,$(BUILDDIR)/%.o,$(SRCS))
 
-# # Executable
-# EXEC = main.exe
+# Executable
+EXEC = $(BUILDDIR)/main.exe
 
-# # Default target
-# all: compile link run
+# Default target
+all: $(EXEC) run
 
-# # Compilation
-# compile: $(OBJS)
+# Create build directory if it doesn't exist
+$(BUILDDIR):
+	@if not exist $(BUILDDIR) mkdir $(BUILDDIR)
 
-# # Linking
-# link: $(EXEC)
+# Compilation
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp | $(BUILDDIR)
+	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
-# # Run
-# run:
-# 	./$(EXEC)
+# Linking
+$(EXEC): $(OBJS)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LIBS)
 
-# # Linking command
-# $(EXEC): $(OBJS)
-# 	$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LIBS)
+# Run
+run: $(EXEC)
+	$(EXEC)
 
-# # Compilation command
-# %.o: %.cpp
-# 	$(CXX) -c $< -o $@ $(CXXFLAGS)
+# Clean up
+clean:
+	if exist $(BUILDDIR) (rmdir /S /Q $(BUILDDIR))
 
-# # Clean up
-# clean:
-# 	rm -f $(OBJS) $(EXEC)
-
-# # Phony targets
-# .PHONY: all compile link run clean
-# ###
+# Phony targets
+.PHONY: all compile link run clean
+###
 
 
 
