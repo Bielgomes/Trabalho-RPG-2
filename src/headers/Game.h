@@ -6,7 +6,6 @@
 #include "Camera.h"
 #include "Enemy.h"
 
-
 class Game {
     private:
         // Window
@@ -22,7 +21,6 @@ class Game {
 
         // Private Functions
         void initVariables();
-        void initTextures();
         void initWindow();
         void initPlayer();
 

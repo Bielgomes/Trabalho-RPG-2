@@ -14,6 +14,19 @@ void Enemy::initVariables() {
     _damage = 1;
 }
 
+void Enemy::initTexture() {
+    sf::Texture* enemyTexture = Context::getTextureContext()->getTexture("ENEMY");
+    if (enemyTexture == nullptr) {
+        enemyTexture = new sf::Texture();
+        if (!enemyTexture->loadFromFile("src/resources/textures/skeleton.png")) {
+            std::cout << "ERROR::GAME::INITTEXTURES::Could not load skeleton texture file." << std::endl;
+        }
+        Context::getTextureContext()->addTexture("ENEMY", enemyTexture);
+    }
+
+    _texture = enemyTexture;
+}
+
 void Enemy::initSprite() {
     _sprite = new sf::Sprite(*_texture);
     _sprite->setOrigin(_sprite->getGlobalBounds().width / 2, _sprite->getGlobalBounds().height);
@@ -33,11 +46,9 @@ void Enemy::initSprite() {
 }
 
 // Constructor and Destructor
-Enemy::Enemy(sf::Texture* texture) {
+Enemy::Enemy() {
     initVariables();
-    
-    _texture = texture;
-    
+    initTexture();
     initSprite();
 }
 

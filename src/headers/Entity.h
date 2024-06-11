@@ -12,6 +12,7 @@ class Entity {
 
         // Private Functions
         virtual void initVariables() = 0;
+        virtual void initTexture() = 0;
         virtual void initSprite() = 0;
 
     public:

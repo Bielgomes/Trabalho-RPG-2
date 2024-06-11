@@ -174,7 +174,3 @@ void EntityGroupList::removeFromGroup(std::string groupName, Entity* entity) {
         current = current->next;
     }
 };
-
-void renderGroup(std::string groupName, sf::RenderTarget& target) {
-    
-}

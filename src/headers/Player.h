@@ -19,11 +19,12 @@ class Player : public Entity {
 
         // Private Functions
         void initVariables();
+        void initTexture();
         void initSprite();
 
     public:
         // Constructor and Destructor
-        Player(sf::Texture* texture);
+        Player();
         virtual ~Player();
 
         // Accessors

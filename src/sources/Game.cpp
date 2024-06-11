@@ -11,20 +11,6 @@ void Game::initVariables() {
     _enemy = nullptr;
 }
 
-void Game::initTextures() {
-    sf::Texture* playerTexture = new sf::Texture();
-    if (!playerTexture->loadFromFile("src/resources/textures/player.png")) {
-        std::cout << "ERROR::GAME::INITTEXTURES::Could not load player texture file." << std::endl;
-    }
-    Context::getTextureContext()->addTexture("PLAYER", playerTexture);
-
-    sf::Texture* skeletonTexture = new sf::Texture();
-    if (!skeletonTexture->loadFromFile("src/resources/textures/skeleton.png")) {
-        std::cout << "ERROR::GAME::INITTEXTURES::Could not load skeleton texture file." << std::endl;
-    }
-    Context::getTextureContext()->addTexture("SKELETON", skeletonTexture);
-}
-
 void Game::initWindow() {
     _window = new sf::RenderWindow(sf::VideoMode(1280, 720), "T2 - RPG", sf::Style::Titlebar | sf::Style::Close);
     _camera = new Camera(_window);
@@ -37,19 +23,18 @@ void Game::initPlayer() {
     Context::getEntityContext()->addGroup("PLAYER");
     Context::getEntityContext()->addGroup("ENEMY");
 
-    _player = new Player(Context::getTextureContext()->getTexture("PLAYER"));
+    _player = new Player();
     Context::getEntityContext()->addToGroup("PLAYER", _player);
 
     _camera->bind(_player);
 
-    _enemy = new Enemy(Context::getTextureContext()->getTexture("SKELETON"));
+    _enemy = new Enemy();
     Context::getEntityContext()->addToGroup("ENEMY", _enemy);
 }
 
 // Constructor and Destructor
 Game::Game() {
     initVariables();
-    initTextures();
     initWindow();
     initPlayer();
 }

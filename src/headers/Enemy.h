@@ -21,11 +21,12 @@ class Enemy : public Entity {
 
         // Private Functions
         void initVariables();
+        void initTexture();
         void initSprite();
 
     public:
         // Constructor and Destructor
-        Enemy(sf::Texture* texture);
+        Enemy();
         virtual ~Enemy();
 
         // Accessors

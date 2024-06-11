@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 
+#include "../headers/Context.h"
 #include "../headers/Player.h"
 
 // Private Functions
@@ -11,6 +12,19 @@ void Player::initVariables() {
     _speed = 2.f;
     _hp = 100;
     _xp = 0;
+}
+
+void Player::initTexture() {
+    sf::Texture* playerTexture = Context::getTextureContext()->getTexture("PLAYER");
+    if (playerTexture == nullptr) {
+        playerTexture = new sf::Texture();
+        if (!playerTexture->loadFromFile("src/resources/textures/player.png")) {
+            std::cout << "ERROR::GAME::INITTEXTURES::Could not load player texture file." << std::endl;
+        }
+        Context::getTextureContext()->addTexture("PLAYER", playerTexture);
+    }
+
+    _texture = playerTexture;
 }
 
 void Player::initSprite() {
@@ -26,11 +40,9 @@ void Player::initSprite() {
 }
 
 // Constructor and Destructor
-Player::Player(sf::Texture* texture) {
+Player::Player() {
     initVariables();
-
-    _texture = texture;
-    
+    initTexture();
     initSprite();
 }
 
