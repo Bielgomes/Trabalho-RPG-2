@@ -28,7 +28,7 @@ class Game {
     public:
         // Constructor and Destructor
         Game();
-        ~Game();
+        virtual ~Game();
 
         // Functions
         void run();

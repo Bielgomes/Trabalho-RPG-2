@@ -24,7 +24,7 @@ class Enemy : public Entity {
     public:
         // Constructor and Destructor
         Enemy();
-        ~Enemy();
+        virtual ~Enemy();
 
         // Accessors
         const sf::Vector2f& getPosition() const;
@@ -32,7 +32,5 @@ class Enemy : public Entity {
 
         // Functions
         void update();
-        void render(sf::RenderTarget& target) {
-            target.draw(*_sprite);
-        };
+        void render(sf::RenderTarget& target);
 };

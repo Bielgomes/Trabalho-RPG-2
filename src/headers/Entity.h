@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include <SFML/Graphics.hpp>
 
 class Entity {
@@ -21,7 +22,5 @@ class Entity {
 
         // Functions
         virtual void update() = 0;
-        void render(sf::RenderTarget& target) {
-            target.draw(*_sprite);
-        };
+        virtual void render(sf::RenderTarget& target) = 0;
 };

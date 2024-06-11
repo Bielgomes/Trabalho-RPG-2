@@ -18,7 +18,7 @@ class Camera {
     public:
         // Constructor and Destructor
         Camera(sf::RenderTarget* target);
-        ~Camera();
+        virtual ~Camera();
 
         // Accessors
         const sf::View& getCamera() const;

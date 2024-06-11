@@ -23,7 +23,7 @@ class Player : public Entity {
     public:
         // Constructor and Destructor
         Player();
-        ~Player();
+        virtual ~Player();
 
         // Accessors
         const sf::Vector2f& getPosition() const;
@@ -31,7 +31,5 @@ class Player : public Entity {
 
         // Functions
         void update();
-        void render(sf::RenderTarget& target) {
-            target.draw(*_sprite);
-        };
+        void render(sf::RenderTarget& target);
 };

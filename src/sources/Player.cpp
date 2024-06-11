@@ -64,3 +64,7 @@ void Player::update() {
 
     _sprite->move(direction * _speed);
 }
+
+void Player::render(sf::RenderTarget& target) {
+    target.draw(*_sprite);
+}

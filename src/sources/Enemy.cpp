@@ -45,3 +45,7 @@ const sf::FloatRect Enemy::getShape() const {
 void Enemy::update() {
     _sprite->move(0.f, 1.0);
 };
+
+void Enemy::render(sf::RenderTarget& target) {
+    target.draw(*_sprite);
+}

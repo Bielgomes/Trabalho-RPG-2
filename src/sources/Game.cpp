@@ -1,5 +1,7 @@
 #include "../headers/Game.h"
 
+#include "../headers/Context.h"
+
 // Private Functions
 void Game::initVariables() {
     _window = nullptr;

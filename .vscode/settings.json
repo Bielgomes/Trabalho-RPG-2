@@ -67,7 +67,9 @@
     "xtr1common": "cpp",
     "xtree": "cpp",
     "xutility": "cpp",
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "bitset": "cpp",
+    "cinttypes": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
