@@ -5,28 +5,31 @@
 
 // Private Functions
 void Player::initVariables() {
+    _texture = nullptr;
+    _sprite = nullptr;
+
     _speed = 2.f;
     _hp = 100;
     _xp = 0;
-}
-
-void Player::initTexture() {
-    _texture = new sf::Texture();
-    if (!_texture->loadFromFile("src/resources/textures/player.png")) {
-        std::cout << "ERROR::PLAYER::INITTEXTURE::Could not load texture file." << std::endl;
-    }
 }
 
 void Player::initSprite() {
     _sprite = new sf::Sprite(*_texture);
     _sprite->setOrigin(_sprite->getGlobalBounds().width / 2, _sprite->getGlobalBounds().height);
     _sprite->setPosition(0.f, 0.f);
+
+    _collision.setSize(sf::Vector2f(_sprite->getGlobalBounds().width, _sprite->getGlobalBounds().height));
+    _collision.setOrigin(_sprite->getOrigin());
+    _collision.setFillColor(sf::Color::Transparent);
+    _collision.setOutlineColor(sf::Color::Red);
+    _collision.setOutlineThickness(0.3f);
 }
 
 // Constructor and Destructor
-Player::Player() {
+Player::Player(sf::Texture* texture) {
     initVariables();
-    initTexture();
+
+    _texture = texture;
     
     initSprite();
 }
@@ -49,13 +52,11 @@ void Player::update() {
     int moveX = sf::Keyboard::isKeyPressed(sf::Keyboard::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     int moveY = sf::Keyboard::isKeyPressed(sf::Keyboard::S) - sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 
-    sf::Vector2f direction(moveX * _speed, moveY * _speed);
+    sf::Vector2f direction(moveX, moveY);
 
     float length = sqrt(direction.x * direction.x + direction.y * direction.y);
-    if (length != 0) {
-        direction.x /= length;
-        direction.y /= length;
-    }
+    if (length != 0)
+        direction /= length;
 
     if (direction.x > 0)
         _sprite->setScale(1.f, 1.f);
@@ -63,8 +64,10 @@ void Player::update() {
         _sprite->setScale(-1.f, 1.f);
 
     _sprite->move(direction * _speed);
+    _collision.setPosition(_sprite->getPosition());
 }
 
 void Player::render(sf::RenderTarget& target) {
     target.draw(*_sprite);
+    target.draw(_collision);
 }

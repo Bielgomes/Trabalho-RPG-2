@@ -11,6 +11,9 @@ class Enemy : public Entity {
         sf::Texture* _texture;
         sf::Sprite* _sprite;
 
+        sf::RectangleShape _collision;
+        sf::CircleShape _aggroRange;
+
         // Variables
         float _speed;
         float _hp;
@@ -18,12 +21,11 @@ class Enemy : public Entity {
 
         // Private Functions
         void initVariables();
-        void initTexture();
         void initSprite();
 
     public:
         // Constructor and Destructor
-        Enemy();
+        Enemy(sf::Texture* texture);
         virtual ~Enemy();
 
         // Accessors

@@ -16,6 +16,10 @@ void EntityContext::listGroups() {
     _entityContext.listGroups();
 };
 
+EntityGroupNode* EntityContext::getEntitiesInGroup(std::string groupName) {
+    return _entityContext.getGroup(groupName)->getEntities();
+};
+
 void EntityContext::addToGroup(std::string groupName, Entity* entity) {
     _entityContext.addToGroup(groupName, entity);
 };
@@ -31,3 +35,10 @@ void EntityContext::listEntitiesInGroup(std::string groupName) {
         group->listEntities();
     }
 };
+
+void EntityContext::renderGroup(std::string groupName, sf::RenderTarget& target) {
+    EntityGroup* group = _entityContext.getGroup(groupName);
+
+    if (group != nullptr)
+        group->render(target);
+}

@@ -15,6 +15,10 @@ EntityGroup::~EntityGroup() {
     }
 };
 
+EntityGroupNode* EntityGroup::getEntities() {
+    return _head;
+};
+
 void EntityGroup::addEntity(Entity* entity) {
     EntityGroupNode* node = new EntityGroupNode();
     node->entity = entity;
@@ -55,6 +59,15 @@ void EntityGroup::listEntities() {
 
     while (current != nullptr) {
         std::cout << current->entity << std::endl;
+        current = current->next;
+    }
+};
+
+void EntityGroup::render(sf::RenderTarget& target) {
+    EntityGroupNode* current = _head;
+
+    while (current != nullptr) {
+        current->entity->render(target);
         current = current->next;
     }
 };
@@ -161,3 +174,7 @@ void EntityGroupList::removeFromGroup(std::string groupName, Entity* entity) {
         current = current->next;
     }
 };
+
+void renderGroup(std::string groupName, sf::RenderTarget& target) {
+    
+}

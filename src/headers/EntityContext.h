@@ -12,7 +12,10 @@ class EntityContext {
         void deleteGroup(std::string groupName);
         void listGroups();
 
+        EntityGroupNode* getEntitiesInGroup(std::string groupName);
         void addToGroup(std::string groupName, Entity* entity);
         void removeFromGroup(std::string groupName, Entity* entity);
         void listEntitiesInGroup(std::string groupName);
+
+        void renderGroup(std::string groupName, sf::RenderTarget& target);
 };

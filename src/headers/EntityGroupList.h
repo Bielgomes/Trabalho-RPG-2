@@ -2,8 +2,7 @@
 
 #include "Entity.h"
 
-struct EntityGroupNode
-{
+struct EntityGroupNode {
     Entity* entity;
     EntityGroupNode* next;
 };
@@ -16,9 +15,12 @@ class EntityGroup {
         EntityGroup();
         virtual ~EntityGroup();
 
+        EntityGroupNode* getEntities();
         void addEntity(Entity* entity);
         void deleteEntity(Entity* entity);
         void listEntities();
+
+        void render(sf::RenderTarget& target);
 };
 
 struct EntityListGroupNode

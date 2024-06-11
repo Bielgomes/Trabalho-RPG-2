@@ -10,6 +10,8 @@ class Player : public Entity {
         sf::Texture* _texture;
         sf::Sprite* _sprite;
 
+        sf::RectangleShape _collision;
+
         // Variables
         float _speed;
         float _hp;
@@ -17,12 +19,11 @@ class Player : public Entity {
 
         // Private Functions
         void initVariables();
-        void initTexture();
         void initSprite();
 
     public:
         // Constructor and Destructor
-        Player();
+        Player(sf::Texture* texture);
         virtual ~Player();
 
         // Accessors

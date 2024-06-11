@@ -11,6 +11,20 @@ void Game::initVariables() {
     _enemy = nullptr;
 }
 
+void Game::initTextures() {
+    sf::Texture* playerTexture = new sf::Texture();
+    if (!playerTexture->loadFromFile("src/resources/textures/player.png")) {
+        std::cout << "ERROR::GAME::INITTEXTURES::Could not load player texture file." << std::endl;
+    }
+    Context::getTextureContext()->addTexture("PLAYER", playerTexture);
+
+    sf::Texture* skeletonTexture = new sf::Texture();
+    if (!skeletonTexture->loadFromFile("src/resources/textures/skeleton.png")) {
+        std::cout << "ERROR::GAME::INITTEXTURES::Could not load skeleton texture file." << std::endl;
+    }
+    Context::getTextureContext()->addTexture("SKELETON", skeletonTexture);
+}
+
 void Game::initWindow() {
     _window = new sf::RenderWindow(sf::VideoMode(1280, 720), "T2 - RPG", sf::Style::Titlebar | sf::Style::Close);
     _camera = new Camera(_window);
@@ -20,15 +34,22 @@ void Game::initWindow() {
 }
 
 void Game::initPlayer() {
-    _player = new Player();
+    Context::getEntityContext()->addGroup("PLAYER");
+    Context::getEntityContext()->addGroup("ENEMY");
+
+    _player = new Player(Context::getTextureContext()->getTexture("PLAYER"));
+    Context::getEntityContext()->addToGroup("PLAYER", _player);
+
     _camera->bind(_player);
 
-    _enemy = new Enemy();
+    _enemy = new Enemy(Context::getTextureContext()->getTexture("SKELETON"));
+    Context::getEntityContext()->addToGroup("ENEMY", _enemy);
 }
 
 // Constructor and Destructor
 Game::Game() {
     initVariables();
+    initTextures();
     initWindow();
     initPlayer();
 }
@@ -37,6 +58,7 @@ Game::~Game() {
     delete _window;
     delete _player;
     delete _camera;
+    delete _enemy;
 }
 
 // Functions
@@ -68,8 +90,8 @@ void Game::update() {
 void Game::render() {
     _window->clear();
 
-    _player->render(*_window);
-    _enemy->render(*_window);
+    Context::getEntityContext()->renderGroup("ENEMY", *_window);
+    Context::getEntityContext()->renderGroup("PLAYER", *_window);
 
     _window->display();
 }
