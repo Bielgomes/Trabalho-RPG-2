@@ -3,35 +3,37 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entity.h"
+#include "Animated.h"
+#include "Collision.h"
 
-class Player : public Entity {
+enum PlayerAnimationState {
+    IDLE,
+    WALKING,
+};
+
+class Player : public Entity, public Animated<PlayerAnimationState>, public Collision {
     private:
         // Variables
-        sf::Texture* _texture;
-        sf::Sprite* _sprite;
+        std::string name;
 
-        sf::RectangleShape _collision;
-
-        // Variables
         float _speed;
         float _hp;
         int _xp;
+
 
         // Private Functions
         void initVariables();
         void initTexture();
         void initSprite();
+        void initAnimations();
 
     public:
         // Constructor and Destructor
         Player();
         virtual ~Player();
 
-        // Accessors
-        const sf::Vector2f& getPosition() const;
-        const sf::FloatRect getShape() const;
-
         // Functions
+        void updateAnimations();
         void update();
         void render(sf::RenderTarget& target);
 };

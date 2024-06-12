@@ -4,14 +4,18 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entity.h"
+#include "Animated.h"
+#include "Collision.h"
 
-class Enemy : public Entity {
+enum EnemyAnimationState {
+    E_IDLE,
+    E_WALKING,
+    E_ATTACKING,
+};
+
+class Enemy : public Entity, public Animated<EnemyAnimationState>, public Collision {
     private:
         // Variables
-        sf::Texture* _texture;
-        sf::Sprite* _sprite;
-
-        sf::RectangleShape _collision;
         sf::CircleShape _aggroRange;
 
         // Variables
@@ -23,17 +27,15 @@ class Enemy : public Entity {
         void initVariables();
         void initTexture();
         void initSprite();
+        void initAnimations();
 
     public:
         // Constructor and Destructor
         Enemy();
         virtual ~Enemy();
 
-        // Accessors
-        const sf::Vector2f& getPosition() const;
-        const sf::FloatRect getShape() const;
-
         // Functions
+        void updateAnimations();
         void update();
         void render(sf::RenderTarget& target);
 };

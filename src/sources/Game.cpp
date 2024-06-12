@@ -7,7 +7,6 @@ void Game::initVariables() {
     _window = nullptr;
     _camera = nullptr;
     _player = nullptr;
-
     _enemy = nullptr;
 }
 

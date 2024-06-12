@@ -5,10 +5,12 @@
 #include <SFML/Graphics.hpp>
 
 class Entity {
-    private:
+    protected:
         // Variables
         sf::Texture* _texture;
         sf::Sprite* _sprite;
+
+        bool _flip;
 
         // Private Functions
         virtual void initVariables() = 0;
@@ -17,10 +19,10 @@ class Entity {
 
     public:
         // Accessors
-        virtual const sf::Vector2f& getPosition() const = 0;
-        virtual const sf::FloatRect getShape() const = 0;
+        const sf::Vector2f& getPosition() const;
+        const sf::FloatRect getShape() const;
 
         // Functions
         virtual void update() = 0;
-        virtual void render(sf::RenderTarget& target) = 0;
+        virtual void render(sf::RenderTarget& target);
 };

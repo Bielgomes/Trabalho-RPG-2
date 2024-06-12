@@ -2,7 +2,7 @@
 
 EntityGroup::EntityGroup() {
     _head = nullptr;
-};
+}
 
 EntityGroup::~EntityGroup() {
     EntityGroupNode* current = _head;
@@ -13,11 +13,11 @@ EntityGroup::~EntityGroup() {
         delete current;
         current = next;
     }
-};
+}
 
 EntityGroupNode* EntityGroup::getEntities() {
     return _head;
-};
+}
 
 void EntityGroup::addEntity(Entity* entity) {
     EntityGroupNode* node = new EntityGroupNode();
@@ -30,7 +30,7 @@ void EntityGroup::addEntity(Entity* entity) {
         node->next = _head;
         _head = node;
     }
-};
+}
 
 void EntityGroup::deleteEntity(Entity* entity) {
     EntityGroupNode* current = _head;
@@ -52,7 +52,7 @@ void EntityGroup::deleteEntity(Entity* entity) {
         previous = current;
         current = current->next;
     }
-};
+}
 
 void EntityGroup::listEntities() {
     EntityGroupNode* current = _head;
@@ -61,7 +61,7 @@ void EntityGroup::listEntities() {
         std::cout << current->entity << std::endl;
         current = current->next;
     }
-};
+}
 
 void EntityGroup::render(sf::RenderTarget& target) {
     EntityGroupNode* current = _head;
@@ -70,7 +70,7 @@ void EntityGroup::render(sf::RenderTarget& target) {
         current->entity->render(target);
         current = current->next;
     }
-};
+}
 
 
 
@@ -78,7 +78,7 @@ void EntityGroup::render(sf::RenderTarget& target) {
 
 EntityGroupList::EntityGroupList() {
     _head = nullptr;
-};
+}
 
 EntityGroupList::~EntityGroupList() {
     EntityListGroupNode* current = _head;
@@ -89,7 +89,7 @@ EntityGroupList::~EntityGroupList() {
         delete current;
         current = next;
     }
-};
+}
 
 EntityGroup* EntityGroupList::getGroup(std::string groupName) {
     EntityListGroupNode* current = _head;
@@ -102,7 +102,7 @@ EntityGroup* EntityGroupList::getGroup(std::string groupName) {
     }
 
     return nullptr;
-};
+}
 
 void EntityGroupList::addGroup(std::string groupName) {
     EntityListGroupNode* node = new EntityListGroupNode();
@@ -116,7 +116,7 @@ void EntityGroupList::addGroup(std::string groupName) {
         node->next = _head;
         _head = node;
     }
-};
+}
 
 void EntityGroupList::deleteGroup(std::string groupName) {
     EntityListGroupNode* current = _head;
@@ -147,7 +147,7 @@ void EntityGroupList::listGroups() {
         std::cout << current->name << std::endl;
         current = current->next;
     }
-};
+}
 
 void EntityGroupList::addToGroup(std::string groupName, Entity* entity) {
     EntityListGroupNode* current = _head;
@@ -160,7 +160,7 @@ void EntityGroupList::addToGroup(std::string groupName, Entity* entity) {
 
         current = current->next;
     }
-};
+}
 
 void EntityGroupList::removeFromGroup(std::string groupName, Entity* entity) {
     EntityListGroupNode* current = _head;
@@ -173,4 +173,4 @@ void EntityGroupList::removeFromGroup(std::string groupName, Entity* entity) {
 
         current = current->next;
     }
-};
+}
