@@ -1,6 +1,7 @@
 #include <cmath>
 
 #include "../headers/Context.h"
+#include "../headers/Functions.h"
 #include "../headers/Enemy.h"
 #include "../headers/Player.h"
 
@@ -93,19 +94,17 @@ void Enemy::update() {
     Player *player = static_cast<Player*>(Context::getEntityContext()->getEntitiesInGroup("PLAYER")->entity);
     if (player->isColliding(_aggroRange)) {
         sf::Vector2f direction = player->getPosition() - _sprite->getPosition();
+        direction = Functions::normalize(direction);
 
-        float length = sqrt(direction.x * direction.x + direction.y * direction.y);
-        if (length != 0) {
+        if (direction.x < 0) {
             _animationState = EnemyAnimationState::E_WALKING;
-            direction /= length;
+            _flip = true;
+        } else if (direction.x > 0) {
+            _animationState = EnemyAnimationState::E_WALKING;
+            _flip = false;
         } else {
             _animationState = EnemyAnimationState::E_IDLE;
         }
-
-        if (direction.x < 0)
-            _flip = true;
-        else if (direction.x > 0)
-            _flip = false;
 
         _sprite->move(direction * _speed);
         _aggroRange.setPosition(_sprite->getPosition());

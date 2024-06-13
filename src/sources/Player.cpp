@@ -1,13 +1,16 @@
-#include <cmath>
 #include <iostream>
 
 #include "../headers/Context.h"
+#include "../headers/Functions.h"
 #include "../headers/Player.h"
+#include "../headers/Sword.h"
 
 // Private Functions
 void Player::initVariables() {
     _texture = nullptr;
     _sprite = nullptr;
+    
+    _sword = new Sword();
 
     _flip = false;
 
@@ -56,7 +59,7 @@ Player::Player() {
 }
 
 Player::~Player() {
-    
+    delete _sword;
 }
 
 // Functions
@@ -88,24 +91,24 @@ void Player::update() {
     int moveY = sf::Keyboard::isKeyPressed(sf::Keyboard::S) - sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 
     sf::Vector2f direction(moveX, moveY);
+    direction = Functions::normalize(direction);
 
-    float length = sqrt(direction.x * direction.x + direction.y * direction.y);
-    if (length != 0) {
+    if (direction.x < 0) {
         _animationState = PlayerAnimationState::WALKING;
-        direction /= length;
+        _flip = true;
+    } else if (direction.x > 0) {
+        _animationState = PlayerAnimationState::WALKING;
+        _flip = false;
     } else {
         _animationState = PlayerAnimationState::IDLE;
     }
-
-    if (direction.x < 0)
-        _flip = true;
-    else if (direction.x > 0)
-        _flip = false;
     
     _sprite->move(direction * _speed);
     _collision.setPosition(_sprite->getPosition());
 
     updateAnimations();
+
+    _sword->update(this);
 }
 
 void Player::render(sf::RenderTarget& target) {

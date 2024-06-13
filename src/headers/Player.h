@@ -6,6 +6,8 @@
 #include "Animated.h"
 #include "Collision.h"
 
+#include "Weapon.h"
+
 enum PlayerAnimationState {
     IDLE,
     WALKING,
@@ -20,6 +22,7 @@ class Player : public Entity, public Animated<PlayerAnimationState>, public Coll
         float _hp;
         int _xp;
 
+        Weapon* _sword;
 
         // Private Functions
         void initVariables();
