@@ -93,15 +93,15 @@ void Player::update() {
     sf::Vector2f direction(moveX, moveY);
     direction = Functions::normalize(direction);
 
-    if (direction.x < 0) {
+    if (direction.x != 0 || direction.y != 0)
         _animationState = PlayerAnimationState::WALKING;
-        _flip = true;
-    } else if (direction.x > 0) {
-        _animationState = PlayerAnimationState::WALKING;
-        _flip = false;
-    } else {
+    else
         _animationState = PlayerAnimationState::IDLE;
-    }
+
+    if (direction.x < 0)
+        _flip = true;
+    else if (direction.x > 0)
+        _flip = false;
     
     _sprite->move(direction * _speed);
     _collision.setPosition(_sprite->getPosition());

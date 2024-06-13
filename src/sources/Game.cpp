@@ -65,10 +65,10 @@ void Game::pollEvents() {
 }
 
 void Game::update() {
-    _player->update();
+    Context::getEntityContext()->updateGroup("PLAYER");
     _camera->update();
 
-    _enemy->update();
+    Context::getEntityContext()->updateGroup("ENEMY");
 }
 
 void Game::render() {

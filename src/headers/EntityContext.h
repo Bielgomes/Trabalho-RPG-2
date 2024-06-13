@@ -17,5 +17,6 @@ class EntityContext {
         void removeFromGroup(std::string groupName, Entity* entity);
         void listEntitiesInGroup(std::string groupName);
 
+        void updateGroup(std::string groupName);
         void renderGroup(std::string groupName, sf::RenderTarget& target);
 };

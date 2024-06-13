@@ -20,6 +20,7 @@ class EntityGroup {
         void deleteEntity(Entity* entity);
         void listEntities();
 
+        void update();
         void render(sf::RenderTarget& target);
 };
 

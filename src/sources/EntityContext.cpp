@@ -36,6 +36,13 @@ void EntityContext::listEntitiesInGroup(std::string groupName) {
     }
 }
 
+void EntityContext::updateGroup(std::string groupName) {
+    EntityGroup* group = _entityContext.getGroup(groupName);
+
+    if (group != nullptr)
+        group->update();
+}
+
 void EntityContext::renderGroup(std::string groupName, sf::RenderTarget& target) {
     EntityGroup* group = _entityContext.getGroup(groupName);
 

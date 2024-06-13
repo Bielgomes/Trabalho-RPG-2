@@ -38,11 +38,10 @@ void EntityGroup::deleteEntity(Entity* entity) {
 
     while (current != nullptr) {
         if (current->entity == entity) {
-            if (previous == nullptr) {
+            if (previous == nullptr)
                 _head = current->next;
-            } else {
+            else
                 previous->next = current->next;
-            }
 
             delete current->entity;
             delete current;
@@ -59,6 +58,15 @@ void EntityGroup::listEntities() {
 
     while (current != nullptr) {
         std::cout << current->entity << std::endl;
+        current = current->next;
+    }
+}
+
+void EntityGroup::update() {
+    EntityGroupNode* current = _head;
+
+    while (current != nullptr) {
+        current->entity->update();
         current = current->next;
     }
 }
