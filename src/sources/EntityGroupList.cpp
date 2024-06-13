@@ -38,6 +38,7 @@ void EntityGroup::deleteEntity(Entity* entity) {
 
     while (current != nullptr) {
         if (current->entity == entity) {
+            std::cout << "Entity Founded! Deleting Entity" << std::endl;
             if (previous == nullptr)
                 _head = current->next;
             else
@@ -175,6 +176,7 @@ void EntityGroupList::removeFromGroup(std::string groupName, Entity* entity) {
 
     while (current != nullptr) {
         if (current->name == groupName) {
+            std::cout << "Group Founded! Removing Entity" << std::endl;
             current->group->deleteEntity(entity);
             return;
         }

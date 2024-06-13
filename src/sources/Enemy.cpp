@@ -13,8 +13,8 @@ void Enemy::initVariables() {
     _flip = false;
 
     _speed = 1.f;
-    _hp = 10;
-    _damage = 1;
+    _hp = 1;
+    _dmg = 1;
 }
 
 void Enemy::initTexture() {
@@ -66,6 +66,16 @@ Enemy::~Enemy() {
 }
 
 // Functions
+int Enemy::getActualHP() {
+    return _hp;
+}
+
+void Enemy::takeDamage(int damage) {
+    _hp -= damage;
+    if (_hp <= 0)
+        _hp = 0;
+}
+
 void Enemy::updateAnimations() {
     switch (_animationState) {
         case EnemyAnimationState::E_IDLE:

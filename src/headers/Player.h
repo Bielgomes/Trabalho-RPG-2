@@ -20,6 +20,7 @@ class Player : public Entity, public Animated<PlayerAnimationState>, public Coll
 
         float _speed;
         float _hp;
+        int _dmg;
         int _xp;
 
         Weapon* _sword;
@@ -34,8 +35,11 @@ class Player : public Entity, public Animated<PlayerAnimationState>, public Coll
         // Constructor and Destructor
         Player();
         virtual ~Player();
-
+        
         // Functions
+        void takeDamage(int damage);
+        void gainXP(int xp);
+
         void updateAnimations();
         void update();
         void render(sf::RenderTarget& target);

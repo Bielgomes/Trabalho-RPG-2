@@ -14,6 +14,9 @@ void Game::initWindow() {
     _window = new sf::RenderWindow(sf::VideoMode(1280, 720), "T2 - RPG", sf::Style::Titlebar | sf::Style::Close);
     _camera = new Camera(_window);
 
+    Context::getWindowContext()->setWindow(_window);
+    Context::getWindowContext()->setView(_camera->getCamera());
+
     _window->setFramerateLimit(60); 
     _window->setVerticalSyncEnabled(false);
 }

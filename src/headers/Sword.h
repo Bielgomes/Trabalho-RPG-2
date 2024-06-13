@@ -11,9 +11,12 @@ class Sword : public Weapon {
 
     public:
         // Constructor and Destructor
-        Sword();
+        Sword(Entity* entity);
         virtual ~Sword();
 
-        void update(Entity* entity);
+        // Functions
+        int getDamage();
+
         void update();
+        void render(sf::RenderTarget& target);
 };

@@ -21,7 +21,7 @@ class Enemy : public Entity, public Animated<EnemyAnimationState>, public Collis
         // Variables
         float _speed;
         float _hp;
-        int _damage;
+        int _dmg;
 
         // Private Functions
         void initVariables();
@@ -35,6 +35,9 @@ class Enemy : public Entity, public Animated<EnemyAnimationState>, public Collis
         virtual ~Enemy();
 
         // Functions
+        int getActualHP();
+        void takeDamage(int damage);
+
         void updateAnimations();
         void update();
         void render(sf::RenderTarget& target);

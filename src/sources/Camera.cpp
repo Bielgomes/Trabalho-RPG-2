@@ -21,8 +21,8 @@ Camera::~Camera() {
 }
 
 // Accessors
-const sf::View& Camera::getCamera() const {
-    return *_camera;
+sf::View* Camera::getCamera() const {
+    return _camera;
 }
 
 // Modifiers

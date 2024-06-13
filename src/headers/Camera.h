@@ -21,7 +21,7 @@ class Camera {
         virtual ~Camera();
 
         // Accessors
-        const sf::View& getCamera() const;
+        sf::View* getCamera() const;
 
         // Modifiers
         void bind(Entity* entity);
