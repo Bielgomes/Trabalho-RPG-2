@@ -50,7 +50,3 @@ void EntityContext::renderGroup(std::string groupName, sf::RenderTarget& target)
     if (group != nullptr)
         group->render(target);
 }
-
-void EntityContext::processDestroy() {
-    _entityContext.processDestroy();
-}

@@ -19,6 +19,4 @@ class EntityContext {
 
         void updateGroup(std::string groupName);
         void renderGroup(std::string groupName, sf::RenderTarget& target);
-
-        void processDestroy();
 };

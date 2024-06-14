@@ -34,11 +34,9 @@ void EntityGroup::addEntity(Entity* entity) {
     }
 }
 
-Entity* EntityGroup::deleteEntity(Entity* entity) {
+void EntityGroup::deleteEntity(Entity* entity) {
     EntityGroupNode* current = _head;
     EntityGroupNode* previous = nullptr;
-
-    Entity* entityToDelete = nullptr;
 
     while (current != nullptr) {
         if (current->entity == entity) {
@@ -47,9 +45,9 @@ Entity* EntityGroup::deleteEntity(Entity* entity) {
             else
                 previous->next = current->next;
             
-            entityToDelete = current->entity;
+            delete current->entity;
             delete current;
-            return entityToDelete;
+            return;
         }
 
         previous = current;
@@ -68,10 +66,12 @@ void EntityGroup::listEntities() {
 
 void EntityGroup::update() {
     EntityGroupNode* current = _head;
+    EntityGroupNode* next = nullptr;
 
     while (current != nullptr) {
+        next = current->next;
         current->entity->update();
-        current = current->next;
+        current = next;
     }
 }
 
@@ -90,18 +90,6 @@ void EntityGroup::render(sf::RenderTarget& target) {
 
 
 // Private Functions
-void EntityGroupList::addToDestroy(Entity* entity) {
-    EntityGroupNode* node = new EntityGroupNode();
-    node->entity = entity;
-    node->next = nullptr;
-
-    if (_entityToDestroy == nullptr) {
-        _entityToDestroy = node;
-    } else {
-        node->next = _entityToDestroy;
-        _entityToDestroy = node;
-    }
-}
 
 // Constructor and Destructor
 EntityGroupList::EntityGroupList() {
@@ -117,7 +105,6 @@ EntityGroupList::~EntityGroupList() {
         current = next;
     }
 
-    processDestroy();
 }
 
 // Functions
@@ -194,34 +181,13 @@ void EntityGroupList::addToGroup(std::string groupName, Entity* entity) {
 
 void EntityGroupList::removeFromGroup(std::string groupName, Entity* entity) {
     EntityListGroupNode* current = _head;
-    Entity* entityToDelete = nullptr;
 
     while (current != nullptr) {
         if (current->name == groupName) {
-            entity = current->group->deleteEntity(entity);
-            if (entity == nullptr)
-                return;
-
-            addToDestroy(entity);
+            current->group->deleteEntity(entity);
+            return;
         }
 
         current = current->next;
-    }
-}
-
-void EntityGroupList::processDestroy() {
-    EntityGroupNode* current = _entityToDestroy;
-    _entityToDestroy = nullptr;
-
-    while (current != nullptr) {
-        EntityGroupNode* next = current->next;
-        
-        if (current->entity != nullptr) {
-            delete current->entity;
-            current->entity = nullptr;
-        }
-
-        delete current;
-        current = next;
     }
 }
