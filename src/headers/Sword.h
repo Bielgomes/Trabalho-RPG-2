@@ -1,9 +1,13 @@
 #pragma once
 
 #include "Weapon.h"
+#include "Player.h"
 
 class Sword : public Weapon {
-    protected:
+    private:
+        // Variables
+        Player* _entity;
+
         // Private Functions
         void initVariables();
         void initTexture();
@@ -11,7 +15,7 @@ class Sword : public Weapon {
 
     public:
         // Constructor and Destructor
-        Sword(Entity* entity);
+        Sword(Player* entity);
         virtual ~Sword();
 
         // Functions

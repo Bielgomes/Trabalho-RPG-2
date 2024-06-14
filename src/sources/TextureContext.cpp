@@ -1,5 +1,6 @@
 #include "../headers/TextureContext.h"
 
+// Functions
 sf::Texture* TextureContext::getTexture(std::string name) {
     if (_textureContext.find(name) != _textureContext.end())
         return _textureContext[name];

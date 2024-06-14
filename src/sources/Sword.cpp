@@ -4,6 +4,7 @@
 #include "../headers/Functions.h"
 #include "../headers/Sword.h"
 #include "../headers/Enemy.h"
+#include "../headers/Player.h"
 
 // Private Functions
 void Sword::initVariables() {
@@ -43,7 +44,7 @@ void Sword::initSprite() {
 }
 
 // Constructor and Destructor
-Sword::Sword(Entity* entity) {
+Sword::Sword(Player* entity) {
     _entity = entity;
 
     initVariables();
@@ -82,14 +83,13 @@ void Sword::update() {
             Enemy* enemy = dynamic_cast<Enemy*>(enemyNode->entity);
 
             if (enemy->isColliding(_hitbox))
-                enemy->takeDamage(1);
+                enemy->takeDamage(_entity->getDamage());
 
-            if (enemy->getActualHP() <= 0) {
-                enemyNode = enemyNode->next;
-                Context::getEntityContext()->removeFromGroup("ENEMY", enemy);
-            } else {
-                enemyNode = enemyNode->next;
-            }
+            if (enemy->getHp() <= 0)
+               _entity->addXp(200);
+
+            break;
+            enemyNode = enemyNode->next;
         }
     }
 }

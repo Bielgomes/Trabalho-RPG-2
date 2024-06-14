@@ -1,5 +1,6 @@
 #include "../headers/EntityGroupList.h"
 
+// Constructor and Destructor
 EntityGroup::EntityGroup() {
     _head = nullptr;
 }
@@ -15,6 +16,7 @@ EntityGroup::~EntityGroup() {
     }
 }
 
+// Functions
 EntityGroupNode* EntityGroup::getEntities() {
     return _head;
 }
@@ -32,21 +34,22 @@ void EntityGroup::addEntity(Entity* entity) {
     }
 }
 
-void EntityGroup::deleteEntity(Entity* entity) {
+Entity* EntityGroup::deleteEntity(Entity* entity) {
     EntityGroupNode* current = _head;
     EntityGroupNode* previous = nullptr;
 
+    Entity* entityToDelete = nullptr;
+
     while (current != nullptr) {
         if (current->entity == entity) {
-            std::cout << "Entity Founded! Deleting Entity" << std::endl;
             if (previous == nullptr)
                 _head = current->next;
             else
                 previous->next = current->next;
-
-            delete current->entity;
+            
+            entityToDelete = current->entity;
             delete current;
-            return;
+            return entityToDelete;
         }
 
         previous = current;
@@ -85,21 +88,39 @@ void EntityGroup::render(sf::RenderTarget& target) {
 
 
 
+
+// Private Functions
+void EntityGroupList::addToDestroy(Entity* entity) {
+    EntityGroupNode* node = new EntityGroupNode();
+    node->entity = entity;
+    node->next = nullptr;
+
+    if (_entityToDestroy == nullptr) {
+        _entityToDestroy = node;
+    } else {
+        node->next = _entityToDestroy;
+        _entityToDestroy = node;
+    }
+}
+
+// Constructor and Destructor
 EntityGroupList::EntityGroupList() {
     _head = nullptr;
 }
 
 EntityGroupList::~EntityGroupList() {
     EntityListGroupNode* current = _head;
-
     while (current != nullptr) {
         EntityListGroupNode* next = current->next;
         delete current->group;
         delete current;
         current = next;
     }
+
+    processDestroy();
 }
 
+// Functions
 EntityGroup* EntityGroupList::getGroup(std::string groupName) {
     EntityListGroupNode* current = _head;
 
@@ -173,14 +194,34 @@ void EntityGroupList::addToGroup(std::string groupName, Entity* entity) {
 
 void EntityGroupList::removeFromGroup(std::string groupName, Entity* entity) {
     EntityListGroupNode* current = _head;
+    Entity* entityToDelete = nullptr;
 
     while (current != nullptr) {
         if (current->name == groupName) {
-            std::cout << "Group Founded! Removing Entity" << std::endl;
-            current->group->deleteEntity(entity);
-            return;
+            entity = current->group->deleteEntity(entity);
+            if (entity == nullptr)
+                return;
+
+            addToDestroy(entity);
         }
 
         current = current->next;
+    }
+}
+
+void EntityGroupList::processDestroy() {
+    EntityGroupNode* current = _entityToDestroy;
+    _entityToDestroy = nullptr;
+
+    while (current != nullptr) {
+        EntityGroupNode* next = current->next;
+        
+        if (current->entity != nullptr) {
+            delete current->entity;
+            current->entity = nullptr;
+        }
+
+        delete current;
+        current = next;
     }
 }

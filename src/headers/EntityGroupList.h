@@ -17,7 +17,7 @@ class EntityGroup {
 
         EntityGroupNode* getEntities();
         void addEntity(Entity* entity);
-        void deleteEntity(Entity* entity);
+        Entity* deleteEntity(Entity* entity);
         void listEntities();
 
         void update();
@@ -34,6 +34,9 @@ struct EntityListGroupNode
 class EntityGroupList {
     private:
         EntityListGroupNode* _head;
+        EntityGroupNode* _entityToDestroy;
+
+        void addToDestroy(Entity* entity);
 
     public:
         EntityGroupList();
@@ -46,4 +49,6 @@ class EntityGroupList {
 
         void addToGroup(std::string groupName, Entity* entity);
         void removeFromGroup(std::string groupName, Entity* entity);
+
+        void processDestroy();
 };

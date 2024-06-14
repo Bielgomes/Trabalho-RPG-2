@@ -3,9 +3,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "Entity.h"
 #include "Animated.h"
-#include "Collision.h"
+#include "CombatEntity.h"
 
 enum EnemyAnimationState {
     E_IDLE,
@@ -13,15 +12,13 @@ enum EnemyAnimationState {
     E_ATTACKING,
 };
 
-class Enemy : public Entity, public Animated<EnemyAnimationState>, public Collision {
+class Enemy : public CombatEntity, public Animated<EnemyAnimationState> {
     private:
         // Variables
         sf::CircleShape _aggroRange;
 
         // Variables
         float _speed;
-        float _hp;
-        int _dmg;
 
         // Private Functions
         void initVariables();
@@ -35,8 +32,9 @@ class Enemy : public Entity, public Animated<EnemyAnimationState>, public Collis
         virtual ~Enemy();
 
         // Functions
-        int getActualHP();
+        int getDamage();
         void takeDamage(int damage);
+        int getHp();
 
         void updateAnimations();
         void update();

@@ -11,6 +11,7 @@ class Functions {
         static sf::Vector2f lerp(sf::Vector2f to, sf::Vector2f from, float porcentage);
 
         static float clamp(float value, float min, float max);
+        static sf::Vector2f clamp(sf::Vector2f vector, float min, float max);
         static sf::Vector2f clamp(sf::Vector2f vector, sf::Vector2f min, sf::Vector2f max);
 
         static sf::Vector2f normalize(sf::Vector2f vector);

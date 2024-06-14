@@ -3,6 +3,7 @@
 
 #include "../headers/Functions.h"
 
+// Functions
 float Functions::lerp(float to, float from, float porcentage) {
     return from + (to - from) * porcentage;
 }
@@ -29,6 +30,12 @@ sf::Vector2f Functions::normalize(sf::Vector2f vector) {
 
 float Functions::clamp(float value, float min, float max) {
     return std::max(min, std::min(value, max));
+}
+
+sf::Vector2f Functions::clamp(sf::Vector2f vector, float min, float max) {
+    float x = clamp(vector.x, min, max);
+    float y = clamp(vector.y, min, max);
+    return sf::Vector2f(x, y);
 }
 
 sf::Vector2f Functions::clamp(sf::Vector2f vector, sf::Vector2f min, sf::Vector2f max) {

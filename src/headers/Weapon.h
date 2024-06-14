@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Entity.h"
+#include "CombatEntity.h"
 
 class Weapon : public Entity {
     protected:
         // Variables
         sf::RectangleShape _hitbox;
-        Entity* _entity;
 
         sf::Clock _attackTimer;
         bool _isAttacking;

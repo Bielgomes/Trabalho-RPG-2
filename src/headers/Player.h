@@ -2,10 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Entity.h"
 #include "Animated.h"
-#include "Collision.h"
-
+#include "CombatEntity.h"
 #include "Weapon.h"
 
 enum PlayerAnimationState {
@@ -13,17 +11,14 @@ enum PlayerAnimationState {
     WALKING,
 };
 
-class Player : public Entity, public Animated<PlayerAnimationState>, public Collision {
+class Player : public CombatEntity, public Animated<PlayerAnimationState> {
     private:
         // Variables
         std::string name;
-
         float _speed;
-        float _hp;
-        int _dmg;
         int _xp;
 
-        Weapon* _sword;
+        Weapon* _weapon;
 
         // Private Functions
         void initVariables();
@@ -37,8 +32,14 @@ class Player : public Entity, public Animated<PlayerAnimationState>, public Coll
         virtual ~Player();
         
         // Functions
+        int getDamage();
         void takeDamage(int damage);
-        void gainXP(int xp);
+        int getHp();
+
+        void addXp(int xp);
+        int getLevel();
+
+        // Inventory things...
 
         void updateAnimations();
         void update();

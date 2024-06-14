@@ -1,5 +1,6 @@
 #include "../headers/Collision.h"
 
+// Functions
 bool Collision::isColliding(Entity* entity) {
     return _collision.getGlobalBounds().intersects(entity->getShape());
 }

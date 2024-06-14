@@ -1,8 +1,10 @@
 #include "../headers/WindowContext.h"
 
+// Variables
 sf::RenderWindow* WindowContext::_window = nullptr;
 sf::View* WindowContext::_view = nullptr;
 
+// Functions
 void WindowContext::setWindow(sf::RenderWindow* window) {
     _window = window;
 }

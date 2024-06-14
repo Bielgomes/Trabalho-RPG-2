@@ -1,5 +1,6 @@
 #include "../headers/EntityContext.h"
 
+// Functions
 EntityGroup* EntityContext::getGroup(std::string name) {
     return _entityContext.getGroup(name);
 }
@@ -48,4 +49,8 @@ void EntityContext::renderGroup(std::string groupName, sf::RenderTarget& target)
 
     if (group != nullptr)
         group->render(target);
+}
+
+void EntityContext::processDestroy() {
+    _entityContext.processDestroy();
 }

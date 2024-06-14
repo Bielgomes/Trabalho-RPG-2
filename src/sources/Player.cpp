@@ -10,7 +10,7 @@ void Player::initVariables() {
     _texture = nullptr;
     _sprite = nullptr;
     
-    _sword = new Sword(this);
+    _weapon = new Sword(this);
 
     _flip = false;
 
@@ -59,18 +59,30 @@ Player::Player() {
 }
 
 Player::~Player() {
-    delete _sword;
+    delete _weapon;
 }
 
 // Functions
+int Player::getDamage() {
+    return _dmg + _weapon->getDamage();
+}
+
 void Player::takeDamage(int damage) {
     _hp -= damage;
     if (_hp < 0)
         _hp = 0;
 }
 
-void Player::gainXP(int xp) {
+int Player::getHp() {
+    return _hp;
+}
+
+void Player::addXp(int xp) {
     _xp += xp;
+}
+
+int Player::getLevel() {
+    return _xp / 100;
 }
 
 void Player::updateAnimations() {
@@ -118,12 +130,12 @@ void Player::update() {
 
     updateAnimations();
 
-    _sword->update();
+    _weapon->update();
 }
 
 void Player::render(sf::RenderTarget& target) {
     target.draw(*_sprite);
     target.draw(_collision);
     
-    _sword->render(target);
+    _weapon->render(target);
 }

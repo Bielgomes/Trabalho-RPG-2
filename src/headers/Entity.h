@@ -24,7 +24,7 @@ class Entity {
         // Accessors
         const sf::Vector2f& getPosition() const;
         const sf::FloatRect getShape() const;
-        virtual const sf::Vector2f getCenter() const;
+        const sf::Vector2f getCenter() const;
 
         // Functions
         virtual void update() = 0;

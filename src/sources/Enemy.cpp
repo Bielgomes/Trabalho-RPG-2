@@ -66,14 +66,18 @@ Enemy::~Enemy() {
 }
 
 // Functions
-int Enemy::getActualHP() {
-    return _hp;
+int Enemy::getDamage() {
+    return _dmg;
 }
 
 void Enemy::takeDamage(int damage) {
     _hp -= damage;
     if (_hp <= 0)
         _hp = 0;
+}
+
+int Enemy::getHp() {
+    return _hp;
 }
 
 void Enemy::updateAnimations() {
@@ -101,6 +105,11 @@ void Enemy::updateAnimations() {
 }
 
 void Enemy::update() {
+    if (_hp <= 0) {
+        Context::getEntityContext()->removeFromGroup("ENEMY", this);
+        return;
+    }
+
     Player *player = static_cast<Player*>(Context::getEntityContext()->getEntitiesInGroup("PLAYER")->entity);
     if (player->isColliding(_aggroRange)) {
         sf::Vector2f direction = player->getPosition() - _sprite->getPosition();

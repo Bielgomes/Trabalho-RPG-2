@@ -69,9 +69,10 @@ void Game::pollEvents() {
 
 void Game::update() {
     Context::getEntityContext()->updateGroup("PLAYER");
-    _camera->update();
-
     Context::getEntityContext()->updateGroup("ENEMY");
+    Context::getEntityContext()->processDestroy();
+    
+    _camera->update();
 }
 
 void Game::render() {
