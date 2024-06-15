@@ -44,4 +44,6 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
         void updateAnimations();
         void update();
         void render(sf::RenderTarget& target);
+
+        void listFree();
 };

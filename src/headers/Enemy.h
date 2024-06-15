@@ -5,6 +5,7 @@
 
 #include "Animated.h"
 #include "CombatEntity.h"
+#include "Player.h"
 
 enum EnemyAnimationState {
     E_IDLE,
@@ -32,11 +33,15 @@ class Enemy : public CombatEntity, public Animated<EnemyAnimationState> {
         virtual ~Enemy();
 
         // Functions
+
         int getDamage();
         void takeDamage(int damage);
+        void takeDamage(int damage, Player* player);
         int getHp();
 
         void updateAnimations();
         void update();
         void render(sf::RenderTarget& target);
+
+        void listFree();
 };

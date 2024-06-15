@@ -139,3 +139,7 @@ void Player::render(sf::RenderTarget& target) {
     
     _weapon->render(target);
 }
+
+void Player::listFree() {
+    Context::getEntityContext()->removeFromGroup("PLAYER", this);
+}

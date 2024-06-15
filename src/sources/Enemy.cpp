@@ -73,7 +73,15 @@ int Enemy::getDamage() {
 void Enemy::takeDamage(int damage) {
     _hp -= damage;
     if (_hp <= 0)
-        _hp = 0;
+        listFree();
+}
+
+void Enemy::takeDamage(int damage, Player* player) {
+    _hp -= damage;
+    if (_hp <= 0) {
+        player->addXp(10);
+        listFree();
+    }
 }
 
 int Enemy::getHp() {
@@ -105,11 +113,6 @@ void Enemy::updateAnimations() {
 }
 
 void Enemy::update() {
-    if (_hp <= 0) {
-        Context::getEntityContext()->removeFromGroup("ENEMY", this);
-        return;
-    }
-
     Player *player = static_cast<Player*>(Context::getEntityContext()->getEntitiesInGroup("PLAYER")->entity);
     if (player->isColliding(_aggroRange)) {
         sf::Vector2f direction = player->getPosition() - _sprite->getPosition();
@@ -137,4 +140,8 @@ void Enemy::render(sf::RenderTarget& target) {
     target.draw(*_sprite);
     target.draw(_aggroRange);
     target.draw(_collision);
+}
+
+void Enemy::listFree() {
+    Context::getEntityContext()->removeFromGroup("ENEMY", this);
 }
