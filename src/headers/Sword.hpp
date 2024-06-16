@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Weapon.h"
-#include "Player.h"
+#include "Weapon.hpp"
+#include "Player.hpp"
 
 class Sword : public Weapon {
     private:

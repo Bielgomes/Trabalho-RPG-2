@@ -1,12 +1,14 @@
 #pragma once
 
-#include "EntityGroupList.h"
+#include "EntityGroupList.hpp"
 
 class EntityContext {
     private:
+        // Variables
         EntityGroupList _entityContext;
 
     public:
+        // Functions
         EntityGroup* getGroup(std::string name);
         void addGroup(std::string groupName);
         void deleteGroup(std::string groupName);

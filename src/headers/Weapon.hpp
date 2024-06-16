@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CombatEntity.h"
+#include "CombatEntity.hpp"
 
 class Weapon : public Entity {
     protected:

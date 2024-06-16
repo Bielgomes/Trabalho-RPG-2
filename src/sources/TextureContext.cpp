@@ -1,4 +1,4 @@
-#include "../headers/TextureContext.h"
+#include "../headers/TextureContext.hpp"
 
 // Functions
 sf::Texture* TextureContext::getTexture(std::string name) {

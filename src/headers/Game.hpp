@@ -2,9 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Player.h"
-#include "Camera.h"
-#include "Enemy.h"
+#include "Player.hpp"
+#include "Camera.hpp"
+
+#include "TileMap.hpp"
 
 class Game {
     private:
@@ -12,16 +13,17 @@ class Game {
         sf::RenderWindow* _window;
         sf::Event _event;
 
+        sf::Texture _tileSheet;
+        TileMap* _tileMap;
+
         // Player
         Player* _player;
         Camera* _camera;
 
-        // Enemies
-        Enemy* _enemy;
-
         // Private Functions
         void initVariables();
         void initWindow();
+        void initTileMap();
         void initPlayer();
 
     public:

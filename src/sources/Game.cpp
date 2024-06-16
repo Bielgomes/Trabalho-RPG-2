@@ -1,13 +1,11 @@
-#include "../headers/Game.h"
-
-#include "../headers/Context.h"
+#include "../headers/Game.hpp"
+#include "../headers/Context.hpp"
 
 // Private Functions
 void Game::initVariables() {
     _window = nullptr;
     _camera = nullptr;
     _player = nullptr;
-    _enemy = nullptr;
 }
 
 void Game::initWindow() {
@@ -21,6 +19,185 @@ void Game::initWindow() {
     _window->setVerticalSyncEnabled(false);
 }
 
+void Game::initTileMap() {
+    TileMap* tileMap = new TileMap(40, 80, 16);
+    Context::getTileMapContext()->addTileMap("ROOM1", tileMap);
+
+    const sf::Vector2f GROUND = sf::Vector2f(0, 0);
+    const sf::Vector2f GROUND2 = sf::Vector2f(0, 16);
+    const sf::Vector2f GROUND3 = sf::Vector2f(0, 32);
+    const sf::Vector2f GROUND4 = sf::Vector2f(16, 0);
+    const sf::Vector2f GROUND5 = sf::Vector2f(16, 16);
+    const sf::Vector2f GROUND6 = sf::Vector2f(16, 32);
+    const sf::Vector2f GROUND7 = sf::Vector2f(32, 0);
+    const sf::Vector2f GROUND8 = sf::Vector2f(32, 16);
+
+    const sf::Vector2f BOTTOM_LEFT_WALL = sf::Vector2f(133, 288);
+    const sf::Vector2f BOTTOM_WALL = sf::Vector2f(150, 288);
+    const sf::Vector2f BOTTOM_RIGHT_WALL = sf::Vector2f(171, 288);
+
+    const sf::Vector2f TOP_RIGHT_WALL = sf::Vector2f(43, 123);
+    const sf::Vector2f TOP_WALL = sf::Vector2f(149, 219);
+    const sf::Vector2f TOP_LEFT_WALL = sf::Vector2f(21, 123);
+
+    const sf::Vector2f RIGHT_WALL = sf::Vector2f(0, 176);
+    const sf::Vector2f LEFT_WALL = sf::Vector2f(0, 160);
+
+    // START ROOM
+    // WALLS
+    tileMap->addTile(0, 0, TOP_LEFT_WALL);
+    for (int i = 1; i < 11; i++)
+        tileMap->addTile(i, 0, TOP_WALL);
+    tileMap->addTile(11, 0, TOP_RIGHT_WALL);
+
+    for (int i = 1; i < 11; i++)
+        tileMap->addTile(0, i, LEFT_WALL);
+
+    tileMap->addTile(0, 11, BOTTOM_LEFT_WALL);
+    for (int i = 1; i < 11; i++)
+        tileMap->addTile(i, 11, BOTTOM_WALL);
+    tileMap->addTile(11, 11, BOTTOM_RIGHT_WALL);
+
+    for (int i = 1; i < 4; i++)
+        tileMap->addTile(11, i, RIGHT_WALL);
+    for (int i = 8; i < 11; i++)
+        tileMap->addTile(11, i, RIGHT_WALL); 
+
+    tileMap->addTile(11, 4, TOP_WALL);
+    tileMap->addTile(11, 7, BOTTOM_WALL);
+
+    for (int i = 1; i < 11; i++)
+        for (int j = 1; j < 11; j++)
+            tileMap->addTile(i, j, GROUND); 
+
+    // CORRIDOR
+    // WALLS
+    tileMap->addTile(11, 5, GROUND);
+    tileMap->addTile(11, 6, GROUND);
+
+    for (int i = 12; i < 22; i++) {
+        tileMap->addTile(i, 4, TOP_WALL);
+        tileMap->addTile(i, 5, GROUND);
+        tileMap->addTile(i, 6, GROUND);
+        tileMap->addTile(i, 7, BOTTOM_WALL);
+    }
+
+    // ROOM 2
+    tileMap->addTile(22, 4, TOP_WALL);
+    tileMap->addTile(22, 7, BOTTOM_WALL);
+
+    for (int i = 1; i < 4; i++)
+        tileMap->addTile(22, i, LEFT_WALL);
+    for (int i = 8; i < 11; i++)
+        tileMap->addTile(22, i, LEFT_WALL);
+
+    tileMap->addTile(22, 0, TOP_LEFT_WALL);
+
+    for (int i = 23; i < 39; i++)
+        tileMap->addTile(i, 0, TOP_WALL);
+    
+    tileMap->addTile(39, 0, TOP_RIGHT_WALL);
+
+    for (int i = 1; i < 35; i++)
+        tileMap->addTile(39, i, RIGHT_WALL);
+    for (int i = 11; i < 32; i++)
+        tileMap->addTile(22, i, LEFT_WALL);
+
+    tileMap->addTile(39, 35, BOTTOM_RIGHT_WALL);
+    tileMap->addTile(22, 32, BOTTOM_LEFT_WALL);
+
+    for (int i = 22; i < 39; i++)
+        tileMap->addTile(i, 35, BOTTOM_WALL);
+
+    tileMap->addTile(22, 5, GROUND);
+    tileMap->addTile(22, 6, GROUND);
+
+    // GROUND
+    for (int i = 23; i < 39; i++)
+        for (int j = 1; j < 35; j++)
+            tileMap->addTile(i, j, GROUND);
+
+    // ROOM 3
+    for (int i = 18; i < 22; i++) {
+        tileMap->addTile(i, 32, TOP_WALL);
+        tileMap->addTile(i, 33, GROUND);
+        tileMap->addTile(i, 34, GROUND);
+        tileMap->addTile(i, 35, BOTTOM_WALL);
+    }
+
+    tileMap->addTile(22, 33, GROUND);
+    tileMap->addTile(22, 34, GROUND);
+
+    tileMap->addTile(17, 32, BOTTOM_RIGHT_WALL);
+    tileMap->addTile(17, 35, TOP_RIGHT_WALL);
+
+    for (int i = 25; i < 32; i++)
+        tileMap->addTile(17, i, RIGHT_WALL);
+    for (int i = 36; i < 44; i++)
+        tileMap->addTile(17, i, RIGHT_WALL);
+
+    tileMap->addTile(17, 24, TOP_RIGHT_WALL);
+    for (int i = 1; i < 17; i++)
+        tileMap->addTile(i, 24, TOP_WALL);
+
+    tileMap->addTile(17, 44, BOTTOM_RIGHT_WALL);
+    for (int i = 3; i < 17; i++)
+        tileMap->addTile(i, 44, BOTTOM_WALL);
+
+    tileMap->addTile(0, 24, TOP_LEFT_WALL);
+    for (int i = 25; i < 79; i++)
+        tileMap->addTile(0, i, LEFT_WALL);
+
+    // GROUND
+    for (int i = 1; i < 17; i++)
+        for (int j = 25; j < 44; j++)
+            tileMap->addTile(i, j, GROUND);
+
+    tileMap->addTile(17, 33, GROUND);
+    tileMap->addTile(17, 34, GROUND);
+
+    tileMap->addTile(0, 79, BOTTOM_LEFT_WALL);
+    for (int i = 1; i < 30; i++)
+        tileMap->addTile(i, 79, BOTTOM_WALL);
+
+    tileMap->addTile(30, 79, BOTTOM_RIGHT_WALL);
+    for (int i = 45; i < 79; i++)
+        tileMap->addTile(30, i, RIGHT_WALL);
+
+    tileMap->addTile(30, 44, TOP_RIGHT_WALL);
+    for (int i = 18; i < 30; i++)
+        tileMap->addTile(i, 44, TOP_WALL);
+
+    // GROUND
+    for (int i = 1; i < 30; i++)
+        for (int j = 45; j < 79; j++)
+            tileMap->addTile(i, j, GROUND);
+
+    tileMap->addTile(1, 44, GROUND);
+    tileMap->addTile(2, 44, GROUND);
+
+    tileMap->addCollision(7, 190, sf::Vector2f(0, 0));
+    tileMap->addCollision(183, 10, sf::Vector2f(8, 0));
+    tileMap->addCollision(6, 53, sf::Vector2f(185, 11));
+    tileMap->addCollision(6, 48, sf::Vector2f(185, 128));
+    tileMap->addCollision(183, 10, sf::Vector2f(8, 175));
+    tileMap->addCollision(192, 10, sf::Vector2f(175, 64));
+    tileMap->addCollision(192, 10, sf::Vector2f(175, 112));
+    tileMap->addCollision(6, 62, sf::Vector2f(352, 0));
+    tileMap->addCollision(6, 389, sf::Vector2f(352, 123));
+    tileMap->addCollision(274, 10, sf::Vector2f(359, 0));
+    tileMap->addCollision(6, 576, sf::Vector2f(634, 0));
+    tileMap->addCollision(361, 10, sf::Vector2f(272, 560));
+    tileMap->addCollision(96, 10, sf::Vector2f(272, 513));
+    tileMap->addCollision(6, 128, sf::Vector2f(282, 384));
+    tileMap->addCollision(6, 135, sf::Vector2f(282, 568));
+    tileMap->addCollision(280, 6, sf::Vector2f(0, 384));
+    tileMap->addCollision(6, 874, sf::Vector2f(0, 390));
+    tileMap->addCollision(496, 7, sf::Vector2f(0, 1265));
+    tileMap->addCollision(8, 560, sf::Vector2f(488, 704));
+    tileMap->addCollision(439, 10, sf::Vector2f(48, 704));
+}
+
 void Game::initPlayer() {
     Context::getEntityContext()->addGroup("PLAYER");
     Context::getEntityContext()->addGroup("ENEMY");
@@ -29,23 +206,19 @@ void Game::initPlayer() {
     Context::getEntityContext()->addToGroup("PLAYER", _player);
 
     _camera->bind(_player);
-
-    _enemy = new Enemy();
-    Context::getEntityContext()->addToGroup("ENEMY", _enemy);
 }
 
 // Constructor and Destructor
 Game::Game() {
     initVariables();
     initWindow();
+    initTileMap();
     initPlayer();
 }
 
 Game::~Game() {
     delete _window;
-    delete _player;
     delete _camera;
-    delete _enemy;
 }
 
 // Functions
@@ -68,14 +241,19 @@ void Game::pollEvents() {
 }
 
 void Game::update() {
+    Context::getTileMapContext()->updateTileMap("ROOM1");
+
     Context::getEntityContext()->updateGroup("PLAYER");
     Context::getEntityContext()->updateGroup("ENEMY");
     
     _camera->update();
+    std::cout << Context::getWindowContext()->getMousePosition().x << " " << Context::getWindowContext()->getMousePosition().y << std::endl;
 }
 
 void Game::render() {
     _window->clear();
+
+    Context::getTileMapContext()->renderTileMap("ROOM1", *_window);
 
     Context::getEntityContext()->renderGroup("ENEMY", *_window);
     Context::getEntityContext()->renderGroup("PLAYER", *_window);

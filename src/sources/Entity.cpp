@@ -1,4 +1,4 @@
-#include "../headers/Entity.h"
+#include "../headers/Entity.hpp"
 
 // Accessors
 const sf::Vector2f& Entity::getPosition() const {

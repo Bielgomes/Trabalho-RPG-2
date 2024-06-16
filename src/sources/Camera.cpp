@@ -1,5 +1,5 @@
-#include "../headers/Camera.h"
-#include "../headers/Functions.h"
+#include "../headers/Camera.hpp"
+#include "../headers/Functions.hpp"
 
 // Private Functions
 void Camera::initVariables() {

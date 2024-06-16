@@ -3,9 +3,9 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "Animated.h"
-#include "CombatEntity.h"
-#include "Player.h"
+#include "Animated.hpp"
+#include "Enemy.hpp"
+#include "Player.hpp"
 
 enum EnemyAnimationState {
     E_IDLE,
@@ -13,7 +13,7 @@ enum EnemyAnimationState {
     E_ATTACKING,
 };
 
-class Enemy : public CombatEntity, public Animated<EnemyAnimationState> {
+class BigDemon : public Enemy, public Animated<EnemyAnimationState> {
     private:
         // Variables
         sf::CircleShape _aggroRange;
@@ -29,8 +29,8 @@ class Enemy : public CombatEntity, public Animated<EnemyAnimationState> {
 
     public:
         // Constructor and Destructor
-        Enemy();
-        virtual ~Enemy();
+        BigDemon();
+        virtual ~BigDemon();
 
         // Functions
 

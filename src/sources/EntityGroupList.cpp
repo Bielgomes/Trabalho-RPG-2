@@ -1,4 +1,4 @@
-#include "../headers/EntityGroupList.h"
+#include "../headers/EntityGroupList.hpp"
 
 // Constructor and Destructor
 EntityGroup::EntityGroup() {

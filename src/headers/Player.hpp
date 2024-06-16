@@ -2,9 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Animated.h"
-#include "CombatEntity.h"
-#include "Weapon.h"
+#include "Animated.hpp"
+#include "CombatEntity.hpp"
+#include "Weapon.hpp"
 
 enum PlayerAnimationState {
     IDLE,
@@ -15,7 +15,6 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
     private:
         // Variables
         std::string name;
-        float _speed;
         int _xp;
 
         Weapon* _weapon;
@@ -42,7 +41,9 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
         // Inventory things...
 
         void updateAnimations();
+        void updateMovement();
         void update();
+        
         void render(sf::RenderTarget& target);
 
         void listFree();

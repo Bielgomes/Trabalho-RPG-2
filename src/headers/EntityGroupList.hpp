@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Entity.h"
+#include "Entity.hpp"
 
 struct EntityGroupNode {
     Entity* entity;
@@ -9,12 +9,15 @@ struct EntityGroupNode {
 
 class EntityGroup {
     private:
+        // Variables
         EntityGroupNode* _head;
 
     public:
+        // Constructor and Destructor
         EntityGroup();
         virtual ~EntityGroup();
 
+        // Functions
         EntityGroupNode* getEntities();
         void addEntity(Entity* entity);
         void deleteEntity(Entity* entity);
@@ -33,12 +36,15 @@ struct EntityListGroupNode
 
 class EntityGroupList {
     private:
+        // Variables
         EntityListGroupNode* _head;
 
     public:
+        // Constructor and Destructor
         EntityGroupList();
         virtual ~EntityGroupList();
 
+        // Functions
         EntityGroup* getGroup(std::string groupName);
         void addGroup(std::string groupName);
         void deleteGroup(std::string groupName);

@@ -1,7 +1,7 @@
 #include <cmath>
 #include <algorithm>
 
-#include "../headers/Functions.h"
+#include "../headers/Functions.hpp"
 
 // Functions
 float Functions::lerp(float to, float from, float porcentage) {

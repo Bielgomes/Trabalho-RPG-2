@@ -1,4 +1,4 @@
-#include "../headers/EntityContext.h"
+#include "../headers/EntityContext.hpp"
 
 // Functions
 EntityGroup* EntityContext::getGroup(std::string name) {

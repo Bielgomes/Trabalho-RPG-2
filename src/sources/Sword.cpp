@@ -1,10 +1,10 @@
 #include <cmath>
 
-#include "../headers/Context.h"
-#include "../headers/Functions.h"
-#include "../headers/Sword.h"
-#include "../headers/Enemy.h"
-#include "../headers/Player.h"
+#include "../headers/Context.hpp"
+#include "../headers/Functions.hpp"
+#include "../headers/Sword.hpp"
+#include "../headers/Enemy.hpp"
+#include "../headers/Player.hpp"
 
 // Private Functions
 void Sword::initVariables() {
@@ -23,7 +23,7 @@ void Sword::initTexture() {
     sf::Texture* swordTexture = Context::getTextureContext()->getTexture("SWORD");
     if (swordTexture == nullptr) {
         swordTexture = new sf::Texture();
-        if (!swordTexture->loadFromFile("src/resources/textures/knight_sword.png")) {
+        if (!swordTexture->loadFromFile("src/resources/textures/knightSwordSprite.png")) {
             std::cout << "ERROR::GAME::INITTEXTURES::Could not load knight_sword texture file." << std::endl;
         }
         Context::getTextureContext()->addTexture("SWORD", swordTexture);

@@ -1,4 +1,4 @@
-#include "../headers/WindowContext.h"
+#include "../headers/WindowContext.hpp"
 
 // Variables
 sf::RenderWindow* WindowContext::_window = nullptr;

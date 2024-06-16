@@ -1,4 +1,4 @@
-#include "../headers/Collision.h"
+#include "../headers/Collision.hpp"
 
 // Functions
 bool Collision::isColliding(Entity* entity) {
