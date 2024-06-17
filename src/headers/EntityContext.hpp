@@ -19,6 +19,8 @@ class EntityContext {
         void removeFromGroup(std::string groupName, Entity* entity);
         void listEntitiesInGroup(std::string groupName);
 
+        bool isColliding(std::vector<std::string> groupsName, sf::FloatRect bound, sf::Vector2f direction, Entity* entity);
+
         void updateGroup(std::string groupName);
         void renderGroup(std::string groupName, sf::RenderTarget& target);
 };

@@ -27,6 +27,8 @@ class BigDemon : public Enemy, public Animated<BigDemonAnimationState> {
         void initSprite();
         void initAnimations();
 
+        void applyBleeding();
+
     public:
         // Constructor and Destructor
         BigDemon();

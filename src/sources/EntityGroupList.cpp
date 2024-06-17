@@ -84,6 +84,21 @@ void EntityGroup::render(sf::RenderTarget& target) {
     }
 }
 
+bool EntityGroup::isColliding(sf::FloatRect bound, sf::Vector2f direction, Entity* entity) {
+    EntityGroupNode* current = _head;
+    while (current != nullptr && current->entity != entity) {
+        if (current->entity->getShape().intersects(
+            sf::FloatRect(bound.left + direction.x, bound.top + direction.y, bound.width, bound.height)
+        )) {
+            return true;
+        }
+
+        current = current->next;
+    }
+
+    return false;
+}
+
 
 
 

@@ -50,3 +50,14 @@ void EntityContext::renderGroup(std::string groupName, sf::RenderTarget& target)
     if (group != nullptr)
         group->render(target);
 }
+
+bool EntityContext::isColliding(std::vector<std::string> groupsName, sf::FloatRect bound, sf::Vector2f direction, Entity* entity) {
+    for (std::string groupName : groupsName) {
+        EntityGroup* group = _entityContext.getGroup(groupName);
+        if (group != nullptr && group->isColliding(bound, direction, entity)) {
+            return true;
+        }
+    }
+
+    return false;
+}

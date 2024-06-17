@@ -12,7 +12,7 @@ void Demon::initVariables() {
 
     _flip = false;
 
-    _speed = 1.5f;
+    _speed = 1.3f;
     _hp = 4;
     _dmg = 1;
     _xp = 10;
@@ -53,6 +53,14 @@ void Demon::initAnimations() {
 
     _sprite->setTextureRect(_animationFrame);
     _animationTimer.restart();
+}
+
+void Demon::applyBleeding() {
+    if (_bleeding > 0 && _bleedingTimer.getElapsedTime().asSeconds() >= 3.f) {
+        _bleedingTimer.restart();
+        _bleeding--;
+        takeDamage(1);
+    }
 }
 
 // Constructor and Destructor
@@ -134,13 +142,19 @@ void Demon::updateAnimations() {
 
 void Demon::update() {
     Player *player = static_cast<Player*>(Context::getEntityContext()->getEntitiesInGroup("PLAYER")->entity);
+    applyBleeding();
 
     EntityGroupNode* group = Context::getEntityContext()->getEntitiesInGroup("WEAPON");
-    if (group != nullptr) {
+    if (group != nullptr && this != nullptr) {
         Weapon* weapon = static_cast<Weapon*>(group->entity);
-        if (isColliding(weapon->getShape()) && weapon->isAttacking())
-            return takeDamage(player->getDamage(), player);
+        if (isColliding(weapon->getShape()) && weapon->isAttacking()) {
+            takeDamage(player->getDamage(), player);
+            _bleeding += 3;
+        }
     }
+
+    if (_hp <= 0)
+        return;
 
     if (player->isColliding(_aggroRange)) {
         sf::Vector2f direction = player->getPosition() - _sprite->getPosition();
@@ -158,6 +172,11 @@ void Demon::update() {
             {"BACKGROUND"},
             bounds,
             sf::Vector2f(direction.x * _speed, 0)
+        ) || Context::getEntityContext()->isColliding(
+            {"ENEMY", "BOSS"},
+            bounds,
+            sf::Vector2f(direction.x * _speed, 0),
+            this
         ))
             direction = sf::Vector2f(0, direction.y);
 
@@ -165,6 +184,11 @@ void Demon::update() {
             {"BACKGROUND"},
             bounds,
             sf::Vector2f(0, direction.y * _speed)
+        ) || Context::getEntityContext()->isColliding(
+            {"ENEMY", "BOSS"},
+            bounds,
+            sf::Vector2f(0, direction.y * _speed),
+            this
         ))
             direction = sf::Vector2f(direction.x, 0);
 

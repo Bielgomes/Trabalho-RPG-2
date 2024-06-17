@@ -17,9 +17,13 @@ void Player::initVariables() {
 
     _flip = false;
 
-    _speed = 2.f;
+    _speed = 1.5f;
     _hp = 100;
+    _dmg = 0;
     _xp = 0;
+
+    _isSpecialAttckButtonPressed = false;
+    _specialAttackTimer.restart();
 }
 
 void Player::initTexture() {
@@ -68,7 +72,7 @@ Player::~Player() {
 
 // Functions
 int Player::getDamage() {
-    return _dmg + _weapon->getDamage();
+    return getLevel() + _weapon->getDamage() + _dmg;
 }
 
 void Player::takeDamage(int damage) {
@@ -162,6 +166,17 @@ void Player::updateMovement() {
 void Player::update() {
     updateMovement();
     _weapon->update();
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+        if (_specialAttackTimer.getElapsedTime().asSeconds() > 5.f && !_isSpecialAttckButtonPressed) {
+            _isSpecialAttckButtonPressed = true;
+            _specialAttackTimer.restart();
+
+            std::cout << "Special Attack!" << std::endl;
+        } else {
+            _isSpecialAttckButtonPressed = false;
+        }
+    }
 }
 
 void Player::render(sf::RenderTarget& target) {

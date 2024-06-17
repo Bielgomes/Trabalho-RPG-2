@@ -22,7 +22,12 @@ void Game::initWindow() {
 }
 
 void Game::initTileMap() {
-    TileMap* tileMap = new TileMap(40, 80, 16);
+    sf::Texture* tilemapTexture = new sf::Texture();
+    if (!tilemapTexture->loadFromFile("src/resources/textures/tileMap.png")) {
+        std::cout << "ERROR::GAME::INITTEXTURES::Could not load tilemap texture file." << std::endl;
+    }
+    
+    TileMap* tileMap = new TileMap(tilemapTexture, 40, 80, 16);
     Context::getTileMapContext()->addTileMap("BACKGROUND", tileMap);
 
     const sf::Vector2f GROUND = sf::Vector2f(0, 0);

@@ -7,29 +7,15 @@ void TileMap::initVariables() {
     _tileSize = 0;
 }
 
-void TileMap::initTexture() {
-    sf::Texture* tilemapTexture = Context::getTextureContext()->getTexture("TILEMAP");
-    if (tilemapTexture == nullptr) {
-        tilemapTexture = new sf::Texture();
-        if (!tilemapTexture->loadFromFile("src/resources/textures/tilemap.png")) {
-            std::cout << "ERROR::GAME::INITTEXTURES::Could not load tilemap texture file." << std::endl;
-        }
-        Context::getTextureContext()->addTexture("TILEMAP", tilemapTexture);
-    }
-
-    _texture = tilemapTexture;
-}
-
 // Constructor and Destructor
 TileMap::TileMap() {
     initVariables();
-    initTexture();
 }
 
-TileMap::TileMap(unsigned width, unsigned height, unsigned tileSize) {
+TileMap::TileMap(sf::Texture* texture, unsigned width, unsigned height, unsigned tileSize) {
     initVariables();
-    initTexture();
-    
+
+    _texture = texture;
     _tileSize = tileSize;
 
     _tiles.resize(width);
@@ -72,9 +58,8 @@ bool TileMap::isColliding(sf::FloatRect bound, sf::Vector2f direction) {
     for (auto collision : _collisions) {
         if (collision->getGlobalBounds().intersects(
             sf::FloatRect(bound.left + direction.x, bound.top + direction.y, bound.width, bound.height)
-        )) {
+        ))
             return true;
-        }
     }
 
     return false;

@@ -17,6 +17,9 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
         std::string name;
         int _xp;
 
+        sf::Clock _specialAttackTimer;
+        bool _isSpecialAttckButtonPressed;
+
         Weapon* _weapon;
 
         // Private Functions

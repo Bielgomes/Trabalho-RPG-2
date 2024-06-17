@@ -13,8 +13,12 @@ void BigDemon::initVariables() {
     _flip = false;
 
     _speed = 1.f;
-    _hp = 1;
-    _dmg = 1;
+    _hp = 10;
+    _dmg = 2;
+    _xp = 80;
+    _bleeding = 0;
+
+    _bleedingTimer.restart();
 }
 
 void BigDemon::initTexture() {
@@ -53,6 +57,14 @@ void BigDemon::initAnimations() {
 
     _sprite->setTextureRect(_animationFrame);
     _animationTimer.restart();
+}
+
+void BigDemon::applyBleeding() {
+    if (_bleeding > 0 && _bleedingTimer.getElapsedTime().asSeconds() >= 3.f) {
+        takeDamage(_bleeding);
+        _bleedingTimer.restart();
+        _bleeding--;
+    }
 }
 
 // Constructor and Destructor
@@ -134,6 +146,18 @@ void BigDemon::updateAnimations() {
 
 void BigDemon::update() {
     Player *player = static_cast<Player*>(Context::getEntityContext()->getEntitiesInGroup("PLAYER")->entity);
+    applyBleeding();
+
+    EntityGroupNode* group = Context::getEntityContext()->getEntitiesInGroup("WEAPON");
+    if (group != nullptr && this != nullptr) {
+        Weapon* weapon = static_cast<Weapon*>(group->entity);
+        if (isColliding(weapon->getShape()) && weapon->isAttacking())
+            takeDamage(player->getDamage(), player);
+    }
+
+    if (_hp <= 0)
+        return;
+
     if (player->isColliding(_aggroRange)) {
         sf::Vector2f direction = player->getPosition() - _sprite->getPosition();
         direction = Functions::normalize(direction);

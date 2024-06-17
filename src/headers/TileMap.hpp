@@ -14,12 +14,11 @@ class TileMap {
         unsigned _tileSize;
 
         void initVariables();
-        void initTexture();
 
     public:
         // Constructor and Destructor
         TileMap();
-        TileMap(unsigned width, unsigned height, unsigned tileSize);
+        TileMap(sf::Texture* _texture, unsigned width, unsigned height, unsigned tileSize);
         virtual ~TileMap();
 
         // Functions

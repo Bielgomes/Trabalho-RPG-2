@@ -11,8 +11,12 @@ class Enemy : public CombatEntity {
     protected:
         // Variables
         sf::CircleShape _aggroRange;
+        sf::Clock _bleedingTimer;
 
         int _xp;
+        int _bleeding;
+
+        virtual void applyBleeding() = 0;
 
     public:
         virtual void takeDamage(int damage, Player* player) = 0;

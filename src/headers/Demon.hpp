@@ -27,6 +27,8 @@ class Demon : public Enemy, public Animated<EnemyAnimationState> {
         void initSprite();
         void initAnimations();
 
+        void applyBleeding();
+
     public:
         // Constructor and Destructor
         Demon();

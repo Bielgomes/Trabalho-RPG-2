@@ -23,6 +23,8 @@ class EntityGroup {
         void deleteEntity(Entity* entity);
         void listEntities();
 
+        bool isColliding(sf::FloatRect bound, sf::Vector2f direction, Entity* entity);
+
         void update();
         void render(sf::RenderTarget& target);
 };
