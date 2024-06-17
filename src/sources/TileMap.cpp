@@ -68,10 +68,14 @@ void TileMap::removeTile(unsigned x, unsigned y) {
     }
 }
 
-bool TileMap::isColliding(sf::FloatRect bounds) {
-    for (auto collision : _collisions)
-        if (collision->getGlobalBounds().intersects(bounds))
+bool TileMap::isColliding(sf::FloatRect bound, sf::Vector2f direction) {
+    for (auto collision : _collisions) {
+        if (collision->getGlobalBounds().intersects(
+            sf::FloatRect(bound.left + direction.x, bound.top + direction.y, bound.width, bound.height)
+        )) {
             return true;
+        }
+    }
 
     return false;
 }

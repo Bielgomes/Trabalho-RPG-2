@@ -61,6 +61,10 @@ int Sword::getDamage() {
     return _dmg;
 }
 
+bool Sword::isAttacking() {
+    return _isAttacking;
+}
+
 void Sword::update() {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         if (_attackTimer.getElapsedTime().asSeconds() > 0.1f && !_isAttackButtonPressed) {
@@ -74,20 +78,6 @@ void Sword::update() {
     } else {
         _isAttackButtonPressed = false;
         _isAttacking = false;
-    }
-    
-    if (_isAttacking) {
-        EntityGroupNode* enemyNode = Context::getEntityContext()->getEntitiesInGroup("ENEMY");
-        EntityGroupNode* next = nullptr;
-
-        while (enemyNode != nullptr) {
-            next = enemyNode->next;
-            Enemy* enemy = dynamic_cast<Enemy*>(enemyNode->entity);
-            if (enemy->isColliding(_hitbox))
-                enemy->takeDamage(_entity->getDamage(), _entity);
-
-            enemyNode = next;
-        }
     }
 }
 

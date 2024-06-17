@@ -20,6 +20,7 @@ class Sword : public Weapon {
 
         // Functions
         int getDamage();
+        bool isAttacking();
 
         void update();
         void render(sf::RenderTarget& target);

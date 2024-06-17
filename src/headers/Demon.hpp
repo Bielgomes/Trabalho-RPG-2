@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Animated.hpp"
-#include "CombatEntity.hpp"
+#include "Enemy.hpp"
 #include "Player.hpp"
 
 enum EnemyAnimationState {
@@ -13,7 +13,7 @@ enum EnemyAnimationState {
     E_ATTACKING,
 };
 
-class Demon : public CombatEntity, public Animated<EnemyAnimationState> {
+class Demon : public Enemy, public Animated<EnemyAnimationState> {
     private:
         // Variables
         sf::CircleShape _aggroRange;
@@ -30,10 +30,10 @@ class Demon : public CombatEntity, public Animated<EnemyAnimationState> {
     public:
         // Constructor and Destructor
         Demon();
+        Demon(float x, float y);
         virtual ~Demon();
 
         // Functions
-
         int getDamage();
         void takeDamage(int damage);
         void takeDamage(int damage, Player* player);

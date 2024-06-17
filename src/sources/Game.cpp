@@ -1,11 +1,13 @@
 #include "../headers/Game.hpp"
 #include "../headers/Context.hpp"
 
+#include "../headers/Demon.hpp"
+#include "../headers/BigDemon.hpp"
+
 // Private Functions
 void Game::initVariables() {
     _window = nullptr;
     _camera = nullptr;
-    _player = nullptr;
 }
 
 void Game::initWindow() {
@@ -21,7 +23,7 @@ void Game::initWindow() {
 
 void Game::initTileMap() {
     TileMap* tileMap = new TileMap(40, 80, 16);
-    Context::getTileMapContext()->addTileMap("ROOM1", tileMap);
+    Context::getTileMapContext()->addTileMap("BACKGROUND", tileMap);
 
     const sf::Vector2f GROUND = sf::Vector2f(0, 0);
     const sf::Vector2f GROUND2 = sf::Vector2f(0, 16);
@@ -202,10 +204,30 @@ void Game::initPlayer() {
     Context::getEntityContext()->addGroup("PLAYER");
     Context::getEntityContext()->addGroup("ENEMY");
 
-    _player = new Player();
-    Context::getEntityContext()->addToGroup("PLAYER", _player);
+    Player* player = new Player();
+    Context::getEntityContext()->addToGroup("PLAYER", player);
+    _camera->bind(player);
+}
 
-    _camera->bind(_player);
+void Game::initEnemies() {
+    Context::getEntityContext()->addGroup("ENEMY");
+    Context::getEntityContext()->addGroup("BOSS");
+
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(319, 95));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(480, 84));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(576, 128));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(431, 223));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(543, 239));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(415, 447));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(559, 384));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(528, 512));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(398, 542));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(303, 543));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(158, 494));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(63, 575));
+    Context::getEntityContext()->addToGroup("ENEMY", new Demon(223, 670));
+    
+    Context::getEntityContext()->addToGroup("BOSS", new BigDemon(223, 959));
 }
 
 // Constructor and Destructor
@@ -214,6 +236,7 @@ Game::Game() {
     initWindow();
     initTileMap();
     initPlayer();
+    initEnemies();
 }
 
 Game::~Game() {
@@ -241,22 +264,25 @@ void Game::pollEvents() {
 }
 
 void Game::update() {
-    Context::getTileMapContext()->updateTileMap("ROOM1");
+    Context::getTileMapContext()->updateTileMap("BACKGROUND");
 
     Context::getEntityContext()->updateGroup("PLAYER");
+    
     Context::getEntityContext()->updateGroup("ENEMY");
+    Context::getEntityContext()->updateGroup("BOSS");
     
     _camera->update();
-    std::cout << Context::getWindowContext()->getMousePosition().x << " " << Context::getWindowContext()->getMousePosition().y << std::endl;
 }
 
 void Game::render() {
     _window->clear();
 
-    Context::getTileMapContext()->renderTileMap("ROOM1", *_window);
+    Context::getTileMapContext()->renderTileMap("BACKGROUND", *_window);
+
+    Context::getEntityContext()->renderGroup("PLAYER", *_window);
 
     Context::getEntityContext()->renderGroup("ENEMY", *_window);
-    Context::getEntityContext()->renderGroup("PLAYER", *_window);
+    Context::getEntityContext()->renderGroup("BOSS", *_window);
 
     _window->display();
 }

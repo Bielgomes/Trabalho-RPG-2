@@ -16,8 +16,14 @@ void TileMapContext::removeTileMap(std::string name) {
     _tileMapContext.erase(name);
 }
 
-bool TileMapContext::isColliding(std::string name, sf::FloatRect bounds) {
-    return _tileMapContext[name]->isColliding(bounds);
+bool TileMapContext::isColliding(std::vector<std::string> name, sf::FloatRect bounds, sf::Vector2f direction) {
+    for (auto n : name) {
+        if (_tileMapContext[n]->isColliding(bounds, direction)) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void TileMapContext::updateTileMap(std::string name) {

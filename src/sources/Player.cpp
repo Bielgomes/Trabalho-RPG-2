@@ -10,7 +10,10 @@ void Player::initVariables() {
     _texture = nullptr;
     _sprite = nullptr;
     
+    Context::getEntityContext()->addGroup("WEAPON");
+
     _weapon = new Sword(this);
+    Context::getEntityContext()->addToGroup("WEAPON", _weapon);
 
     _flip = false;
 
@@ -60,7 +63,7 @@ Player::Player() {
 }
 
 Player::~Player() {
-    delete _weapon;
+    
 }
 
 // Functions
@@ -137,24 +140,16 @@ void Player::updateMovement() {
 
     sf::FloatRect bounds = _collision.getGlobalBounds();
     if (Context::getTileMapContext()->isColliding(
-        "ROOM1",
-        sf::FloatRect(
-            bounds.left + direction.x * _speed,
-            bounds.top,
-            bounds.width,
-            bounds.height
-        )
+        {"BACKGROUND"},
+        bounds,
+        sf::Vector2f(direction.x * _speed, 0)
     ))
         direction = sf::Vector2f(0, direction.y);
 
     if (Context::getTileMapContext()->isColliding(
-        "ROOM1",
-        sf::FloatRect(
-            bounds.left,
-            bounds.top + direction.y * _speed,
-            bounds.width,
-            bounds.height
-        )
+        {"BACKGROUND"},
+        bounds,
+        sf::Vector2f(0, direction.y * _speed)
     ))
         direction = sf::Vector2f(direction.x, 0);
     

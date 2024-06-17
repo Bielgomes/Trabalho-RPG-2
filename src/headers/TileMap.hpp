@@ -26,7 +26,7 @@ class TileMap {
         void addTile(unsigned x, unsigned y, sf::Vector2f position);
         void removeTile(unsigned x, unsigned y);
 
-        bool isColliding(sf::FloatRect bounds);
+        bool isColliding(sf::FloatRect bound, sf::Vector2f direction);
         void addCollision(int x, unsigned y, sf::Vector2f position);
 
         void update();

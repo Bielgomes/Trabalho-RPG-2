@@ -17,7 +17,6 @@ class Game {
         TileMap* _tileMap;
 
         // Player
-        Player* _player;
         Camera* _camera;
 
         // Private Functions
@@ -25,6 +24,7 @@ class Game {
         void initWindow();
         void initTileMap();
         void initPlayer();
+        void initEnemies();
 
     public:
         // Constructor and Destructor

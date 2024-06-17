@@ -19,4 +19,5 @@ class Weapon : public Entity {
 
         // Functions
         virtual int getDamage() = 0;
+        virtual bool isAttacking() = 0;
 };

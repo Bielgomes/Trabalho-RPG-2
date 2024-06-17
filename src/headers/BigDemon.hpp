@@ -7,13 +7,13 @@
 #include "Enemy.hpp"
 #include "Player.hpp"
 
-enum EnemyAnimationState {
-    E_IDLE,
-    E_WALKING,
-    E_ATTACKING,
+enum BigDemonAnimationState {
+    BD_IDLE,
+    BD_WALKING,
+    BD_ATTACKING,
 };
 
-class BigDemon : public Enemy, public Animated<EnemyAnimationState> {
+class BigDemon : public Enemy, public Animated<BigDemonAnimationState> {
     private:
         // Variables
         sf::CircleShape _aggroRange;
@@ -30,10 +30,10 @@ class BigDemon : public Enemy, public Animated<EnemyAnimationState> {
     public:
         // Constructor and Destructor
         BigDemon();
+        BigDemon(float x, float y);
         virtual ~BigDemon();
 
         // Functions
-
         int getDamage();
         void takeDamage(int damage);
         void takeDamage(int damage, Player* player);

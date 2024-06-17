@@ -12,6 +12,8 @@ class Enemy : public CombatEntity {
         // Variables
         sf::CircleShape _aggroRange;
 
-    private:
-        virtual void takeDamage(int damage, CombatEntity* player) = 0;
+        int _xp;
+
+    public:
+        virtual void takeDamage(int damage, Player* player) = 0;
 };
