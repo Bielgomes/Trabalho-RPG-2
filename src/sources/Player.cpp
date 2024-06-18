@@ -17,7 +17,11 @@ void Player::initVariables() {
 
     _flip = false;
 
-    _speed = 1.5f;
+    _velocity = sf::Vector2f(0.f, 0.f);
+    _velocityMax = 1.3f;
+    _velocityDesaceleration = 0.85f;
+    _velocityAceleration = 1.1f;
+
     _hp = 100;
     _dmg = 0;
     _xp = 0;
@@ -129,38 +133,52 @@ void Player::updateMovement() {
     int moveX = sf::Keyboard::isKeyPressed(sf::Keyboard::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     int moveY = sf::Keyboard::isKeyPressed(sf::Keyboard::S) - sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 
-    sf::Vector2f direction(moveX, moveY);
-    direction = Functions::normalize(direction);
+    sf::Vector2f direction = Functions::normalize(sf::Vector2f(moveX, moveY));
 
-    if (direction.x != 0 || direction.y != 0)
+    _velocity.x += direction.x * _velocityAceleration;
+    _velocity.y += direction.y * _velocityAceleration;
+
+    if (std::abs(_velocity.x) > _velocityMax)
+        _velocity.x = (_velocity.x < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.x);
+    if (std::abs(_velocity.y) > _velocityMax)
+        _velocity.y = (_velocity.y < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.y);
+
+    if (_velocity.x != 0 || _velocity.y != 0)
         _animationState = PlayerAnimationState::WALKING;
     else
         _animationState = PlayerAnimationState::IDLE;
 
-    if (direction.x < 0)
+    if (_velocity.x < 0)
         _flip = true;
-    else if (direction.x > 0)
+    else if (_velocity.x > 0)
         _flip = false;
 
     sf::FloatRect bounds = _collision.getGlobalBounds();
     if (Context::getTileMapContext()->isColliding(
         {"BACKGROUND"},
         bounds,
-        sf::Vector2f(direction.x * _speed, 0)
+        sf::Vector2f(_velocity.x, 0)
     ))
-        direction = sf::Vector2f(0, direction.y);
+        _velocity = sf::Vector2f(0, _velocity.y);
 
     if (Context::getTileMapContext()->isColliding(
         {"BACKGROUND"},
         bounds,
-        sf::Vector2f(0, direction.y * _speed)
+        sf::Vector2f(0, _velocity.y)
     ))
-        direction = sf::Vector2f(direction.x, 0);
+        _velocity = sf::Vector2f(_velocity.x, 0);
     
-    _sprite->move(direction * _speed);
+    _sprite->move(_velocity);
     _collision.setPosition(_sprite->getPosition());
 
     updateAnimations();
+
+    _velocity *= _velocityDesaceleration;
+
+    if (std::abs(_velocity.x) < 0.1f)
+        _velocity.x = 0.f;
+    if (std::abs(_velocity.y) < 0.1f)
+        _velocity.y = 0.f;
 }
 
 void Player::update() {

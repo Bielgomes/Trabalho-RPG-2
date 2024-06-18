@@ -12,7 +12,7 @@ void Demon::initVariables() {
 
     _flip = false;
 
-    _speed = 1.3f;
+    _speed = 1.f;
     _hp = 4;
     _dmg = 1;
     _xp = 10;

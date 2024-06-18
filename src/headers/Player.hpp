@@ -20,6 +20,11 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
         sf::Clock _specialAttackTimer;
         bool _isSpecialAttckButtonPressed;
 
+        sf::Vector2f _velocity;
+        float _velocityMax;
+        float _velocityAceleration;
+        float _velocityDesaceleration;
+
         Weapon* _weapon;
 
         // Private Functions
