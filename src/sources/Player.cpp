@@ -194,10 +194,10 @@ void Player::update() {
 
             std::cout << "Special Attack!" << std::endl;
 
-            sf::Vector2f playerPosition = getPosition();
+            sf::Vector2f playerPosition = getCenter();
             sf::Vector2f mousePosition = Context::getWindowContext()->getMousePosition(); 
 
-            float angle = Functions::pointDirection(getCenter(), mousePosition);
+            float angle = Functions::pointDirection(playerPosition, mousePosition);
             sf::Vector2f direction = Functions::normalize(Functions::pointDirection(angle));
             float rotation = Functions::angleToDegree(angle);
 

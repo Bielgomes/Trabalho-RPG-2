@@ -37,8 +37,8 @@ TileMap::~TileMap() {
 
 // Functions
 void TileMap::addTile(unsigned x, unsigned y, sf::Vector2f position) {
-    if (x < _tiles.size() && x >= 0)
-        if (y < _tiles[x].size() && y >= 0)
+    if (x < _tiles.size())
+        if (y < _tiles[x].size())
             if (_tiles[x][y] == nullptr)
                 _tiles[x][y] = new Tile(x, y, _tileSize, _texture, sf::IntRect(position.x, position.y, _tileSize, _tileSize), false);
 }

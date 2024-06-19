@@ -149,7 +149,7 @@ void BigDemon::update() {
     applyBleeding();
 
     EntityGroupNode* group = Context::getEntityContext()->getEntitiesInGroup("WEAPON");
-    if (group != nullptr && this != nullptr) {
+    if (group != nullptr) {
         Weapon* weapon = static_cast<Weapon*>(group->entity);
         if (isColliding(weapon->getShape()) && weapon->isAttacking())
             takeDamage(player->getDamage(), player);
