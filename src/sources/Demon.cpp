@@ -79,7 +79,7 @@ Demon::Demon(float x, float y) {
 }
 
 Demon::~Demon() {
-
+    delete _sprite;
 }
 
 // Functions

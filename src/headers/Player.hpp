@@ -35,7 +35,7 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
 
     public:
         // Constructor and Destructor
-        Player();
+        Player(sf::Vector2f position);
         virtual ~Player();
         
         // Functions

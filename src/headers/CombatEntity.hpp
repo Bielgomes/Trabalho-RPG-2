@@ -14,6 +14,4 @@ class CombatEntity : public Entity, public Collision {
         virtual int getDamage() = 0;
         virtual void takeDamage(int damage) = 0;
         virtual int getHp() = 0;
-
-        virtual void listFree() = 0;
 };

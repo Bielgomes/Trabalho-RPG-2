@@ -69,7 +69,9 @@
     "xutility": "cpp",
     "sstream": "cpp",
     "bitset": "cpp",
-    "cinttypes": "cpp"
+    "cinttypes": "cpp",
+    "fstream": "cpp",
+    "iomanip": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

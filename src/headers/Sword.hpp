@@ -24,4 +24,6 @@ class Sword : public Weapon {
 
         void update();
         void render(sf::RenderTarget& target);
+
+        void listFree();
 };

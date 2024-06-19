@@ -83,7 +83,7 @@ BigDemon::BigDemon(float x, float y) {
 }
 
 BigDemon::~BigDemon() {
-
+    delete _sprite;
 }
 
 // Functions

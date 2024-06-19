@@ -208,8 +208,9 @@ void Game::initTileMap() {
 void Game::initPlayer() {
     Context::getEntityContext()->addGroup("PLAYER");
     Context::getEntityContext()->addGroup("ENEMY");
+    Context::getEntityContext()->addGroup("PROJECTILE");
 
-    Player* player = new Player();
+    Player* player = new Player(sf::Vector2f(30, 30));
     Context::getEntityContext()->addToGroup("PLAYER", player);
     _camera->bind(player);
 }
@@ -275,6 +276,8 @@ void Game::update() {
     
     Context::getEntityContext()->updateGroup("ENEMY");
     Context::getEntityContext()->updateGroup("BOSS");
+
+    Context::getEntityContext()->updateGroup("PROJECTILE");
     
     _camera->update();
 }
@@ -288,6 +291,8 @@ void Game::render() {
 
     Context::getEntityContext()->renderGroup("ENEMY", *_window);
     Context::getEntityContext()->renderGroup("BOSS", *_window);
+
+    Context::getEntityContext()->renderGroup("PROJECTILE", *_window);
 
     _window->display();
 }
