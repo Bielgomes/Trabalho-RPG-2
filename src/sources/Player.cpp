@@ -4,6 +4,7 @@
 #include "../headers/Functions.hpp"
 #include "../headers/Player.hpp"
 #include "../headers/Sword.hpp"
+#include "../headers/Projectile.hpp"
 
 // Private Functions
 void Player::initVariables() {
@@ -45,7 +46,6 @@ void Player::initTexture() {
 
 void Player::initSprite() {
     _sprite = new sf::Sprite(*_texture);
-    _sprite->setPosition(30, 30);
 
     _collision.setSize(sf::Vector2f(9, 12));
     _collision.setOrigin(_sprite->getOrigin().x - 3, _sprite->getOrigin().y - 13);
@@ -63,15 +63,17 @@ void Player::initAnimations() {
 }
 
 // Constructor and Destructor
-Player::Player() {
+Player::Player(sf::Vector2f position) {
     initVariables();
     initTexture();
     initSprite();
     initAnimations();
+
+    _sprite->setPosition(position);
 }
 
 Player::~Player() {
-    
+    delete _sprite;
 }
 
 // Functions
@@ -189,11 +191,27 @@ void Player::update() {
 
     _weapon->update();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-        if (_specialAttackTimer.getElapsedTime().asSeconds() > 5.f && !_isSpecialAttckButtonPressed) {
+        if (_specialAttackTimer.getElapsedTime().asSeconds() > 3.f && !_isSpecialAttckButtonPressed) {
             _isSpecialAttckButtonPressed = true;
             _specialAttackTimer.restart();
 
             std::cout << "Special Attack!" << std::endl;
+
+            sf::Vector2f playerPosition = getCenter();
+            sf::Vector2f mousePosition = Context::getWindowContext()->getMousePosition(); 
+
+            float angle = Functions::pointDirection(playerPosition, mousePosition);
+            sf::Vector2f direction = Functions::normalize(Functions::pointDirection(angle));
+            float rotation = Functions::angleToDegree(angle);
+
+            sf::Vector2f projectilePoint = sf::Vector2f(
+                getPosition().x + getShape().width / 2, getPosition().y + getShape().height / 2
+            );
+
+            Context::getEntityContext()->addToGroup("PROJECTILE", new Projectile(
+                direction, projectilePoint, rotation
+            ));
+
         } else {
             _isSpecialAttckButtonPressed = false;
         }

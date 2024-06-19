@@ -28,6 +28,8 @@ class Entity {
         const sf::Vector2f getCenter() const;
 
         // Functions
+        virtual void listFree() = 0;
+
         virtual void update() = 0;
         virtual void render(sf::RenderTarget& target);
 };

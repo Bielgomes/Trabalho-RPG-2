@@ -53,7 +53,7 @@ Sword::Sword(Player* entity) {
 }
 
 Sword::~Sword() {
-
+    delete _sprite;
 }
 
 // Functions
@@ -87,11 +87,8 @@ void Sword::render(sf::RenderTarget& target) {
 
     currentPlayerPositon.y += 5;
 
-    float dx = currentMousePosition.x - currentPlayerPositon.x;
-    float dy = currentMousePosition.y - currentPlayerPositon.y;
-
-    float angle = atan2(dy, dx);
-    float deg = angle * 180 / Functions::PI;
+    float angle = Functions::pointDirection(currentPlayerPositon, currentMousePosition);
+    float deg = Functions::angleToDegree(angle);
 
     _sprite->setRotation(deg + 90);
     _hitbox.setRotation(deg + 90);
@@ -104,4 +101,8 @@ void Sword::render(sf::RenderTarget& target) {
 
     target.draw(*_sprite);
     target.draw(_hitbox);
+}
+
+void Sword::listFree() {
+    Context::getEntityContext()->removeFromGroup("SWORD", this);
 }

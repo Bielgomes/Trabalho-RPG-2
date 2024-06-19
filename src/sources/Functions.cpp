@@ -20,10 +20,14 @@ sf::Vector2f Functions::lerp(sf::Vector2f to, sf::Vector2f from, float porcentag
     return sf::Vector2f(x, y);
 }
 
+float Functions::vectorMagnitude(sf::Vector2f vector) {
+    return sqrt(vector.x * vector.x + vector.y * vector.y);
+}
+
 sf::Vector2f Functions::normalize(sf::Vector2f vector) {
-    float length = sqrt(vector.x * vector.x + vector.y * vector.y);
-    if (length != 0)
-        vector /= length;
+    float magnitude = vectorMagnitude(vector);
+    if (magnitude != 0)
+        vector /= magnitude;
 
     return vector;
 }
@@ -42,4 +46,24 @@ sf::Vector2f Functions::clamp(sf::Vector2f vector, sf::Vector2f min, sf::Vector2
     float x = clamp(vector.x, min.x, max.x);
     float y = clamp(vector.y, min.y, max.y);
     return sf::Vector2f(x, y);
+}
+
+float Functions::vectorToAngle(sf::Vector2f vector) {
+    return atan2(vector.y, vector.x);
+}
+
+float Functions::angleToDegree(float angle) {
+    return angle * 180 / PI;
+}
+
+float Functions::pointDirection(float from_x, float from_y, float to_x, float to_y) {
+    return atan2(to_y - from_y, to_x - from_x);
+}
+
+float Functions::pointDirection(sf::Vector2f from, sf::Vector2f to) {
+    return pointDirection(from.x, from.y, to.x, to.y);
+}
+
+sf::Vector2f Functions::pointDirection(float angle) {
+    return sf::Vector2f(std::cos(angle), std::sin(angle));
 }
