@@ -12,10 +12,16 @@ void Demon::initVariables() {
 
     _flip = false;
 
-    _speed = 1.f;
     _hp = 4;
     _dmg = 1;
     _xp = 10;
+    _bleeding = 0;
+    _bleedingTimer.restart();
+
+    _velocity = sf::Vector2f(0.f, 0.f);
+    _velocityMax = 1.f;
+    _velocityDesaceleration = 0.85f;
+    _velocityAceleration = 1.1f;
 }
 
 void Demon::initTexture() {
@@ -78,31 +84,21 @@ Demon::Demon(float x, float y) {
     _sprite->setPosition(x, y);
 }
 
-Demon::~Demon() {
-
-}
+Demon::~Demon() {}
 
 // Functions
-int Demon::getDamage() {
-    return _dmg;
-}
-
 void Demon::takeDamage(int damage) {
     _hp -= damage;
     if (_hp <= 0)
         listFree();
 }
 
-void Demon::takeDamage(int damage, Player* player) {
+void Demon::takeDamage(int damage, CombatEntity* entity) {
     _hp -= damage;
     if (_hp <= 0) {
-        player->addXp(_xp);
+        static_cast<Player*>(entity)->addXp(_xp);
         listFree();
     }
-}
-
-int Demon::getHp() {
-    return _hp;
 }
 
 void Demon::updateAnimations() {
@@ -140,16 +136,15 @@ void Demon::updateAnimations() {
     }
 }
 
-void Demon::update() {
+void Demon::updateMovement() {
     Player *player = static_cast<Player*>(Context::getEntityContext()->getEntitiesInGroup("PLAYER")->entity);
-    applyBleeding();
 
     EntityGroupNode* group = Context::getEntityContext()->getEntitiesInGroup("WEAPON");
     if (group != nullptr && this != nullptr) {
         Weapon* weapon = static_cast<Weapon*>(group->entity);
         if (isColliding(weapon->getShape()) && weapon->isAttacking()) {
             takeDamage(player->getDamage(), player);
-            _bleeding += 3;
+            _bleeding += 2;
         }
     }
 
@@ -160,53 +155,63 @@ void Demon::update() {
         sf::Vector2f direction = player->getPosition() - _sprite->getPosition();
         direction = Functions::normalize(direction);
 
-        _animationState = EnemyAnimationState::E_WALKING;
+        _velocity.x += direction.x * _velocityAceleration;
+        _velocity.y += direction.y * _velocityAceleration;
 
-        if (direction.x < 0)
+        if (std::abs(_velocity.x) > _velocityMax)
+            _velocity.x = (_velocity.x < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.x);
+        if (std::abs(_velocity.y) > _velocityMax)
+            _velocity.y = (_velocity.y < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.y);
+
+        if (_velocity.x < 0)
             _flip = true;
-        else if (direction.x > 0)
+        else if (_velocity.x > 0)
             _flip = false;
 
         sf::FloatRect bounds = _collision.getGlobalBounds();
         if (Context::getTileMapContext()->isColliding(
             {"BACKGROUND"},
             bounds,
-            sf::Vector2f(direction.x * _speed, 0)
+            sf::Vector2f(_velocity.x, 0)
         ) || Context::getEntityContext()->isColliding(
             {"ENEMY", "BOSS"},
             bounds,
-            sf::Vector2f(direction.x * _speed, 0),
+            sf::Vector2f(_velocity.x, 0),
             this
         ))
-            direction = sf::Vector2f(0, direction.y);
+            _velocity = sf::Vector2f(0, _velocity.y);
 
         if (Context::getTileMapContext()->isColliding(
             {"BACKGROUND"},
             bounds,
-            sf::Vector2f(0, direction.y * _speed)
+            sf::Vector2f(0, _velocity.y)
         ) || Context::getEntityContext()->isColliding(
             {"ENEMY", "BOSS"},
             bounds,
-            sf::Vector2f(0, direction.y * _speed),
+            sf::Vector2f(0, _velocity.y),
             this
         ))
-            direction = sf::Vector2f(direction.x, 0);
-
-        _sprite->move(direction * _speed);
-        _aggroRange.setPosition(_sprite->getPosition());
-        _collision.setPosition(_sprite->getPosition());
-    } else {
-        _animationState = EnemyAnimationState::E_IDLE;
+            _velocity = sf::Vector2f(_velocity.x, 0);
     }
 
-    updateAnimations();
-};
+    if (_velocity.x != 0 || _velocity.y != 0)
+        _animationState = EnemyAnimationState::E_WALKING;
+    else
+        _animationState = EnemyAnimationState::E_IDLE;
 
-void Demon::render(sf::RenderTarget& target) {
-    target.draw(*_sprite);
-    target.draw(_aggroRange);
-    target.draw(_collision);
+    _sprite->move(_velocity);
+    _aggroRange.setPosition(_sprite->getPosition());
+    _collision.setPosition(_sprite->getPosition());
+
+    updateAnimations();
 }
+
+void Demon::update() {
+    applyBleeding();
+
+    updatePhysics();
+    updateMovement();
+};
 
 void Demon::listFree() {
     Context::getEntityContext()->removeFromGroup("ENEMY", this);

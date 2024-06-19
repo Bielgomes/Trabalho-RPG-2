@@ -11,20 +11,20 @@ void Player::initVariables() {
     _sprite = nullptr;
     
     Context::getEntityContext()->addGroup("WEAPON");
-
+    
     _weapon = new Sword(this);
     Context::getEntityContext()->addToGroup("WEAPON", _weapon);
 
     _flip = false;
 
+    _hp = 100;
+    _dmg = 0;
+    _xp = 0;
+
     _velocity = sf::Vector2f(0.f, 0.f);
     _velocityMax = 1.3f;
     _velocityDesaceleration = 0.85f;
     _velocityAceleration = 1.1f;
-
-    _hp = 100;
-    _dmg = 0;
-    _xp = 0;
 
     _isSpecialAttckButtonPressed = false;
     _specialAttackTimer.restart();
@@ -129,6 +129,15 @@ void Player::updateAnimations() {
     }
 }
 
+void Player::updatePhysics() {
+    _velocity *= _velocityDesaceleration;
+
+    if (std::abs(_velocity.x) < 0.1f)
+        _velocity.x = 0.f;
+    if (std::abs(_velocity.y) < 0.1f)
+        _velocity.y = 0.f;
+}
+
 void Player::updateMovement() {
     int moveX = sf::Keyboard::isKeyPressed(sf::Keyboard::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     int moveY = sf::Keyboard::isKeyPressed(sf::Keyboard::S) - sf::Keyboard::isKeyPressed(sf::Keyboard::W);
@@ -172,19 +181,13 @@ void Player::updateMovement() {
     _collision.setPosition(_sprite->getPosition());
 
     updateAnimations();
-
-    _velocity *= _velocityDesaceleration;
-
-    if (std::abs(_velocity.x) < 0.1f)
-        _velocity.x = 0.f;
-    if (std::abs(_velocity.y) < 0.1f)
-        _velocity.y = 0.f;
 }
 
 void Player::update() {
+    updatePhysics();
     updateMovement();
-    _weapon->update();
 
+    _weapon->update();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
         if (_specialAttackTimer.getElapsedTime().asSeconds() > 5.f && !_isSpecialAttckButtonPressed) {
             _isSpecialAttckButtonPressed = true;

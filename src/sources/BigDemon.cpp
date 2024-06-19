@@ -3,7 +3,6 @@
 #include "../headers/Context.hpp"
 #include "../headers/Functions.hpp"
 #include "../headers/BigDemon.hpp"
-#include "../headers/Player.hpp"
 
 // Private Functions
 void BigDemon::initVariables() {
@@ -12,13 +11,16 @@ void BigDemon::initVariables() {
 
     _flip = false;
 
-    _speed = 1.f;
     _hp = 10;
     _dmg = 2;
     _xp = 80;
     _bleeding = 0;
-
     _bleedingTimer.restart();
+
+    _velocity = sf::Vector2f(0.f, 0.f);
+    _velocityMax = 1.f;
+    _velocityDesaceleration = 0.85f;
+    _velocityAceleration = 1.1f;
 }
 
 void BigDemon::initTexture() {
@@ -87,26 +89,18 @@ BigDemon::~BigDemon() {
 }
 
 // Functions
-int BigDemon::getDamage() {
-    return _dmg;
-}
-
 void BigDemon::takeDamage(int damage) {
     _hp -= damage;
     if (_hp <= 0)
         listFree();
 }
 
-void BigDemon::takeDamage(int damage, Player* player) {
+void BigDemon::takeDamage(int damage, CombatEntity* entity) {
     _hp -= damage;
     if (_hp <= 0) {
-        player->addXp(10);
+        static_cast<Player*>(entity)->addXp(_xp);
         listFree();
     }
-}
-
-int BigDemon::getHp() {
-    return _hp;
 }
 
 void BigDemon::updateAnimations() {
@@ -144,9 +138,8 @@ void BigDemon::updateAnimations() {
     }
 }
 
-void BigDemon::update() {
+void BigDemon::updateMovement() {
     Player *player = static_cast<Player*>(Context::getEntityContext()->getEntitiesInGroup("PLAYER")->entity);
-    applyBleeding();
 
     EntityGroupNode* group = Context::getEntityContext()->getEntitiesInGroup("WEAPON");
     if (group != nullptr && this != nullptr) {
@@ -162,44 +155,53 @@ void BigDemon::update() {
         sf::Vector2f direction = player->getPosition() - _sprite->getPosition();
         direction = Functions::normalize(direction);
 
-        _animationState = BigDemonAnimationState::BD_WALKING;
+        _velocity.x += direction.x * _velocityAceleration;
+        _velocity.y += direction.y * _velocityAceleration;
 
-        if (direction.x < 0)
+        if (std::abs(_velocity.x) > _velocityMax)
+            _velocity.x = (_velocity.x < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.x);
+        if (std::abs(_velocity.y) > _velocityMax)
+            _velocity.y = (_velocity.y < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.y);
+
+        if (_velocity.x < 0)
             _flip = true;
-        else if (direction.x > 0)
+        else if (_velocity.x > 0)
             _flip = false;
 
         sf::FloatRect bounds = _collision.getGlobalBounds();
         if (Context::getTileMapContext()->isColliding(
             {"BACKGROUND"},
             bounds,
-            sf::Vector2f(direction.x * _speed, 0)
+           sf::Vector2f(_velocity.x, 0)
         ))
-            direction = sf::Vector2f(0, direction.y);
+            _velocity = sf::Vector2f(0, _velocity.y);
 
         if (Context::getTileMapContext()->isColliding(
             {"BACKGROUND"},
             bounds,
-            sf::Vector2f(0, direction.y * _speed)
+            sf::Vector2f(0, _velocity.y)
         ))
-            direction = sf::Vector2f(direction.x, 0);
-
-        _sprite->move(direction * _speed);
-        _aggroRange.setPosition(_sprite->getPosition());
-        _collision.setPosition(_sprite->getPosition());
-
-    } else {
-        _animationState = BigDemonAnimationState::BD_IDLE;
+            _velocity = sf::Vector2f(_velocity.x, 0);
     }
+        
+    if (_velocity.x != 0 || _velocity.y != 0)
+        _animationState = BigDemonAnimationState::BD_WALKING;
+    else
+        _animationState = BigDemonAnimationState::BD_IDLE;
+
+    _sprite->move(_velocity);
+    _aggroRange.setPosition(_sprite->getPosition());
+    _collision.setPosition(_sprite->getPosition());
 
     updateAnimations();
-};
-
-void BigDemon::render(sf::RenderTarget& target) {
-    target.draw(*_sprite);
-    target.draw(_aggroRange);
-    target.draw(_collision);
 }
+
+void BigDemon::update() {
+    applyBleeding();
+    
+    updatePhysics();
+    updateMovement();
+};
 
 void BigDemon::listFree() {
     Context::getEntityContext()->removeFromGroup("BOSS", this);

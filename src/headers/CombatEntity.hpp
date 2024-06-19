@@ -8,12 +8,20 @@ class CombatEntity : public Entity, public Collision {
         // Variables
         int _hp;
         int _dmg;
-        float _speed;
+        int _xp;
+        
+        sf::Vector2f _velocity;
+        float _velocityMax;
+        float _velocityAceleration;
+        float _velocityDesaceleration;
 
     public:
-        virtual int getDamage() = 0;
-        virtual void takeDamage(int damage) = 0;
-        virtual int getHp() = 0;
+        int getDamage();
+        void takeDamage(int damage);
+        int getHp();
+
+        void updatePhysics();
+        virtual void updateMovement() = 0;
 
         virtual void listFree() = 0;
 };

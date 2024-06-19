@@ -15,15 +15,9 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
     private:
         // Variables
         std::string name;
-        int _xp;
-
+        
         sf::Clock _specialAttackTimer;
         bool _isSpecialAttckButtonPressed;
-
-        sf::Vector2f _velocity;
-        float _velocityMax;
-        float _velocityAceleration;
-        float _velocityDesaceleration;
 
         Weapon* _weapon;
 
@@ -49,6 +43,7 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
         // Inventory things...
 
         void updateAnimations();
+        void updatePhysics();
         void updateMovement();
         void update();
         

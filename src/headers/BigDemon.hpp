@@ -1,11 +1,7 @@
 #pragma once
 
-#include <iostream>
-#include <SFML/Graphics.hpp>
-
 #include "Animated.hpp"
 #include "Enemy.hpp"
-#include "Player.hpp"
 
 enum BigDemonAnimationState {
     BD_IDLE,
@@ -17,9 +13,6 @@ class BigDemon : public Enemy, public Animated<BigDemonAnimationState> {
     private:
         // Variables
         sf::CircleShape _aggroRange;
-
-        // Variables
-        float _speed;
 
         // Private Functions
         void initVariables();
@@ -36,14 +29,12 @@ class BigDemon : public Enemy, public Animated<BigDemonAnimationState> {
         virtual ~BigDemon();
 
         // Functions
-        int getDamage();
         void takeDamage(int damage);
-        void takeDamage(int damage, Player* player);
-        int getHp();
+        void takeDamage(int damage, CombatEntity* entity);
 
         void updateAnimations();
+        void updateMovement();
         void update();
-        void render(sf::RenderTarget& target);
 
         void listFree();
 };

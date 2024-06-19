@@ -14,5 +14,9 @@
     - [ ] Adicionar menu de inventário
     - [ ] Criar pilha de armaduras
 
-- [ ] Fazer menu inicial para escolher nome e classe
-- [ ] Criar ataque especial e sangramento
+- [ ] Menu inicial
+    - [ ] Escolher nome
+    - [ ] Escolher Classe
+
+- [ ] Criar ataque especial
+- [ ] Adicionar sangramento
