@@ -8,6 +8,11 @@
 void Game::initVariables() {
     _window = nullptr;
     _camera = nullptr;
+
+    _isRunning = true;
+    _gameOver = false;
+
+    _isKeyPressed = false;
 }
 
 void Game::initWindow() {
@@ -213,6 +218,8 @@ void Game::initPlayer() {
     Player* player = new Player(sf::Vector2f(30, 30));
     Context::getEntityContext()->addToGroup("PLAYER", player);
     _camera->bind(player);
+
+    _inventory = new Inventory();
 }
 
 void Game::initEnemies() {
@@ -248,14 +255,19 @@ Game::Game() {
 Game::~Game() {
     delete _window;
     delete _camera;
+
+    delete _inventory;
 }
 
 // Functions
 void Game::run() {
     while (_window->isOpen()) {
         pollEvents();
-        update();
-        render();
+
+        if (_gameOver == false) {
+            update();
+            render();
+        }
     }
 }
 
@@ -270,6 +282,18 @@ void Game::pollEvents() {
 }
 
 void Game::update() {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+        if (!_isKeyPressed) {
+            _isKeyPressed = true;
+            _inventory->setIsOpen();
+        }
+    } else {
+        _isKeyPressed = false;
+    }
+
+    if (!Context::getEntityContext()->getEntitiesInGroup("BOSS"))
+        _gameOver = true;
+
     Context::getTileMapContext()->updateTileMap("BACKGROUND");
 
     Context::getEntityContext()->updateGroup("PLAYER");
@@ -278,7 +302,8 @@ void Game::update() {
     Context::getEntityContext()->updateGroup("BOSS");
 
     Context::getEntityContext()->updateGroup("PROJECTILE");
-    
+
+    _inventory->update();
     _camera->update();
 }
 
@@ -293,6 +318,8 @@ void Game::render() {
     Context::getEntityContext()->renderGroup("BOSS", *_window);
 
     Context::getEntityContext()->renderGroup("PROJECTILE", *_window);
+
+    _inventory->render(*_window);
 
     _window->display();
 }

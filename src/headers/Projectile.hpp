@@ -6,6 +6,7 @@ class Projectile : public Entity {
         sf::Vector2f _direction;
         float _maxDistance;
         float _distanceTravelled;
+        float _speed;
 
         // Private Functions
         void initVariables();

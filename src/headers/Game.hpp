@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Inventory.hpp"
 #include "Player.hpp"
 #include "Camera.hpp"
 
@@ -16,8 +17,14 @@ class Game {
         sf::Texture _tileSheet;
         TileMap* _tileMap;
 
+        bool _isRunning;
+        bool _gameOver;
+
         // Player
         Camera* _camera;
+
+        Inventory* _inventory;
+        bool _isKeyPressed;
 
         // Private Functions
         void initVariables();

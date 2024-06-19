@@ -7,8 +7,9 @@ void Projectile::initVariables() {
     _texture = nullptr;
     _sprite = nullptr;
 
-    _maxDistance = 1000.f;
+    _maxDistance = 60.f;
     _distanceTravelled = 0.f;
+    _speed = 3.f;
 
     _direction = sf::Vector2f(0.f, 0.f);
 }
@@ -49,15 +50,15 @@ Projectile::~Projectile() {
     delete _sprite;
 }
 
-void Projectile::listFree() {
-    Context::getEntityContext()->removeFromGroup("PROJECTILE", this);
-}
-
 // Functions
 void Projectile::update() {
     if (_distanceTravelled > _maxDistance)
         return listFree();
 
-    _sprite->move(_direction);
+    _sprite->move(_direction * _speed);
     _distanceTravelled += Functions::vectorMagnitude(_direction);
+}
+
+void Projectile::listFree() {
+    Context::getEntityContext()->removeFromGroup("PROJECTILE", this);
 }
