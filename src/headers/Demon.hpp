@@ -3,13 +3,13 @@
 #include "Animated.hpp"
 #include "Enemy.hpp"
 
-enum EnemyAnimationState {
-    E_IDLE,
-    E_WALKING,
-    E_ATTACKING,
+enum DemonAnimationState {
+    D_IDLE,
+    D_WALKING,
+    D_HIT,
 };
 
-class Demon : public Enemy, public Animated<EnemyAnimationState> {
+class Demon : public Enemy, public Animated<DemonAnimationState> {
     private:
         // Variables
         sf::CircleShape _aggroRange;

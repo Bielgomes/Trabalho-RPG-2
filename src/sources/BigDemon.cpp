@@ -21,6 +21,8 @@ void BigDemon::initVariables() {
     _velocityMax = 1.f;
     _velocityDesaceleration = 0.85f;
     _velocityAceleration = 1.1f;
+
+    _invencibilityTimer.restart();
 }
 
 void BigDemon::initTexture() {
@@ -42,15 +44,9 @@ void BigDemon::initSprite() {
     
     _aggroRange.setRadius(200.f);
     _aggroRange.setOrigin(_aggroRange.getRadius() - 16, _aggroRange.getRadius() - 16);
-    _aggroRange.setFillColor(sf::Color::Transparent);
-    _aggroRange.setOutlineColor(sf::Color::Red);
-    _aggroRange.setOutlineThickness(0.3f);
 
     _collision.setSize(sf::Vector2f(30, 30));
     _collision.setOrigin(_sprite->getOrigin().x - 10, _sprite->getOrigin().y - 15);
-    _collision.setFillColor(sf::Color::Transparent);
-    _collision.setOutlineColor(sf::Color::Red);
-    _collision.setOutlineThickness(0.3f);
 }
 
 void BigDemon::initAnimations() {
@@ -139,7 +135,7 @@ void BigDemon::updateAnimations() {
             }
             break;
 
-        case BigDemonAnimationState::BD_ATTACKING:
+        case BigDemonAnimationState::BD_HIT:
             break;
     }
 }
@@ -197,7 +193,6 @@ void BigDemon::updateMovement() {
     if (player->isColliding(_collision)) {
         sf::Vector2f direction = directionTo(player);
         player->takeDamage(_dmg, direction);
-        _animationState = BigDemonAnimationState::BD_ATTACKING;
     }
 
     _sprite->move(_velocity);

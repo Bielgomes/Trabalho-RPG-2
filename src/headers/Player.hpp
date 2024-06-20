@@ -18,7 +18,6 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
         std::string name;
         
         sf::Clock _specialAttackTimer;
-        sf::Clock _invencibilityTimer;
         bool _isSpecialAttckButtonPressed;
 
         Weapon* _weapon;
@@ -43,7 +42,6 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
         int getLevel();
 
         void updateAnimations();
-        void updatePhysics();
         void updateMovement();
         void update();
         

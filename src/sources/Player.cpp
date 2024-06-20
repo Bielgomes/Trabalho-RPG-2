@@ -153,15 +153,6 @@ void Player::updateAnimations() {
     }
 }
 
-void Player::updatePhysics() {
-    _velocity *= _velocityDesaceleration;
-
-    if (std::abs(_velocity.x) < 0.1f)
-        _velocity.x = 0.f;
-    if (std::abs(_velocity.y) < 0.1f)
-        _velocity.y = 0.f;
-}
-
 void Player::updateMovement() {
     int moveX = sf::Keyboard::isKeyPressed(sf::Keyboard::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     int moveY = sf::Keyboard::isKeyPressed(sf::Keyboard::S) - sf::Keyboard::isKeyPressed(sf::Keyboard::W);

@@ -22,6 +22,8 @@ void Demon::initVariables() {
     _velocityMax = 1.f;
     _velocityDesaceleration = 0.85f;
     _velocityAceleration = 1.1f;
+
+    _invencibilityTimer.restart();
 }
 
 void Demon::initTexture() {
@@ -39,22 +41,16 @@ void Demon::initTexture() {
 
 void Demon::initSprite() {
     _sprite = new sf::Sprite(*_texture);
-    
+
     _aggroRange.setRadius(100.f);
     _aggroRange.setOrigin(_aggroRange.getRadius() - 16, _aggroRange.getRadius() - 16);
-    _aggroRange.setFillColor(sf::Color::Transparent);
-    _aggroRange.setOutlineColor(sf::Color::Red);
-    _aggroRange.setOutlineThickness(0.3f);
 
     _collision.setSize(sf::Vector2f(10, 10));
     _collision.setOrigin(_sprite->getOrigin().x - 2, _sprite->getOrigin().y - 5);
-    _collision.setFillColor(sf::Color::Transparent);
-    _collision.setOutlineColor(sf::Color::Red);
-    _collision.setOutlineThickness(0.3f);
 }
 
 void Demon::initAnimations() {
-    _animationState = EnemyAnimationState::E_IDLE;
+    _animationState = DemonAnimationState::D_IDLE;
     _animationFrame = sf::IntRect(0, 0, 16, 16);
 
     _sprite->setTextureRect(_animationFrame);
@@ -102,16 +98,21 @@ void Demon::takeDamage(int damage, sf::Vector2f direction) {
 }
 
 void Demon::takeDamage(int damage, CombatEntity* entity, sf::Vector2f direction) {
+    _animationState = DemonAnimationState::D_HIT;
     _hp -= damage;
     if (_hp <= 0) {
         static_cast<Player*>(entity)->addXp(_xp);
-        listFree();
+        return listFree();
     }
+
+    _velocity = direction * 1.5f;
+    
+    _invencibilityTimer.restart();
 }
 
 void Demon::updateAnimations() {
     switch (_animationState) {
-        case EnemyAnimationState::E_IDLE:
+        case DemonAnimationState::D_IDLE:
             _animationFrame.top = 0;
             if (_animationTimer.getElapsedTime().asSeconds() >= 0.1f) {
                 _animationFrame.left += 16;
@@ -125,7 +126,7 @@ void Demon::updateAnimations() {
             }
             break;
 
-        case EnemyAnimationState::E_WALKING:
+        case DemonAnimationState::D_WALKING:
             _animationFrame.top = 16;
             if (_animationTimer.getElapsedTime().asSeconds() >= 0.1f) {
                 _animationFrame.left += 16;
@@ -139,7 +140,18 @@ void Demon::updateAnimations() {
             }
             break;
 
-        case EnemyAnimationState::E_ATTACKING:
+        case DemonAnimationState::D_HIT:
+            _animationFrame.top = 0;
+            _animationFrame.left = 0;
+            _sprite->setTextureRect(
+                sf::IntRect(_animationFrame.left + (_flip * 16), _animationFrame.top, 16 - (_flip * 32), 16)
+            );
+
+            if (_animationTimer.getElapsedTime().asSeconds() >= 0.3f) {
+                _animationState = DemonAnimationState::D_IDLE;
+                _animationTimer.restart();
+                _invencibilityTimer.restart();
+            }
             break;
     }
 }
@@ -160,16 +172,23 @@ void Demon::updateMovement() {
     if (_hp <= 0)
         return;
 
-    if (player->isColliding(_aggroRange) && _animationState != EnemyAnimationState::E_ATTACKING) {
+    float isInHitAnimation = _animationState == DemonAnimationState::D_HIT;
+
+    if (player->isColliding(_aggroRange)) {
         sf::Vector2f direction = directionTo(player);
+
+        if (isInHitAnimation)
+            direction = sf::Vector2f(0, 0);
 
         _velocity.x += direction.x * _velocityAceleration;
         _velocity.y += direction.y * _velocityAceleration;
 
-        if (std::abs(_velocity.x) > _velocityMax)
-            _velocity.x = (_velocity.x < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.x);
-        if (std::abs(_velocity.y) > _velocityMax)
-            _velocity.y = (_velocity.y < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.y);
+        if (!isInHitAnimation) {
+            if (std::abs(_velocity.x) > _velocityMax)
+                _velocity.x = (_velocity.x < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.x);
+            if (std::abs(_velocity.y) > _velocityMax)
+                _velocity.y = (_velocity.y < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.y);
+        }
 
         if (_velocity.x < 0)
             _flip = true;
@@ -202,15 +221,16 @@ void Demon::updateMovement() {
             _velocity = sf::Vector2f(_velocity.x, 0);
     }
 
-    if (_velocity.x != 0 || _velocity.y != 0)
-        _animationState = EnemyAnimationState::E_WALKING;
-    else
-        _animationState = EnemyAnimationState::E_IDLE;
+    if (!isInHitAnimation) {
+        if (_velocity.x != 0 || _velocity.y != 0)
+            _animationState = DemonAnimationState::D_WALKING;
+        else
+            _animationState = DemonAnimationState::D_IDLE;
+    }
 
     if (player->isColliding(_collision)) {
         sf::Vector2f direction = directionTo(player);
         player->takeDamage(_dmg, direction);
-        _animationState = EnemyAnimationState::E_ATTACKING;
     }
 
     _sprite->move(_velocity);

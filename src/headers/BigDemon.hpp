@@ -6,7 +6,7 @@
 enum BigDemonAnimationState {
     BD_IDLE,
     BD_WALKING,
-    BD_ATTACKING,
+    BD_HIT,
 };
 
 class BigDemon : public Enemy, public Animated<BigDemonAnimationState> {

@@ -15,6 +15,8 @@ class CombatEntity : public Entity, public Collision {
         float _velocityAceleration;
         float _velocityDesaceleration;
 
+        sf::Clock _invencibilityTimer;
+
     public:
         int getDamage();
         virtual void takeDamage(int damage, sf::Vector2f direction) = 0;
