@@ -158,7 +158,6 @@ void Player::updateMovement() {
     int moveY = sf::Keyboard::isKeyPressed(sf::Keyboard::S) - sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 
     sf::Vector2f direction = Functions::normalize(sf::Vector2f(moveX, moveY));
-
     if (_animationState == PlayerAnimationState::HIT)
         direction = sf::Vector2f(0, 0);
 

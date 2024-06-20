@@ -98,11 +98,16 @@ void BigDemon::takeDamage(int damage, sf::Vector2f direction) {
 }
 
 void BigDemon::takeDamage(int damage, CombatEntity* entity, sf::Vector2f direction) {
+    _animationState = BigDemonAnimationState::BD_HIT;
     _hp -= damage;
     if (_hp <= 0) {
         static_cast<Player*>(entity)->addXp(_xp);
-        listFree();
+        return listFree();
     }
+
+    _velocity = direction * 1.5f;
+    
+    _invencibilityTimer.restart();
 }
 
 void BigDemon::updateAnimations() {
@@ -136,6 +141,17 @@ void BigDemon::updateAnimations() {
             break;
 
         case BigDemonAnimationState::BD_HIT:
+            _animationFrame.top = 0;
+            _animationFrame.left = 0;
+            _sprite->setTextureRect(
+                sf::IntRect(_animationFrame.left + (_flip * 32), _animationFrame.top, 32 - (_flip * 64), 36)
+            );
+
+            if (_animationTimer.getElapsedTime().asSeconds() >= 0.3f) {
+                _animationState = BigDemonAnimationState::BD_IDLE;
+                _animationTimer.restart();
+                _invencibilityTimer.restart();
+            }
             break;
     }
 }
@@ -153,47 +169,51 @@ void BigDemon::updateMovement() {
     if (_hp <= 0)
         return;
 
-    if (player->isColliding(_aggroRange)) {
-        sf::Vector2f direction = directionTo(player);
+    float isInHitAnimation = _animationState == BigDemonAnimationState::BD_HIT;
+    
+    sf::Vector2f direction = sf::Vector2f(0, 0);
+    if (player->isColliding(_aggroRange) && !isInHitAnimation)
+        direction = directionTo(player);
 
-        _velocity.x += direction.x * _velocityAceleration;
-        _velocity.y += direction.y * _velocityAceleration;
+    if (player->isColliding(_collision)) {
+        player->takeDamage(_dmg, directionTo(player));
+        direction = sf::Vector2f(0, 0);
+    }
 
+    _velocity.x += direction.x * _velocityAceleration;
+    _velocity.y += direction.y * _velocityAceleration;
+
+    if (!isInHitAnimation) {
         if (std::abs(_velocity.x) > _velocityMax)
             _velocity.x = (_velocity.x < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.x);
         if (std::abs(_velocity.y) > _velocityMax)
             _velocity.y = (_velocity.y < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.y);
 
-        if (_velocity.x < 0)
-            _flip = true;
-        else if (_velocity.x > 0)
-            _flip = false;
-
-        sf::FloatRect bounds = _collision.getGlobalBounds();
-        if (Context::getTileMapContext()->isColliding(
-            {"BACKGROUND"},
-            bounds,
-           sf::Vector2f(_velocity.x, 0)
-        ))
-            _velocity = sf::Vector2f(0, _velocity.y);
-
-        if (Context::getTileMapContext()->isColliding(
-            {"BACKGROUND"},
-            bounds,
-            sf::Vector2f(0, _velocity.y)
-        ))
-            _velocity = sf::Vector2f(_velocity.x, 0);
+        if (_velocity.x != 0 || _velocity.y != 0)
+            _animationState = BigDemonAnimationState::BD_WALKING;
+        else
+            _animationState = BigDemonAnimationState::BD_IDLE;
     }
-        
-    if (_velocity.x != 0 || _velocity.y != 0)
-        _animationState = BigDemonAnimationState::BD_WALKING;
-    else
-        _animationState = BigDemonAnimationState::BD_IDLE;
 
-    if (player->isColliding(_collision)) {
-        sf::Vector2f direction = directionTo(player);
-        player->takeDamage(_dmg, direction);
-    }
+    sf::FloatRect bounds = _collision.getGlobalBounds();
+    if (Context::getTileMapContext()->isColliding(
+        {"BACKGROUND"},
+        bounds,
+        sf::Vector2f(_velocity.x, 0)
+    ))
+        _velocity = sf::Vector2f(0, _velocity.y);
+
+    if (Context::getTileMapContext()->isColliding(
+        {"BACKGROUND"},
+        bounds,
+        sf::Vector2f(0, _velocity.y)
+    ))
+        _velocity = sf::Vector2f(_velocity.x, 0);
+
+    if (_velocity.x < 0)
+        _flip = true;
+    else if (_velocity.x > 0)
+        _flip = false;
 
     _sprite->move(_velocity);
     _aggroRange.setPosition(_sprite->getPosition());

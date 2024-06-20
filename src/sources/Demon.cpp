@@ -162,11 +162,8 @@ void Demon::updateMovement() {
     EntityGroupNode* group = Context::getEntityContext()->getEntitiesInGroup("WEAPON");
     if (group != nullptr) {
         Weapon* weapon = static_cast<Weapon*>(group->entity);
-        if (isColliding(weapon->getShape()) && weapon->isAttacking()) {
-            sf::Vector2f direction = player->directionTo(this);
-            takeDamage(player->getDamage(), player, direction);
-            _bleeding += 2;
-        }
+        if (isColliding(weapon->getShape()) && weapon->isAttacking())
+            takeDamage(player->getDamage(), player, player->directionTo(this));
     }
 
     if (_hp <= 0)
@@ -174,64 +171,59 @@ void Demon::updateMovement() {
 
     float isInHitAnimation = _animationState == DemonAnimationState::D_HIT;
 
-    if (player->isColliding(_aggroRange)) {
-        sf::Vector2f direction = directionTo(player);
+    sf::Vector2f direction = sf::Vector2f(0, 0);
+    if (player->isColliding(_aggroRange) && !isInHitAnimation)
+        direction = directionTo(player);
 
-        if (isInHitAnimation)
-            direction = sf::Vector2f(0, 0);
-
-        _velocity.x += direction.x * _velocityAceleration;
-        _velocity.y += direction.y * _velocityAceleration;
-
-        if (!isInHitAnimation) {
-            if (std::abs(_velocity.x) > _velocityMax)
-                _velocity.x = (_velocity.x < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.x);
-            if (std::abs(_velocity.y) > _velocityMax)
-                _velocity.y = (_velocity.y < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.y);
-        }
-
-        if (_velocity.x < 0)
-            _flip = true;
-        else if (_velocity.x > 0)
-            _flip = false;
-
-        sf::FloatRect bounds = _collision.getGlobalBounds();
-        if (Context::getTileMapContext()->isColliding(
-            {"BACKGROUND"},
-            bounds,
-            sf::Vector2f(_velocity.x, 0)
-        ) || Context::getEntityContext()->isColliding(
-            {"ENEMY", "BOSS"},
-            bounds,
-            sf::Vector2f(_velocity.x, 0),
-            this
-        ))
-            _velocity = sf::Vector2f(0, _velocity.y);
-
-        if (Context::getTileMapContext()->isColliding(
-            {"BACKGROUND"},
-            bounds,
-            sf::Vector2f(0, _velocity.y)
-        ) || Context::getEntityContext()->isColliding(
-            {"ENEMY", "BOSS"},
-            bounds,
-            sf::Vector2f(0, _velocity.y),
-            this
-        ))
-            _velocity = sf::Vector2f(_velocity.x, 0);
+    if (player->isColliding(_collision)) {
+        player->takeDamage(_dmg, directionTo(player));
+        direction = sf::Vector2f(0, 0);
     }
 
+    _velocity.x += direction.x * _velocityAceleration;
+    _velocity.y += direction.y * _velocityAceleration;
+
     if (!isInHitAnimation) {
+        if (std::abs(_velocity.x) > _velocityMax)
+            _velocity.x = (_velocity.x < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.x);
+        if (std::abs(_velocity.y) > _velocityMax)
+            _velocity.y = (_velocity.y < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.y);
+
         if (_velocity.x != 0 || _velocity.y != 0)
             _animationState = DemonAnimationState::D_WALKING;
         else
             _animationState = DemonAnimationState::D_IDLE;
     }
 
-    if (player->isColliding(_collision)) {
-        sf::Vector2f direction = directionTo(player);
-        player->takeDamage(_dmg, direction);
-    }
+    sf::FloatRect bounds = _collision.getGlobalBounds();
+    if (Context::getTileMapContext()->isColliding(
+        {"BACKGROUND"},
+        bounds,
+        sf::Vector2f(_velocity.x, 0)
+    ) || Context::getEntityContext()->isColliding(
+        {"ENEMY", "BOSS"},
+        bounds,
+        sf::Vector2f(_velocity.x, 0),
+        this
+    ))
+        _velocity = sf::Vector2f(0, _velocity.y);
+
+    if (Context::getTileMapContext()->isColliding(
+        {"BACKGROUND"},
+        bounds,
+        sf::Vector2f(0, _velocity.y)
+    ) || Context::getEntityContext()->isColliding(
+        {"ENEMY", "BOSS"},
+        bounds,
+        sf::Vector2f(0, _velocity.y),
+        this
+    ))
+        _velocity = sf::Vector2f(_velocity.x, 0);
+
+    if (_velocity.x < 0)
+        _flip = true;
+    else if (_velocity.x > 0)
+        _flip = false;
 
     _sprite->move(_velocity);
     _aggroRange.setPosition(_sprite->getPosition());

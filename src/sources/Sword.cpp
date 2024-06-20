@@ -23,8 +23,8 @@ void Sword::initTexture() {
     sf::Texture* swordTexture = Context::getTextureContext()->getTexture("SWORD");
     if (swordTexture == nullptr) {
         swordTexture = new sf::Texture();
-        if (!swordTexture->loadFromFile("src/resources/textures/knightSwordSprite.png")) {
-            std::cout << "ERROR::GAME::INITTEXTURES::Could not load knight_sword texture file." << std::endl;
+        if (!swordTexture->loadFromFile("src/resources/textures/swordSprite.png")) {
+            std::cout << "ERROR::GAME::INITTEXTURES::Could not load sword texture file." << std::endl;
         }
         Context::getTextureContext()->addTexture("SWORD", swordTexture);
     }
