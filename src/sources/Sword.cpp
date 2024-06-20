@@ -79,9 +79,7 @@ void Sword::update() {
         _isAttackButtonPressed = false;
         _isAttacking = false;
     }
-}
 
-void Sword::render(sf::RenderTarget& target) {
     sf::Vector2f currentPlayerPositon = _entity->getCenter();
     sf::Vector2f currentMousePosition = Context::getWindowContext()->getMousePosition();
 
@@ -98,9 +96,6 @@ void Sword::render(sf::RenderTarget& target) {
 
     _hitbox.setPosition(newPosition);
     _sprite->setPosition(newPosition);
-
-    target.draw(*_sprite);
-    target.draw(_hitbox);
 }
 
 void Sword::listFree() {

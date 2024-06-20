@@ -30,7 +30,8 @@ class BigDemon : public Enemy, public Animated<BigDemonAnimationState> {
 
         // Functions
         void takeDamage(int damage);
-        void takeDamage(int damage, CombatEntity* entity);
+        void takeDamage(int damage, sf::Vector2f direction);
+        void takeDamage(int damage, CombatEntity* entity, sf::Vector2f direction);
 
         void updateAnimations();
         void updateMovement();

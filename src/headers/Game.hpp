@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Inventory.hpp"
+#include "InventoryMenu.hpp"
 #include "Player.hpp"
 #include "Camera.hpp"
 
@@ -23,7 +23,7 @@ class Game {
         // Player
         Camera* _camera;
 
-        Inventory* _inventory;
+        InventoryMenu* _inventory;
         bool _isKeyPressed;
 
         // Private Functions

@@ -1,35 +1,31 @@
 #include <iostream>
 
 #include "../headers/Context.hpp"
-#include "../headers/Inventory.hpp"
+#include "../headers/InventoryMenu.hpp"
 
-// Constructor and Destructor
-Inventory::Inventory()  {
-    _overlay.setSize(sf::Vector2f(410.f, 230.f));
-    _overlay.setFillColor(sf::Color(20, 20, 20, 200));
-    _overlay.setOutlineColor(sf::Color::White);
-
-    _background.setSize(sf::Vector2f(350.f, 200.f));
-    _background.setFillColor(sf::Color(20, 20, 20, 255));
-    _background.setOutlineColor(sf::Color::White);
-
+// Private Functions
+void InventoryMenu::initVariables() {
     _isOpen = false;
 }
 
-Inventory::~Inventory()  {
+void InventoryMenu::initBackground() {
+    _overlay.setSize(sf::Vector2f(410.f, 230.f));
+    _overlay.setFillColor(sf::Color(20, 20, 20, 200));
 
+    _background.setSize(sf::Vector2f(350.f, 200.f));
+    _background.setFillColor(sf::Color(20, 20, 20, 255));
 }
+
+// Constructor and Destructor
+InventoryMenu::InventoryMenu() {
+    initVariables();
+    initBackground();
+}
+
+InventoryMenu::~InventoryMenu() {}
 
 // Functions
-bool Inventory::isOpen() const  {
-    return _isOpen;
-}
-
-void Inventory::setIsOpen() {
-    _isOpen = !_isOpen;
-}
-
-void Inventory::update() {
+void InventoryMenu::update() {
     if (!_isOpen)
         return;
 
@@ -37,7 +33,7 @@ void Inventory::update() {
     _background.setPosition(Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f, Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f);
 }
 
-void Inventory::render(sf::RenderTarget& target) {
+void InventoryMenu::render(sf::RenderTarget& target) {
     if (!_isOpen)
         return;
 

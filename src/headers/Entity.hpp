@@ -28,6 +28,10 @@ class Entity {
         const sf::Vector2f getCenter() const;
 
         // Functions
+        sf::Vector2f directionTo(Entity* entity);
+        sf::Vector2f directionTo(sf::Vector2f target);
+        sf::Vector2f directionTo(float x, float y);
+
         virtual void listFree() = 0;
 
         virtual void update() = 0;

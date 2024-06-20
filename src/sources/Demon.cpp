@@ -95,7 +95,13 @@ void Demon::takeDamage(int damage) {
         listFree();
 }
 
-void Demon::takeDamage(int damage, CombatEntity* entity) {
+void Demon::takeDamage(int damage, sf::Vector2f direction) {
+    _hp -= damage;
+    if (_hp <= 0)
+        listFree();
+}
+
+void Demon::takeDamage(int damage, CombatEntity* entity, sf::Vector2f direction) {
     _hp -= damage;
     if (_hp <= 0) {
         static_cast<Player*>(entity)->addXp(_xp);
@@ -145,7 +151,8 @@ void Demon::updateMovement() {
     if (group != nullptr) {
         Weapon* weapon = static_cast<Weapon*>(group->entity);
         if (isColliding(weapon->getShape()) && weapon->isAttacking()) {
-            takeDamage(player->getDamage(), player);
+            sf::Vector2f direction = player->directionTo(this);
+            takeDamage(player->getDamage(), player, direction);
             _bleeding += 2;
         }
     }
@@ -153,9 +160,8 @@ void Demon::updateMovement() {
     if (_hp <= 0)
         return;
 
-    if (player->isColliding(_aggroRange)) {
-        sf::Vector2f direction = player->getPosition() - _sprite->getPosition();
-        direction = Functions::normalize(direction);
+    if (player->isColliding(_aggroRange) && _animationState != EnemyAnimationState::E_ATTACKING) {
+        sf::Vector2f direction = directionTo(player);
 
         _velocity.x += direction.x * _velocityAceleration;
         _velocity.y += direction.y * _velocityAceleration;
@@ -201,6 +207,12 @@ void Demon::updateMovement() {
     else
         _animationState = EnemyAnimationState::E_IDLE;
 
+    if (player->isColliding(_collision)) {
+        sf::Vector2f direction = directionTo(player);
+        player->takeDamage(_dmg, direction);
+        _animationState = EnemyAnimationState::E_ATTACKING;
+    }
+
     _sprite->move(_velocity);
     _aggroRange.setPosition(_sprite->getPosition());
     _collision.setPosition(_sprite->getPosition());
@@ -210,6 +222,9 @@ void Demon::updateMovement() {
 
 void Demon::update() {
     applyBleeding();
+
+    if (_hp <= 0)
+        return;
 
     updatePhysics();
     updateMovement();

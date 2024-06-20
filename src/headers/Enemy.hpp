@@ -15,5 +15,6 @@ class Enemy : public CombatEntity {
 
         virtual void applyBleeding() = 0;
         virtual void takeDamage(int damage) = 0;
-        virtual void takeDamage(int damage, CombatEntity* entity) = 0;
+        virtual void takeDamage(int damage, sf::Vector2f direction) = 0;
+        virtual void takeDamage(int damage, CombatEntity* entity, sf::Vector2f direction) = 0;
 };

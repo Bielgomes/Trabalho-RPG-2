@@ -41,7 +41,7 @@ Projectile::Projectile(sf::Vector2f direction, sf::Vector2f position, float rota
     initTexture();
     initSprite();
 
-    _direction = direction;
+    _direction = direction * _speed;
     _sprite->setPosition(position);
     _sprite->setRotation(rotation + 90);
 }
@@ -55,7 +55,7 @@ void Projectile::update() {
     if (_distanceTravelled > _maxDistance)
         return listFree();
 
-    _sprite->move(_direction * _speed);
+    _sprite->move(_direction);
     _distanceTravelled += Functions::vectorMagnitude(_direction);
 }
 

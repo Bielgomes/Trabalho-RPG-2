@@ -29,6 +29,7 @@ void Player::initVariables() {
 
     _isSpecialAttckButtonPressed = false;
     _specialAttackTimer.restart();
+    _invencibilityTimer.restart();
 }
 
 void Player::initTexture() {
@@ -81,10 +82,17 @@ int Player::getDamage() {
     return getLevel() + _weapon->getDamage() + _dmg;
 }
 
-void Player::takeDamage(int damage) {
-    _hp -= damage;
-    if (_hp < 0)
-        _hp = 0;
+void Player::takeDamage(int damage, sf::Vector2f direction) {
+    if (_invencibilityTimer.getElapsedTime().asSeconds() > 1.5f) {
+        _animationState = PlayerAnimationState::HIT;
+        _hp -= damage;
+        if (_hp < 0)
+            _hp = 0;
+
+        _velocity = direction * 5.f;
+        
+        _invencibilityTimer.restart();
+    }
 }
 
 int Player::getHp() {
@@ -128,6 +136,20 @@ void Player::updateAnimations() {
                 _animationTimer.restart();
             }
             break;
+
+        case PlayerAnimationState::HIT:
+            _animationFrame.top = 56;
+            _animationFrame.left = 0;
+            _sprite->setTextureRect(
+                sf::IntRect(_animationFrame.left + (_flip * 16), _animationFrame.top, 16 - (_flip * 32), 28)
+            );
+
+            if (_animationTimer.getElapsedTime().asSeconds() >= 0.3f) {
+                _animationState = PlayerAnimationState::IDLE;
+                _animationTimer.restart();
+                _invencibilityTimer.restart();
+            }
+            break;
     }
 }
 
@@ -146,18 +168,23 @@ void Player::updateMovement() {
 
     sf::Vector2f direction = Functions::normalize(sf::Vector2f(moveX, moveY));
 
+    if (_animationState == PlayerAnimationState::HIT)
+        direction = sf::Vector2f(0, 0);
+
     _velocity.x += direction.x * _velocityAceleration;
     _velocity.y += direction.y * _velocityAceleration;
 
-    if (std::abs(_velocity.x) > _velocityMax)
-        _velocity.x = (_velocity.x < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.x);
-    if (std::abs(_velocity.y) > _velocityMax)
-        _velocity.y = (_velocity.y < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.y);
+    if (_animationState != PlayerAnimationState::HIT) {
+        if (std::abs(_velocity.x) > _velocityMax)
+            _velocity.x = (_velocity.x < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.x);
+        if (std::abs(_velocity.y) > _velocityMax)
+            _velocity.y = (_velocity.y < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.y);
 
-    if (_velocity.x != 0 || _velocity.y != 0)
-        _animationState = PlayerAnimationState::WALKING;
-    else
-        _animationState = PlayerAnimationState::IDLE;
+        if (_velocity.x != 0 || _velocity.y != 0)
+            _animationState = PlayerAnimationState::WALKING;
+        else
+            _animationState = PlayerAnimationState::IDLE;
+    }
 
     if (_velocity.x < 0)
         _flip = true;
@@ -195,13 +222,11 @@ void Player::update() {
             _isSpecialAttckButtonPressed = true;
             _specialAttackTimer.restart();
 
-            std::cout << "Special Attack!" << std::endl;
-
             sf::Vector2f playerPosition = getCenter();
             sf::Vector2f mousePosition = Context::getWindowContext()->getMousePosition(); 
 
             float angle = Functions::pointDirection(playerPosition, mousePosition);
-            sf::Vector2f direction = Functions::normalize(Functions::pointDirection(angle));
+            sf::Vector2f direction = Functions::directionTo(angle);
             float rotation = Functions::angleToDegree(angle);
 
             sf::Vector2f projectilePoint = sf::Vector2f(
@@ -211,7 +236,6 @@ void Player::update() {
             Context::getEntityContext()->addToGroup("PROJECTILE", new Projectile(
                 direction, projectilePoint, rotation
             ));
-
         } else {
             _isSpecialAttckButtonPressed = false;
         }
@@ -220,8 +244,6 @@ void Player::update() {
 
 void Player::render(sf::RenderTarget& target) {
     target.draw(*_sprite);
-    target.draw(_collision);
-    
     _weapon->render(target);
 }
 

@@ -12,9 +12,10 @@
 
 - [ ] Adicionar sistema de inventário
     - [ ] Adicionar menu de inventário
-    
+
 - [ ] Criar pilha de armaduras
 
 - [ ] Fazer menu inicial para escolher nome e classe
-- [ ] Criar ataque especial
-- [ ] Criar sangramento
+
+- [x] Criar ataque especial
+- [x] Criar sangramento

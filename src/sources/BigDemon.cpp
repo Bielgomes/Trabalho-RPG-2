@@ -95,7 +95,13 @@ void BigDemon::takeDamage(int damage) {
         listFree();
 }
 
-void BigDemon::takeDamage(int damage, CombatEntity* entity) {
+void BigDemon::takeDamage(int damage, sf::Vector2f direction) {
+    _hp -= damage;
+    if (_hp <= 0)
+        listFree();
+}
+
+void BigDemon::takeDamage(int damage, CombatEntity* entity, sf::Vector2f direction) {
     _hp -= damage;
     if (_hp <= 0) {
         static_cast<Player*>(entity)->addXp(_xp);
@@ -145,15 +151,14 @@ void BigDemon::updateMovement() {
     if (group != nullptr) {
         Weapon* weapon = static_cast<Weapon*>(group->entity);
         if (isColliding(weapon->getShape()) && weapon->isAttacking())
-            takeDamage(player->getDamage(), player);
+            takeDamage(player->getDamage(), player, player->directionTo(this));
     }
 
     if (_hp <= 0)
         return;
 
     if (player->isColliding(_aggroRange)) {
-        sf::Vector2f direction = player->getPosition() - _sprite->getPosition();
-        direction = Functions::normalize(direction);
+        sf::Vector2f direction = directionTo(player);
 
         _velocity.x += direction.x * _velocityAceleration;
         _velocity.y += direction.y * _velocityAceleration;
@@ -189,6 +194,12 @@ void BigDemon::updateMovement() {
     else
         _animationState = BigDemonAnimationState::BD_IDLE;
 
+    if (player->isColliding(_collision)) {
+        sf::Vector2f direction = directionTo(player);
+        player->takeDamage(_dmg, direction);
+        _animationState = BigDemonAnimationState::BD_ATTACKING;
+    }
+
     _sprite->move(_velocity);
     _aggroRange.setPosition(_sprite->getPosition());
     _collision.setPosition(_sprite->getPosition());
@@ -198,6 +209,9 @@ void BigDemon::updateMovement() {
 
 void BigDemon::update() {
     applyBleeding();
+
+    if (_hp <= 0)
+        return;
     
     updatePhysics();
     updateMovement();

@@ -1,5 +1,5 @@
-#include "../headers/Game.hpp"
 #include "../headers/Context.hpp"
+#include "../headers/Game.hpp"
 
 #include "../headers/Demon.hpp"
 #include "../headers/BigDemon.hpp"
@@ -16,7 +16,11 @@ void Game::initVariables() {
 }
 
 void Game::initWindow() {
-    _window = new sf::RenderWindow(sf::VideoMode(1280, 720), "T2 - RPG", sf::Style::Titlebar | sf::Style::Close);
+    sf::Image icon;
+    icon.loadFromFile("src/resources/textures/icon.png");
+
+    _window = new sf::RenderWindow(sf::VideoMode(1280, 720), "DunDare", sf::Style::Titlebar | sf::Style::Close);
+    _window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     _camera = new Camera(_window);
 
     Context::getWindowContext()->setWindow(_window);
@@ -219,7 +223,7 @@ void Game::initPlayer() {
     Context::getEntityContext()->addToGroup("PLAYER", player);
     _camera->bind(player);
 
-    _inventory = new Inventory();
+    _inventory = new InventoryMenu();
 }
 
 void Game::initEnemies() {
@@ -291,8 +295,10 @@ void Game::update() {
         _isKeyPressed = false;
     }
 
-    if (!Context::getEntityContext()->getEntitiesInGroup("BOSS"))
+    if (!Context::getEntityContext()->getEntitiesInGroup("BOSS")) {
         _gameOver = true;
+        return;
+    }
 
     Context::getTileMapContext()->updateTileMap("BACKGROUND");
 
@@ -303,8 +309,8 @@ void Game::update() {
 
     Context::getEntityContext()->updateGroup("PROJECTILE");
 
-    _inventory->update();
     _camera->update();
+    _inventory->update();
 }
 
 void Game::render() {

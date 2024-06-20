@@ -9,6 +9,7 @@
 enum PlayerAnimationState {
     IDLE,
     WALKING,
+    HIT
 };
 
 class Player : public CombatEntity, public Animated<PlayerAnimationState> {
@@ -17,6 +18,7 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
         std::string name;
         
         sf::Clock _specialAttackTimer;
+        sf::Clock _invencibilityTimer;
         bool _isSpecialAttckButtonPressed;
 
         Weapon* _weapon;
@@ -34,13 +36,11 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
         
         // Functions
         int getDamage();
-        void takeDamage(int damage);
+        void takeDamage(int damage, sf::Vector2f direction);
         int getHp();
 
         void addXp(int xp);
         int getLevel();
-
-        // Inventory things...
 
         void updateAnimations();
         void updatePhysics();

@@ -23,7 +23,6 @@ class Sword : public Weapon {
         bool isAttacking();
 
         void update();
-        void render(sf::RenderTarget& target);
 
         void listFree();
 };

@@ -17,11 +17,9 @@ class CombatEntity : public Entity, public Collision {
 
     public:
         int getDamage();
-        void takeDamage(int damage);
+        virtual void takeDamage(int damage, sf::Vector2f direction) = 0;
         int getHp();
 
         void updatePhysics();
         virtual void updateMovement() = 0;
-
-        virtual void listFree() = 0;
 };
