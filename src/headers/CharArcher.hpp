@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Character.hpp"
 
 class CharArcher : public Character {

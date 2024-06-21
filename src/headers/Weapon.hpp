@@ -4,7 +4,14 @@
 
 class Weapon : public Entity {
     protected:
+
+
+        std::string _texturePath;
+        std::string _textureName;
+
         // Variables
+        CombatEntity* _entity;
+
         sf::RectangleShape _hitbox;
 
         sf::Clock _attackTimer;
@@ -13,11 +20,21 @@ class Weapon : public Entity {
 
         int _dmg;
 
+        // Private Functions
+        void initVariables();
+        void initTexture();
+        void initSprite();
+
     public:
         // Constructor and Destructor
-        virtual ~Weapon() = default;
+        Weapon(CombatEntity* entity, std::string textureName, std::string texturePath);
+        virtual ~Weapon();
 
         // Functions
-        virtual int getDamage() = 0;
-        virtual bool isAttacking() = 0;
+        int getDamage();
+        bool isAttacking();
+
+        void update();
+
+        void listFree();
 };

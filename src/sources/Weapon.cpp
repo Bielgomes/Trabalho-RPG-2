@@ -2,12 +2,12 @@
 
 #include "../headers/Context.hpp"
 #include "../headers/Functions.hpp"
-#include "../headers/Sword.hpp"
+
+#include "../headers/Weapon.hpp"
 #include "../headers/Enemy.hpp"
-#include "../headers/Character.hpp"
 
 // Private Functions
-void Sword::initVariables() {
+void Weapon::initVariables() {
     _texture = nullptr;
     _sprite = nullptr;
 
@@ -19,20 +19,20 @@ void Sword::initVariables() {
     _flip = false;
 }
 
-void Sword::initTexture() {
-    sf::Texture* swordTexture = Context::getTextureContext()->getTexture("SWORD");
-    if (swordTexture == nullptr) {
-        swordTexture = new sf::Texture();
-        if (!swordTexture->loadFromFile("src/resources/textures/swordSprite.png")) {
-            std::cout << "ERROR::GAME::INITTEXTURES::Could not load sword texture file." << std::endl;
+void Weapon::initTexture() {
+    sf::Texture* weaponTexture = Context::getTextureContext()->getTexture(_textureName);
+    if (weaponTexture == nullptr) {
+        weaponTexture = new sf::Texture();
+        if (!weaponTexture->loadFromFile("src/resources/textures/" + _texturePath + ".png")) {
+            std::cout << "ERROR::GAME::INITTEXTURES::Could not load weapon texture file." << std::endl;
         }
-        Context::getTextureContext()->addTexture("SWORD", swordTexture);
+        Context::getTextureContext()->addTexture(_textureName, weaponTexture);
     }
 
-    _texture = swordTexture;
+    _texture = weaponTexture;
 }
 
-void Sword::initSprite() {
+void Weapon::initSprite() {
     _sprite = new sf::Sprite(*_texture);
     _sprite->setOrigin(_sprite->getGlobalBounds().width / 2, _sprite->getGlobalBounds().height);
 
@@ -44,7 +44,10 @@ void Sword::initSprite() {
 }
 
 // Constructor and Destructor
-Sword::Sword(Character* entity) {
+Weapon::Weapon(CombatEntity* entity, std::string textureName, std::string texturePath) {
+    _textureName = textureName;
+    _texturePath = texturePath;
+
     _entity = entity;
 
     initVariables();
@@ -52,20 +55,20 @@ Sword::Sword(Character* entity) {
     initSprite();
 }
 
-Sword::~Sword() {
+Weapon::~Weapon() {
     delete _sprite;
 }
 
 // Functions
-int Sword::getDamage() {
+int Weapon::getDamage() {
     return _dmg;
 }
 
-bool Sword::isAttacking() {
+bool Weapon::isAttacking() {
     return _isAttacking;
 }
 
-void Sword::update() {
+void Weapon::update() {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         if (_attackTimer.getElapsedTime().asSeconds() > 0.1f && !_isAttackButtonPressed) {
             _isAttacking = true;
@@ -98,6 +101,6 @@ void Sword::update() {
     _sprite->setPosition(newPosition);
 }
 
-void Sword::listFree() {
-    Context::getEntityContext()->removeFromGroup("SWORD", this);
+void Weapon::listFree() {
+    Context::getEntityContext()->removeFromGroup("WEAPON", this);
 }

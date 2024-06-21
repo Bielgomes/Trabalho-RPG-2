@@ -3,6 +3,7 @@
 #include "../headers/Context.hpp"
 #include "../headers/Functions.hpp"
 #include "../headers/BigDemon.hpp"
+#include "../headers/Weapon.hpp"
 
 // Private Functions
 void BigDemon::initVariables() {

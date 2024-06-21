@@ -3,7 +3,7 @@
 #include "../headers/Context.hpp"
 #include "../headers/Functions.hpp"
 #include "../headers/Character.hpp"
-#include "../headers/Sword.hpp"
+#include "../headers/WeaponStaff.hpp"
 #include "../headers/Projectile.hpp"
 
 // Private Functions
@@ -13,7 +13,7 @@ void Character::initVariables() {
     
     Context::getEntityContext()->addGroup("WEAPON");
     
-    _weapon = new Sword(this);
+    _weapon = new WeaponStaff(this);
     Context::getEntityContext()->addToGroup("WEAPON", _weapon);
 
     _flip = false;
