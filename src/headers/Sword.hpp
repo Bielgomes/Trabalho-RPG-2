@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Weapon.hpp"
-#include "Player.hpp"
+#include "Character.hpp"
 
 class Sword : public Weapon {
     private:
         // Variables
-        Player* _entity;
+        Character* _entity;
 
         // Private Functions
         void initVariables();
@@ -15,7 +15,7 @@ class Sword : public Weapon {
 
     public:
         // Constructor and Destructor
-        Sword(Player* entity);
+        Sword(Character* entity);
         virtual ~Sword();
 
         // Functions

@@ -8,6 +8,8 @@ class Projectile : public Entity {
         float _distanceTravelled;
         float _speed;
 
+        int _dmg;
+
         // Private Functions
         void initVariables();
         void initTexture();
@@ -17,6 +19,9 @@ class Projectile : public Entity {
         // Constructor and Destructor
         Projectile(sf::Vector2f direction, sf::Vector2f position, float rotation);
         virtual ~Projectile();
+
+        // Accessors
+        int getDamage() const;
 
         // Functions
         void update();

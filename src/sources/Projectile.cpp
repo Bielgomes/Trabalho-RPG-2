@@ -11,6 +11,8 @@ void Projectile::initVariables() {
     _distanceTravelled = 0.f;
     _speed = 3.f;
 
+    _dmg = 1;
+
     _direction = sf::Vector2f(0.f, 0.f);
 }
 
@@ -48,6 +50,11 @@ Projectile::Projectile(sf::Vector2f direction, sf::Vector2f position, float rota
 
 Projectile::~Projectile() {
     delete _sprite;
+}
+
+// Accessors
+int Projectile::getDamage() const {
+    return _dmg;
 }
 
 // Functions

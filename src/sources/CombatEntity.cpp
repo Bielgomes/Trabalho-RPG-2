@@ -1,5 +1,5 @@
 #include "../headers/CombatEntity.hpp"
-#include "../headers/Player.hpp"
+#include "../headers/Character.hpp"
 
 int CombatEntity::getDamage() {
     return _dmg;

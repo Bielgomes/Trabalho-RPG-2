@@ -2,12 +2,12 @@
 
 #include "../headers/Context.hpp"
 #include "../headers/Functions.hpp"
-#include "../headers/Player.hpp"
+#include "../headers/Character.hpp"
 #include "../headers/Sword.hpp"
 #include "../headers/Projectile.hpp"
 
 // Private Functions
-void Player::initVariables() {
+void Character::initVariables() {
     _texture = nullptr;
     _sprite = nullptr;
     
@@ -32,20 +32,20 @@ void Player::initVariables() {
     _invencibilityTimer.restart();
 }
 
-void Player::initTexture() {
-    sf::Texture* playerTexture = Context::getTextureContext()->getTexture("PLAYER");
-    if (playerTexture == nullptr) {
-        playerTexture = new sf::Texture();
-        if (!playerTexture->loadFromFile("src/resources/textures/knightSpriteSheet.png")) {
-            std::cout << "ERROR::GAME::INITTEXTURES::Could not load player texture file." << std::endl;
+void Character::initTexture() {
+    sf::Texture* characterTexture = Context::getTextureContext()->getTexture(_textureName);
+    if (characterTexture == nullptr) {
+        characterTexture = new sf::Texture();
+        if (!characterTexture->loadFromFile("src/resources/textures/" + _texturePath + ".png")) {
+            std::cout << "ERROR::GAME::INITTEXTURES::Could not load Character texture file." << std::endl;
         }
-        Context::getTextureContext()->addTexture("PLAYER", playerTexture);
+        Context::getTextureContext()->addTexture(_textureName, characterTexture);
     }
 
-    _texture = playerTexture;
+    _texture = characterTexture;
 }
 
-void Player::initSprite() {
+void Character::initSprite() {
     _sprite = new sf::Sprite(*_texture);
 
     _collision.setSize(sf::Vector2f(9, 12));
@@ -55,8 +55,8 @@ void Player::initSprite() {
     _collision.setOutlineThickness(0.3f);
 }
 
-void Player::initAnimations() {
-    _animationState = PlayerAnimationState::IDLE;
+void Character::initAnimations() {
+    _animationState = CharacterAnimationState::IDLE;
     _animationFrame = sf::IntRect(0, 0, 16, 28);
 
     _sprite->setTextureRect(_animationFrame);
@@ -64,7 +64,10 @@ void Player::initAnimations() {
 }
 
 // Constructor and Destructor
-Player::Player(sf::Vector2f position) {
+Character::Character(sf::Vector2f position, std::string textureName, std::string texturePath) {
+    _textureName = textureName;
+    _texturePath = texturePath;
+
     initVariables();
     initTexture();
     initSprite();
@@ -73,18 +76,18 @@ Player::Player(sf::Vector2f position) {
     _sprite->setPosition(position);
 }
 
-Player::~Player() {
+Character::~Character() {
     delete _sprite;
 }
 
 // Functions
-int Player::getDamage() {
+int Character::getDamage() {
     return getLevel() + _weapon->getDamage() + _dmg;
 }
 
-void Player::takeDamage(int damage, sf::Vector2f direction) {
+void Character::takeDamage(int damage, sf::Vector2f direction) {
     if (_invencibilityTimer.getElapsedTime().asSeconds() > 1.5f) {
-        _animationState = PlayerAnimationState::HIT;
+        _animationState = CharacterAnimationState::HIT;
         _hp -= damage;
         if (_hp < 0)
             _hp = 0;
@@ -95,21 +98,21 @@ void Player::takeDamage(int damage, sf::Vector2f direction) {
     }
 }
 
-int Player::getHp() {
+int Character::getHp() {
     return _hp;
 }
 
-void Player::addXp(int xp) {
+void Character::addXp(int xp) {
     _xp += xp;
 }
 
-int Player::getLevel() {
+int Character::getLevel() {
     return _xp / 100;
 }
 
-void Player::updateAnimations() {
+void Character::updateAnimations() {
     switch (_animationState) {
-        case PlayerAnimationState::IDLE:
+        case CharacterAnimationState::IDLE:
             _animationFrame.top = 0;
             if (_animationTimer.getElapsedTime().asSeconds() >= 0.2f) {
                 _animationFrame.left += 16;
@@ -123,7 +126,7 @@ void Player::updateAnimations() {
             }
             break;
 
-        case PlayerAnimationState::WALKING:
+        case CharacterAnimationState::WALKING:
             _animationFrame.top = 28;
             if (_animationTimer.getElapsedTime().asSeconds() >= 0.1f) {
                 _animationFrame.left += 16;
@@ -137,7 +140,7 @@ void Player::updateAnimations() {
             }
             break;
 
-        case PlayerAnimationState::HIT:
+        case CharacterAnimationState::HIT:
             _animationFrame.top = 56;
             _animationFrame.left = 0;
             _sprite->setTextureRect(
@@ -145,7 +148,7 @@ void Player::updateAnimations() {
             );
 
             if (_animationTimer.getElapsedTime().asSeconds() >= 0.3f) {
-                _animationState = PlayerAnimationState::IDLE;
+                _animationState = CharacterAnimationState::IDLE;
                 _animationTimer.restart();
                 _invencibilityTimer.restart();
             }
@@ -153,27 +156,27 @@ void Player::updateAnimations() {
     }
 }
 
-void Player::updateMovement() {
+void Character::updateMovement() {
     int moveX = sf::Keyboard::isKeyPressed(sf::Keyboard::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     int moveY = sf::Keyboard::isKeyPressed(sf::Keyboard::S) - sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 
     sf::Vector2f direction = Functions::normalize(sf::Vector2f(moveX, moveY));
-    if (_animationState == PlayerAnimationState::HIT)
+    if (_animationState == CharacterAnimationState::HIT)
         direction = sf::Vector2f(0, 0);
 
     _velocity.x += direction.x * _velocityAceleration;
     _velocity.y += direction.y * _velocityAceleration;
 
-    if (_animationState != PlayerAnimationState::HIT) {
+    if (_animationState != CharacterAnimationState::HIT) {
         if (std::abs(_velocity.x) > _velocityMax)
             _velocity.x = (_velocity.x < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.x);
         if (std::abs(_velocity.y) > _velocityMax)
             _velocity.y = (_velocity.y < 0 ? -_velocityMax : _velocityMax) * std::abs(direction.y);
 
         if (_velocity.x != 0 || _velocity.y != 0)
-            _animationState = PlayerAnimationState::WALKING;
+            _animationState = CharacterAnimationState::WALKING;
         else
-            _animationState = PlayerAnimationState::IDLE;
+            _animationState = CharacterAnimationState::IDLE;
     }
 
     if (_velocity.x < 0)
@@ -202,7 +205,7 @@ void Player::updateMovement() {
     updateAnimations();
 }
 
-void Player::update() {
+void Character::update() {
     updatePhysics();
     updateMovement();
 
@@ -212,10 +215,10 @@ void Player::update() {
             _isSpecialAttckButtonPressed = true;
             _specialAttackTimer.restart();
 
-            sf::Vector2f playerPosition = getCenter();
+            sf::Vector2f CharacterPosition = getCenter();
             sf::Vector2f mousePosition = Context::getWindowContext()->getMousePosition(); 
 
-            float angle = Functions::pointDirection(playerPosition, mousePosition);
+            float angle = Functions::pointDirection(CharacterPosition, mousePosition);
             sf::Vector2f direction = Functions::directionTo(angle);
             float rotation = Functions::angleToDegree(angle);
 
@@ -232,11 +235,11 @@ void Player::update() {
     }
 }
 
-void Player::render(sf::RenderTarget& target) {
+void Character::render(sf::RenderTarget& target) {
     target.draw(*_sprite);
     _weapon->render(target);
 }
 
-void Player::listFree() {
-    Context::getEntityContext()->removeFromGroup("PLAYER", this);
+void Character::listFree() {
+    Context::getEntityContext()->removeFromGroup("Character", this);
 }

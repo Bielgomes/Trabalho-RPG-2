@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "InventoryMenu.hpp"
-#include "Player.hpp"
+#include "Character.hpp"
 #include "Camera.hpp"
 
 #include "TileMap.hpp"
@@ -20,7 +20,7 @@ class Game {
         bool _isRunning;
         bool _gameOver;
 
-        // Player
+        // Character
         Camera* _camera;
 
         InventoryMenu* _inventory;
@@ -30,7 +30,7 @@ class Game {
         void initVariables();
         void initWindow();
         void initTileMap();
-        void initPlayer();
+        void initCharacter();
         void initEnemies();
 
     public:

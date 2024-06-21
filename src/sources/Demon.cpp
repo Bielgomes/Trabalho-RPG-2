@@ -101,7 +101,7 @@ void Demon::takeDamage(int damage, CombatEntity* entity, sf::Vector2f direction)
     _animationState = DemonAnimationState::D_HIT;
     _hp -= damage;
     if (_hp <= 0) {
-        static_cast<Player*>(entity)->addXp(_xp);
+        static_cast<Character*>(entity)->addXp(_xp);
         return listFree();
     }
 
@@ -157,13 +157,13 @@ void Demon::updateAnimations() {
 }
 
 void Demon::updateMovement() {
-    Player *player = static_cast<Player*>(Context::getEntityContext()->getEntitiesInGroup("PLAYER")->entity);
+    Character *character = static_cast<Character*>(Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity);
 
     EntityGroupNode* group = Context::getEntityContext()->getEntitiesInGroup("WEAPON");
     if (group != nullptr) {
         Weapon* weapon = static_cast<Weapon*>(group->entity);
         if (isColliding(weapon->getShape()) && weapon->isAttacking())
-            takeDamage(player->getDamage(), player, player->directionTo(this));
+            takeDamage(character->getDamage(), character, character->directionTo(this));
     }
 
     if (_hp <= 0)
@@ -172,11 +172,11 @@ void Demon::updateMovement() {
     float isInHitAnimation = _animationState == DemonAnimationState::D_HIT;
 
     sf::Vector2f direction = sf::Vector2f(0, 0);
-    if (player->isColliding(_aggroRange) && !isInHitAnimation)
-        direction = directionTo(player);
+    if (character->isColliding(_aggroRange) && !isInHitAnimation)
+        direction = directionTo(character);
 
-    if (player->isColliding(_collision)) {
-        player->takeDamage(_dmg, directionTo(player));
+    if (character->isColliding(_collision)) {
+        character->takeDamage(_dmg, directionTo(character));
         direction = sf::Vector2f(0, 0);
     }
 

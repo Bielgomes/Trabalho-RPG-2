@@ -4,7 +4,7 @@
 #include "../headers/Functions.hpp"
 #include "../headers/Sword.hpp"
 #include "../headers/Enemy.hpp"
-#include "../headers/Player.hpp"
+#include "../headers/Character.hpp"
 
 // Private Functions
 void Sword::initVariables() {
@@ -44,7 +44,7 @@ void Sword::initSprite() {
 }
 
 // Constructor and Destructor
-Sword::Sword(Player* entity) {
+Sword::Sword(Character* entity) {
     _entity = entity;
 
     initVariables();
@@ -80,19 +80,19 @@ void Sword::update() {
         _isAttacking = false;
     }
 
-    sf::Vector2f currentPlayerPositon = _entity->getCenter();
+    sf::Vector2f currentCharacterPositon = _entity->getCenter();
     sf::Vector2f currentMousePosition = Context::getWindowContext()->getMousePosition();
 
-    currentPlayerPositon.y += 5;
+    currentCharacterPositon.y += 5;
 
-    float angle = Functions::pointDirection(currentPlayerPositon, currentMousePosition);
+    float angle = Functions::pointDirection(currentCharacterPositon, currentMousePosition);
     float deg = Functions::angleToDegree(angle);
 
     _sprite->setRotation(deg + 90);
     _hitbox.setRotation(deg + 90);
 
     sf::Vector2f offset(std::cos(angle) * 3, std::sin(angle) * 3);
-    sf::Vector2f newPosition = currentPlayerPositon + offset;
+    sf::Vector2f newPosition = currentCharacterPositon + offset;
 
     _hitbox.setPosition(newPosition);
     _sprite->setPosition(newPosition);

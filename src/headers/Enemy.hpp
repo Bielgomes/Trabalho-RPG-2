@@ -2,7 +2,7 @@
 
 #include "Animated.hpp"
 #include "CombatEntity.hpp"
-#include "Player.hpp"
+#include "Character.hpp"
 
 class Enemy : public CombatEntity {
     protected:

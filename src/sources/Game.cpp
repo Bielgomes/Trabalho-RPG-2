@@ -4,6 +4,10 @@
 #include "../headers/Demon.hpp"
 #include "../headers/BigDemon.hpp"
 
+#include "../headers/CharMage.hpp"
+#include "../headers/CharKnight.hpp"
+#include "../headers/CharArcher.hpp"
+
 // Private Functions
 void Game::initVariables() {
     _window = nullptr;
@@ -214,14 +218,14 @@ void Game::initTileMap() {
     tileMap->addCollision(439, 10, sf::Vector2f(48, 704));
 }
 
-void Game::initPlayer() {
-    Context::getEntityContext()->addGroup("PLAYER");
+void Game::initCharacter() {
+    Context::getEntityContext()->addGroup("CHARACTER");
     Context::getEntityContext()->addGroup("ENEMY");
     Context::getEntityContext()->addGroup("PROJECTILE");
 
-    Player* player = new Player(sf::Vector2f(30, 30));
-    Context::getEntityContext()->addToGroup("PLAYER", player);
-    _camera->bind(player);
+    Character* character = new CharMage(sf::Vector2f(32, 32));
+    Context::getEntityContext()->addToGroup("CHARACTER", character);
+    _camera->bind(character);
 
     _inventory = new InventoryMenu();
 }
@@ -252,7 +256,7 @@ Game::Game() {
     initVariables();
     initWindow();
     initTileMap();
-    initPlayer();
+    initCharacter();
     initEnemies();
 }
 
@@ -302,7 +306,7 @@ void Game::update() {
 
     Context::getTileMapContext()->updateTileMap("BACKGROUND");
 
-    Context::getEntityContext()->updateGroup("PLAYER");
+    Context::getEntityContext()->updateGroup("CHARACTER");
     
     Context::getEntityContext()->updateGroup("ENEMY");
     Context::getEntityContext()->updateGroup("BOSS");
@@ -318,7 +322,7 @@ void Game::render() {
 
     Context::getTileMapContext()->renderTileMap("BACKGROUND", *_window);
 
-    Context::getEntityContext()->renderGroup("PLAYER", *_window);
+    Context::getEntityContext()->renderGroup("CHARACTER", *_window);
 
     Context::getEntityContext()->renderGroup("ENEMY", *_window);
     Context::getEntityContext()->renderGroup("BOSS", *_window);
