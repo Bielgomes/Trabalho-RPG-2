@@ -57,6 +57,12 @@ Sword::~Sword() {
 }
 
 // Functions
+
+Sword* Sword::clone()
+{
+    return new Sword(*this);
+}
+
 int Sword::getDamage() {
     return _dmg;
 }

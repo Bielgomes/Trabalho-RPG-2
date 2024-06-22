@@ -5,6 +5,7 @@
 #include "Animated.hpp"
 #include "CombatEntity.hpp"
 #include "Weapon.hpp"
+#include "Inventory.hpp"
 
 enum PlayerAnimationState {
     IDLE,
@@ -20,6 +21,7 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
         sf::Clock _specialAttackTimer;
         bool _isSpecialAttckButtonPressed;
 
+        Inventory* _inventory;
         Weapon* _weapon;
 
         // Private Functions
@@ -27,7 +29,8 @@ class Player : public CombatEntity, public Animated<PlayerAnimationState> {
         void initTexture();
         void initSprite();
         void initAnimations();
-
+        void initInventory();
+        
     public:
         // Constructor and Destructor
         Player(sf::Vector2f position);

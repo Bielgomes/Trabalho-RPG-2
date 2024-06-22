@@ -5,7 +5,6 @@
 #include "InventoryMenu.hpp"
 #include "Player.hpp"
 #include "Camera.hpp"
-
 #include "TileMap.hpp"
 
 class Game {

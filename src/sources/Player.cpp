@@ -5,6 +5,8 @@
 #include "../headers/Player.hpp"
 #include "../headers/Sword.hpp"
 #include "../headers/Projectile.hpp"
+#include "../headers/Items.hpp"
+#include "Player.hpp"
 
 // Private Functions
 void Player::initVariables() {
@@ -14,6 +16,7 @@ void Player::initVariables() {
     Context::getEntityContext()->addGroup("WEAPON");
     
     _weapon = new Sword(this);
+
     Context::getEntityContext()->addToGroup("WEAPON", _weapon);
 
     _flip = false;
@@ -63,17 +66,30 @@ void Player::initAnimations() {
     _animationTimer.restart();
 }
 
+void Player::initInventory()
+{
+    this->_inventory = new Inventory(100);
+
+    // // Descomente para testar o inventário
+    // std::cout << this->_inventory->size() << " ";
+    // this->_inventory->add(_weapon);
+    // this->_inventory->remove(0);
+    // std::cout << this->_inventory->size() << " ";
+} 
+
 // Constructor and Destructor
 Player::Player(sf::Vector2f position) {
     initVariables();
     initTexture();
     initSprite();
     initAnimations();
+    initInventory();
 
     _sprite->setPosition(position);
 }
 
 Player::~Player() {
+    delete this->_inventory;
     delete _sprite;
 }
 

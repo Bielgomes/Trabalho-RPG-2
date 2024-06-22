@@ -19,6 +19,7 @@ class Sword : public Weapon {
         virtual ~Sword();
 
         // Functions
+        virtual Sword* clone();
         int getDamage();
         bool isAttacking();
 

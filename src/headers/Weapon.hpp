@@ -1,8 +1,11 @@
 #pragma once
 
 #include "CombatEntity.hpp"
+#include "Item.hpp"
 
-class Weapon : public Entity {
+class Weapon : public Entity,
+               public Item
+{
     protected:
         // Variables
         sf::RectangleShape _hitbox;
@@ -20,4 +23,6 @@ class Weapon : public Entity {
         // Functions
         virtual int getDamage() = 0;
         virtual bool isAttacking() = 0;
+
+        virtual Weapon* clone() = 0;
 };

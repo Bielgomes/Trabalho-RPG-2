@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "OverlayMenu.hpp"
+#include "Item.hpp"
 
 class InventoryMenu : public OverlayMenu {
     private:
