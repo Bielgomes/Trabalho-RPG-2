@@ -225,6 +225,8 @@ void Game::initCharacter(int classIndex, std::string name) {
     Context::getEntityContext()->addGroup("CHARACTER");
     Context::getEntityContext()->addGroup("ENEMY");
     Context::getEntityContext()->addGroup("PROJECTILE");
+    Context::getEntityContext()->addGroup("WEAPON");
+    Context::getEntityContext()->addGroup("WEAPONBOW");
 
     Character* character = nullptr;
 

@@ -4,8 +4,6 @@
 
 class Weapon : public Entity {
     protected:
-
-
         std::string _texturePath;
         std::string _textureName;
 

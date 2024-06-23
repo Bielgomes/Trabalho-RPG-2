@@ -7,4 +7,9 @@ class WeaponBow : public Weapon {
         // Constructor and Destructor
         WeaponBow(CombatEntity* entity);
         ~WeaponBow() = default;
+
+        // Functions
+        void update();
+
+        void listFree();
 };

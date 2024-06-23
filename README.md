@@ -8,14 +8,14 @@
 - [x] Adicionar maior variedade de inimigos
 - [x] Adicionar Boss
 
-- [ ] Adicionar Pontuação ao finalizar o jogo
+- [x] Adicionar Pontuação ao finalizar o jogo
 
 - [ ] Adicionar sistema de inventário
-    - [ ] Adicionar menu de inventário
+    - [x] Adicionar menu de inventário
 
 - [ ] Criar pilha de armaduras
 
-- [ ] Fazer menu inicial para escolher nome e classe
+- [x] Fazer menu inicial para escolher nome e classe
 
 - [x] Criar ataque especial
 - [x] Criar sangramento

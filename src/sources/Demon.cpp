@@ -2,8 +2,10 @@
 
 #include "../headers/Context.hpp"
 #include "../headers/Functions.hpp"
+#include "../headers/Projectile.hpp"
 #include "../headers/Enemy.hpp"
 #include "../headers/Demon.hpp"
+
 
 // Private Functions
 void Demon::initVariables() {
@@ -166,6 +168,16 @@ void Demon::updateMovement() {
             takeDamage(character->getDamage(), character, character->directionTo(this));
     }
 
+    group = Context::getEntityContext()->getEntitiesInGroup("PROJECTILE");
+    while (group != nullptr) {
+        Projectile* projectile = static_cast<Projectile*>(group->entity);
+        if (isColliding(projectile->getShape())) {
+            takeDamage(projectile->getDamage(), character, character->directionTo(this));
+            projectile->listFree();
+        }
+        group = group->next;
+    }
+    
     if (_hp <= 0)
         return;
 

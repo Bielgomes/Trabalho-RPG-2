@@ -22,10 +22,10 @@ void CharArcher::initVariables() {
     _texture = nullptr;
     _sprite = nullptr;
     
-    Context::getEntityContext()->addGroup("WEAPON");
+    Context::getEntityContext()->addGroup("WEAPONBOW");
     
     _weapon = new WeaponBow(this);
-    Context::getEntityContext()->addToGroup("WEAPON", _weapon);
+    Context::getEntityContext()->addToGroup("WEAPONBOW", _weapon);
 
     _flip = false;
 

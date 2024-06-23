@@ -44,8 +44,7 @@ class Character : public CombatEntity, public Animated<CharacterAnimationState> 
 
         void addXp(int xp);
         int getLevel();
-
-        void updateLifeBar();
+        
         void updateAnimations();
         void updateMovement();
         void update();

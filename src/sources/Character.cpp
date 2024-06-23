@@ -196,10 +196,10 @@ void Character::update() {
             _isSpecialAttckButtonPressed = true;
             _specialAttackTimer.restart();
 
-            sf::Vector2f CharacterPosition = getCenter();
+            sf::Vector2f characterPosition = getCenter();
             sf::Vector2f mousePosition = Context::getWindowContext()->getMousePosition(); 
 
-            float angle = Functions::pointDirection(CharacterPosition, mousePosition);
+            float angle = Functions::pointDirection(characterPosition, mousePosition);
             sf::Vector2f direction = Functions::directionTo(angle);
             float rotation = Functions::angleToDegree(angle);
 
@@ -207,9 +207,9 @@ void Character::update() {
                 getPosition().x + getShape().width / 2, getPosition().y + getShape().height / 2
             );
 
-            Context::getEntityContext()->addToGroup("PROJECTILE", new Projectile(
-                direction, projectilePoint, rotation
-            ));
+            // Context::getEntityContext()->addToGroup("PROJECTILE", new Projectile(
+            //     direction, projectilePoint, rotation
+            // ));
         } else {
             _isSpecialAttckButtonPressed = false;
         }
@@ -240,5 +240,5 @@ void Character::render(sf::RenderTarget& target) {
 }
 
 void Character::listFree() {
-    Context::getEntityContext()->removeFromGroup("Character", this);
+    Context::getEntityContext()->removeFromGroup("CHARACTER", this);
 }

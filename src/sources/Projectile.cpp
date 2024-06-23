@@ -17,13 +17,13 @@ void Projectile::initVariables() {
 }
 
 void Projectile::initTexture() {
-    sf::Texture* projectileTexture = Context::getTextureContext()->getTexture("PROJECTILE");
+    sf::Texture* projectileTexture = Context::getTextureContext()->getTexture(_textureName);
     if (projectileTexture == nullptr) {
         projectileTexture = new sf::Texture();
-        if (!projectileTexture->loadFromFile("src/resources/textures/swordSprite.png")) {
+        if (!projectileTexture->loadFromFile("src/resources/textures/" + _texturePath + ".png")) {
             std::cout << "ERROR::GAME::INITTEXTURES::Could not load projectile texture file." << std::endl;
         }
-        Context::getTextureContext()->addTexture("PROJECTILE", projectileTexture);
+        Context::getTextureContext()->addTexture(_textureName, projectileTexture);
     }
 
     _texture = projectileTexture;
@@ -38,16 +38,6 @@ void Projectile::initSprite() {
 }
 
 // Constructor and Destructor
-Projectile::Projectile(sf::Vector2f direction, sf::Vector2f position, float rotation) {
-    initVariables();
-    initTexture();
-    initSprite();
-
-    _direction = direction * _speed;
-    _sprite->setPosition(position);
-    _sprite->setRotation(rotation + 90);
-}
-
 Projectile::~Projectile() {
     delete _sprite;
 }

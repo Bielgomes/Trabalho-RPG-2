@@ -70,14 +70,13 @@ bool Weapon::isAttacking() {
 
 void Weapon::update() {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        if (_attackTimer.getElapsedTime().asSeconds() > 0.1f && !_isAttackButtonPressed) {
+        if (_attackTimer.getElapsedTime().asSeconds() > 0.3f && !_isAttackButtonPressed) {
             _isAttacking = true;
             _isAttackButtonPressed = true;
+            _attackTimer.restart();
         } else {
             _isAttacking = false;
         }
-
-        _attackTimer.restart();
     } else {
         _isAttackButtonPressed = false;
         _isAttacking = false;
