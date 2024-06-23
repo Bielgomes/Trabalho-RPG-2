@@ -2,6 +2,7 @@
 
 #include "../headers/Context.hpp"
 #include "../headers/InventoryMenu.hpp"
+#include "../headers/Character.hpp"
 
 // Private Functions
 void InventoryMenu::initVariables() {
@@ -29,7 +30,28 @@ void InventoryMenu::initFont() {
 }
 
 void InventoryMenu::initText() {
+    _characterName = new sf::Text();
+    _characterLevel = new sf::Text();
 
+    _characterName->setFont(*_font);
+    _characterName->setCharacterSize(12);
+    _characterName->setFillColor(sf::Color::White);
+    _characterName->setString(
+        static_cast<Character*>(
+            Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity
+        )->getName()
+    );
+    
+    _characterLevel->setFont(*_font);
+    _characterLevel->setCharacterSize(10);
+    _characterLevel->setFillColor(sf::Color::White);
+    _characterLevel->setString(
+        "Level: " + std::to_string(
+            static_cast<Character*>(
+                Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity
+            )->getLevel() + 1
+        )
+    );
 }
 
 // Constructor and Destructor
@@ -40,15 +62,41 @@ InventoryMenu::InventoryMenu() {
     initText();
 }
 
-InventoryMenu::~InventoryMenu() {}
+InventoryMenu::~InventoryMenu() {
+    delete _characterName;
+    delete _characterLevel;
+}
 
 // Functions
 void InventoryMenu::update() {
     if (!_isOpen)
         return;
 
-    _overlay.setPosition(Context::getWindowContext()->getView()->getCenter().x - _overlay.getSize().x / 2.f, Context::getWindowContext()->getView()->getCenter().y - _overlay.getSize().y / 2.f);
-    _background.setPosition(Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f, Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f);
+    _overlay.setPosition(
+        Context::getWindowContext()->getView()->getCenter().x - _overlay.getSize().x / 2.f,
+        Context::getWindowContext()->getView()->getCenter().y - _overlay.getSize().y / 2.f
+    );
+    _background.setPosition(
+        Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f,
+        Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f
+    );
+
+    // Top Left corner in _background
+    _characterName->setPosition(
+        Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f + 10.f,
+        Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f + 10.f
+    );
+    _characterLevel->setPosition(
+        Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f + 10.f,
+        Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f + 30.f
+    );
+    _characterLevel->setString(
+        "Level: " + std::to_string(
+            static_cast<Character*>(
+                Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity
+            )->getLevel() + 1
+        )
+    );
 }
 
 void InventoryMenu::render(sf::RenderTarget& target) {
@@ -57,4 +105,7 @@ void InventoryMenu::render(sf::RenderTarget& target) {
 
     target.draw(_overlay);
     target.draw(_background);
+
+    target.draw(*_characterName);
+    target.draw(*_characterLevel);
 }

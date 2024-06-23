@@ -21,16 +21,20 @@ class Character : public CombatEntity, public Animated<CharacterAnimationState> 
         std::string _textureName;
 
         sf::Clock _specialAttackTimer;
+        float _specialAttackTimerMax;
         bool _isSpecialAttckButtonPressed;
 
         int _hpMax;
 
         Weapon* _weapon;
 
+        sf::Text* _specialAttackText;
+
         // Private Functions
         virtual void initVariables() = 0;
         void initTexture();
         void initSprite();
+        void initText();
         void initAnimations();
 
     public:       
@@ -41,6 +45,7 @@ class Character : public CombatEntity, public Animated<CharacterAnimationState> 
         int getDamage();
         void takeDamage(int damage, sf::Vector2f direction);
         int getHp();
+        std::string getName();
 
         void addXp(int xp);
         int getLevel();

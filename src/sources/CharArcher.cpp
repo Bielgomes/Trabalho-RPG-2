@@ -13,6 +13,7 @@ CharArcher::CharArcher(sf::Vector2f position, std::string name) {
     initVariables();
     initTexture();
     initSprite();
+    initText();
     initAnimations();
 
     _sprite->setPosition(position);
@@ -37,12 +38,15 @@ void CharArcher::initVariables() {
     _xp = 0;
 
     _velocity = sf::Vector2f(0.f, 0.f);
-    _velocityMax = 1.3f;
+    _velocityMax = 1.2f;
     _velocityDesaceleration = 0.85f;
     _velocityAceleration = 1.1f;
 
     _isSpecialAttckButtonPressed = false;
     _specialAttackTimer.restart();
+
+    _specialAttackTimerMax = 3.f;
+
     _invencibilityTimer.restart();
 }
 
@@ -52,7 +56,7 @@ void CharArcher::update() {
 
     _weapon->update();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-        if (_specialAttackTimer.getElapsedTime().asSeconds() > 3.f && !_isSpecialAttckButtonPressed) {
+        if (_specialAttackTimer.getElapsedTime().asSeconds() > _specialAttackTimerMax && !_isSpecialAttckButtonPressed) {
             _isSpecialAttckButtonPressed = true;
             _specialAttackTimer.restart();
 
@@ -73,5 +77,13 @@ void CharArcher::update() {
         } else {
             _isSpecialAttckButtonPressed = false;
         }
+    }
+
+    if (_specialAttackTimer.getElapsedTime().asSeconds() >= _specialAttackTimerMax) {
+        _specialAttackText->setString("CARREGADO");
+        _specialAttackText->setFillColor(sf::Color::Green);
+    } else {
+        _specialAttackText->setString(std::to_string((int)(_specialAttackTimerMax + 1 - _specialAttackTimer.getElapsedTime().asSeconds())) + "s");
+        _specialAttackText->setFillColor(sf::Color::Red);
     }
 }

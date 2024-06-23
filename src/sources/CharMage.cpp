@@ -15,6 +15,7 @@ CharMage::CharMage(sf::Vector2f position, std::string name) {
     initVariables();
     initTexture();
     initSprite();
+    initText();
     initAnimations();
 
     _sprite->setPosition(position);
@@ -45,6 +46,9 @@ void CharMage::initVariables() {
 
     _isSpecialAttckButtonPressed = false;
     _specialAttackTimer.restart();
+
+    _specialAttackTimerMax = 3.f;
+
     _invencibilityTimer.restart();
 }
 
@@ -54,7 +58,7 @@ void CharMage::update() {
 
     _weapon->update();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-        if (_specialAttackTimer.getElapsedTime().asSeconds() > 3.f && !_isSpecialAttckButtonPressed) {
+        if (_specialAttackTimer.getElapsedTime().asSeconds() > _specialAttackTimerMax && !_isSpecialAttckButtonPressed) {
             _isSpecialAttckButtonPressed = true;
             _specialAttackTimer.restart();
 
@@ -75,5 +79,13 @@ void CharMage::update() {
         } else {
             _isSpecialAttckButtonPressed = false;
         }
+    }
+
+    if (_specialAttackTimer.getElapsedTime().asSeconds() >= _specialAttackTimerMax) {
+        _specialAttackText->setString("CARREGADO");
+        _specialAttackText->setFillColor(sf::Color::Green);
+    } else {
+        _specialAttackText->setString(std::to_string((int)(_specialAttackTimerMax + 1 - _specialAttackTimer.getElapsedTime().asSeconds())) + "s");
+        _specialAttackText->setFillColor(sf::Color::Red);
     }
 }

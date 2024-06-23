@@ -48,6 +48,14 @@ void Character::initSprite() {
     _collision.setOutlineThickness(0.3f);
 }
 
+void Character::initText() {
+    _specialAttackText = new sf::Text();
+    _specialAttackText->setFont(*Context::getFontContext()->getFont("DEPIXEL"));
+
+    _specialAttackText->setCharacterSize(8);
+    _specialAttackText->setFillColor(sf::Color::White);
+}
+
 void Character::initAnimations() {
     _animationState = CharacterAnimationState::IDLE;
     _animationFrame = sf::IntRect(0, 0, 16, 28);
@@ -89,6 +97,10 @@ void Character::addXp(int xp) {
 
 int Character::getLevel() {
     return _xp / 100;
+}
+
+std::string Character::getName() {
+    return _name;
 }
 
 void Character::updateAnimations() {
@@ -207,6 +219,13 @@ void Character::render(sf::RenderTarget& target) {
             target.draw(sprite);
         }
     }
+
+    _specialAttackText->setPosition(
+        Context::getWindowContext()->getView()->getCenter().x - Context::getWindowContext()->getView()->getSize().x / 2 + 10,
+        Context::getWindowContext()->getView()->getCenter().y + Context::getWindowContext()->getView()->getSize().y / 2 - 20
+    );
+
+    target.draw(*_specialAttackText);
 }
 
 void Character::listFree() {

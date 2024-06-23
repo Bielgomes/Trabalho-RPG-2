@@ -4,6 +4,10 @@
 
 class InventoryMenu : public OverlayMenu {
     private:
+        // Variables
+        sf::Text* _characterName;
+        sf::Text* _characterLevel;
+
         // Private Functions
         void initVariables();
         void initBackground();
