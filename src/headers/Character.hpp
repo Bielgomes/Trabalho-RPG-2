@@ -5,6 +5,7 @@
 #include "Animated.hpp"
 #include "CombatEntity.hpp"
 #include "Weapon.hpp"
+#include "Armor.hpp"
 
 enum CharacterAnimationState {
     IDLE,
