@@ -11,7 +11,7 @@ void Projectile::initVariables() {
     _distanceTravelled = 0.f;
     _speed = 3.f;
 
-    _dmg = 1;
+    _dmg = 2;
 
     _direction = sf::Vector2f(0.f, 0.f);
 }

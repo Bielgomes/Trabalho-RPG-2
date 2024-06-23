@@ -186,36 +186,6 @@ void Character::updateMovement() {
     updateAnimations();
 }
 
-void Character::update() {
-    updatePhysics();
-    updateMovement();
-
-    _weapon->update();
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-        if (_specialAttackTimer.getElapsedTime().asSeconds() > 3.f && !_isSpecialAttckButtonPressed) {
-            _isSpecialAttckButtonPressed = true;
-            _specialAttackTimer.restart();
-
-            sf::Vector2f characterPosition = getCenter();
-            sf::Vector2f mousePosition = Context::getWindowContext()->getMousePosition(); 
-
-            float angle = Functions::pointDirection(characterPosition, mousePosition);
-            sf::Vector2f direction = Functions::directionTo(angle);
-            float rotation = Functions::angleToDegree(angle);
-
-            sf::Vector2f projectilePoint = sf::Vector2f(
-                getPosition().x + getShape().width / 2, getPosition().y + getShape().height / 2
-            );
-
-            // Context::getEntityContext()->addToGroup("PROJECTILE", new Projectile(
-            //     direction, projectilePoint, rotation
-            // ));
-        } else {
-            _isSpecialAttckButtonPressed = false;
-        }
-    }
-}
-
 void Character::render(sf::RenderTarget& target) {
     target.draw(*_sprite);
     _weapon->render(target);

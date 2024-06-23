@@ -11,4 +11,7 @@ class CharMage : public Character {
         // Constructor and Destructor
         CharMage(sf::Vector2f position, std::string name);
         ~CharMage() = default;
+
+        // Functions
+        void update();
 };

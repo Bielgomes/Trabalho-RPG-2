@@ -31,7 +31,7 @@ void WeaponBow::update() {
             );
 
             Context::getEntityContext()->addToGroup("PROJECTILE", new ProjectileArrow(
-                direction, projectilePoint, rotation, 300
+                direction, projectilePoint, rotation, 300, 1.f
             ));
 
             _attackTimer.restart();

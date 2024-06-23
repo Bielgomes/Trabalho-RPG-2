@@ -14,14 +14,14 @@ void Demon::initVariables() {
 
     _flip = false;
 
-    _hp = 4;
+    _hp = 5;
     _dmg = 1;
     _xp = 10;
     _bleeding = 0;
     _bleedingTimer.restart();
 
     _velocity = sf::Vector2f(0.f, 0.f);
-    _velocityMax = 1.f;
+    _velocityMax = 1.25f;
     _velocityDesaceleration = 0.85f;
     _velocityAceleration = 1.1f;
 

@@ -1,9 +1,9 @@
-#include "../headers/ProjectileArrow.hpp"
+#include "../headers/ProjectileSword.hpp"
 
 // Constructor
-ProjectileArrow::ProjectileArrow(sf::Vector2f direction, sf::Vector2f position, float rotation, int maxDistance, float size) {
-    _textureName = "PROJECTILEARROW";
-    _texturePath = "arrowSprite";
+ProjectileSword::ProjectileSword(sf::Vector2f direction, sf::Vector2f position, float rotation, int maxDistance, float size) {
+    _textureName = "PROJECTILESWORD";
+    _texturePath = "swordSlashSprite";
 
     initVariables();
 

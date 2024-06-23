@@ -47,7 +47,8 @@ class Character : public CombatEntity, public Animated<CharacterAnimationState> 
         
         void updateAnimations();
         void updateMovement();
-        void update();
+
+        virtual void update() = 0;
 
         void render(sf::RenderTarget& target);
 

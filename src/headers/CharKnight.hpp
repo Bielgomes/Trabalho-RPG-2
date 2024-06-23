@@ -11,4 +11,7 @@ class CharKnight : public Character {
         // Constructor and Destructor
         CharKnight(sf::Vector2f position, std::string name);
         ~CharKnight() = default;
+
+        // Functions
+        void update();
 };

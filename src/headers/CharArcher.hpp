@@ -11,4 +11,7 @@ class CharArcher : public Character {
         // Constructor and Destructor
         CharArcher(sf::Vector2f position, std::string name);
         ~CharArcher() = default;
+
+        // Functions
+        void update();
 };

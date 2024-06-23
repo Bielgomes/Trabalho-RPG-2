@@ -4,6 +4,7 @@
 #include "../headers/Functions.hpp"
 #include "../headers/BigDemon.hpp"
 #include "../headers/Weapon.hpp"
+#include "../headers/Projectile.hpp"
 
 // Private Functions
 void BigDemon::initVariables() {
@@ -12,7 +13,7 @@ void BigDemon::initVariables() {
 
     _flip = false;
 
-    _hp = 10;
+    _hp = 35;
     _dmg = 2;
     _xp = 80;
     _bleeding = 0;
@@ -105,8 +106,6 @@ void BigDemon::takeDamage(int damage, CombatEntity* entity, sf::Vector2f directi
         static_cast<Character*>(entity)->addXp(_xp);
         return listFree();
     }
-
-    _velocity = direction * 1.5f;
     
     _invencibilityTimer.restart();
 }
@@ -148,7 +147,7 @@ void BigDemon::updateAnimations() {
                 sf::IntRect(_animationFrame.left + (_flip * 32), _animationFrame.top, 32 - (_flip * 64), 36)
             );
 
-            if (_animationTimer.getElapsedTime().asSeconds() >= 0.3f) {
+            if (_animationTimer.getElapsedTime().asSeconds() >= 0.15f) {
                 _animationState = BigDemonAnimationState::BD_IDLE;
                 _animationTimer.restart();
                 _invencibilityTimer.restart();
@@ -165,6 +164,16 @@ void BigDemon::updateMovement() {
         Weapon* weapon = static_cast<Weapon*>(group->entity);
         if (isColliding(weapon->getShape()) && weapon->isAttacking())
             takeDamage(character->getDamage(), character, character->directionTo(this));
+    }
+
+    group = Context::getEntityContext()->getEntitiesInGroup("PROJECTILE");
+    while (group != nullptr) {
+        Projectile* projectile = static_cast<Projectile*>(group->entity);
+        if (isColliding(projectile->getShape())) {
+            takeDamage(projectile->getDamage(), character, character->directionTo(this));
+            projectile->listFree();
+        }
+        group = group->next;
     }
 
     if (_hp <= 0)
