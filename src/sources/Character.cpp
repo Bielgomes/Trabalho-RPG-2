@@ -18,6 +18,24 @@ void Character::initTexture() {
     }
 
     _texture = characterTexture;
+
+    sf::Texture* heartFullTexture = Context::getTextureContext()->getTexture("HEARTFULL");
+    if (heartFullTexture == nullptr) {
+        heartFullTexture = new sf::Texture();
+        if (!heartFullTexture->loadFromFile("src/resources/textures/fullHeartSprite.png")) {
+            std::cout << "ERROR::GAME::INITTEXTURES::Could not load Heart Full texture file." << std::endl;
+        }
+        Context::getTextureContext()->addTexture("HEARTFULL", heartFullTexture);
+    }
+
+    sf::Texture* heartEmptyTexture = Context::getTextureContext()->getTexture("HEARTEMPTY");
+    if (heartEmptyTexture == nullptr) {
+        heartEmptyTexture = new sf::Texture();
+        if (!heartEmptyTexture->loadFromFile("src/resources/textures/emptyHeartSprite.png")) {
+            std::cout << "ERROR::GAME::INITTEXTURES::Could not load Heart Empty texture file." << std::endl;
+        }
+        Context::getTextureContext()->addTexture("HEARTEMPTY", heartEmptyTexture);
+    }
 }
 
 void Character::initSprite() {
@@ -201,6 +219,24 @@ void Character::update() {
 void Character::render(sf::RenderTarget& target) {
     target.draw(*_sprite);
     _weapon->render(target);
+
+    for (int i = 0; i < _hpMax; i++) {
+        if (i < _hp) {
+            sf::Sprite sprite = sf::Sprite(*Context::getTextureContext()->getTexture("HEARTFULL"));
+            sprite.setPosition(sf::Vector2f(
+                Context::getWindowContext()->getView()->getCenter().x - Context::getWindowContext()->getView()->getSize().x / 2 + 10 + i * 16,
+                Context::getWindowContext()->getView()->getCenter().y - Context::getWindowContext()->getView()->getSize().y / 2 + 5
+            ));
+            target.draw(sprite);
+        } else {
+            sf::Sprite sprite = sf::Sprite(*Context::getTextureContext()->getTexture("HEARTEMPTY"));
+            sprite.setPosition(sf::Vector2f(
+                Context::getWindowContext()->getView()->getCenter().x - Context::getWindowContext()->getView()->getSize().x / 2 + 10 + i * 16,
+                Context::getWindowContext()->getView()->getCenter().y - Context::getWindowContext()->getView()->getSize().y / 2 + 5
+            ));
+            target.draw(sprite);
+        }
+    }
 }
 
 void Character::listFree() {

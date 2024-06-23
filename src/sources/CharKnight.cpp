@@ -29,7 +29,8 @@ void CharKnight::initVariables() {
 
     _flip = false;
 
-    _hp = 100;
+    _hpMax = 5;
+    _hp = _hpMax;
     _dmg = 0;
     _xp = 0;
 

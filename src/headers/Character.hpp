@@ -23,6 +23,8 @@ class Character : public CombatEntity, public Animated<CharacterAnimationState> 
         sf::Clock _specialAttackTimer;
         bool _isSpecialAttckButtonPressed;
 
+        int _hpMax;
+
         Weapon* _weapon;
 
         // Private Functions
@@ -43,6 +45,7 @@ class Character : public CombatEntity, public Animated<CharacterAnimationState> 
         void addXp(int xp);
         int getLevel();
 
+        void updateLifeBar();
         void updateAnimations();
         void updateMovement();
         void update();

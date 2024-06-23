@@ -28,7 +28,7 @@ void StartMenu::initBackground() {
     _sprite = new sf::Sprite(*_texture);
 }
 
-void StartMenu::initText() {
+void StartMenu::initFont() {
     sf::Font* font = Context::getFontContext()->getFont("DEPIXEL");
     if (font == nullptr) {
         font = new sf::Font();
@@ -38,7 +38,9 @@ void StartMenu::initText() {
         Context::getFontContext()->addFont("DEPIXEL", font);
     }
     _font = font;
+}
 
+void StartMenu::initText() {
     _nameText = new sf::Text();
     _nameText->setFont(*_font);
 
@@ -53,6 +55,7 @@ void StartMenu::initText() {
 StartMenu::StartMenu() {
     initVariables();
     initBackground();
+    initFont();
     initText();
 }
 

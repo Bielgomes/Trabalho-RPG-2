@@ -16,10 +16,28 @@ void InventoryMenu::initBackground() {
     _background.setFillColor(sf::Color(20, 20, 20, 255));
 }
 
+void InventoryMenu::initFont() {
+    sf::Font* font = Context::getFontContext()->getFont("DEPIXEL");
+    if (font == nullptr) {
+        font = new sf::Font();
+        if (!font->loadFromFile("src/resources/fonts/DePixel.ttf")) {
+            std::cout << "ERROR::INVENTORYMENU::INITTEXT::Could not load inventory menu font file." << std::endl;
+        }
+        Context::getFontContext()->addFont("DEPIXEL", font);
+    }
+    _font = font;
+}
+
+void InventoryMenu::initText() {
+
+}
+
 // Constructor and Destructor
 InventoryMenu::InventoryMenu() {
     initVariables();
     initBackground();
+    initFont();
+    initText();
 }
 
 InventoryMenu::~InventoryMenu() {}

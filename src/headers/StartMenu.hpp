@@ -13,7 +13,6 @@ class StartMenu : public Menu {
         std::string _name;
 
         // Name
-        sf::Font* _font;
         sf::Text* _nameText;
 
         int _classIndex;
@@ -23,6 +22,7 @@ class StartMenu : public Menu {
         // Private Functions
         void initVariables();
         void initBackground();
+        void initFont();
         void initText();
 
     public:

@@ -1,6 +1,8 @@
 #include "../headers/Context.hpp"
 #include "../headers/Game.hpp"
+
 #include "../headers/StartMenu.hpp"
+#include "../headers/EndMenu.hpp"
 
 #include "../headers/Demon.hpp"
 #include "../headers/BigDemon.hpp"
@@ -304,6 +306,19 @@ void Game::run() {
         if (_gameOver == false) {
             update();
             render();
+        } else {
+            EndMenu* endMenu = new EndMenu();
+            while (endMenu->isOpen()) {
+                pollEvents();
+                
+                _window->clear();
+                endMenu->update();
+                endMenu->render(*_window);
+                _window->display();
+            }
+
+            delete endMenu;
+            _window->close();
         }
     }
 }
@@ -328,7 +343,10 @@ void Game::update() {
         _isKeyPressed = false;
     }
 
-    if (!Context::getEntityContext()->getEntitiesInGroup("BOSS")) {
+    if (
+        Context::getEntityContext()->getEntitiesInGroup("BOSS") == nullptr ||
+        static_cast<Character*>(Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity)->getHp() <= 0
+    ) {
         _gameOver = true;
         return;
     }

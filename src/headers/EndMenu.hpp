@@ -1,9 +1,14 @@
-#include <SFML/Graphics.hpp>
+#pragma once
 
-#include "OverlayMenu.hpp"
+#include "Context.hpp"
+#include "Menu.hpp"
 
-class InventoryMenu : public OverlayMenu {
+class EndMenu : public Menu {
     private:
+        // Variables
+        sf::Text* _endText;
+        sf::Text* _scoreText;
+
         // Private Functions
         void initVariables();
         void initBackground();
@@ -12,8 +17,8 @@ class InventoryMenu : public OverlayMenu {
 
     public:
         // Constructor and Destructor
-        InventoryMenu();
-        virtual ~InventoryMenu();
+        EndMenu();
+        virtual ~EndMenu();
 
         // Functions
         void update();

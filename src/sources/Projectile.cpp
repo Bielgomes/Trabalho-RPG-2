@@ -20,7 +20,7 @@ void Projectile::initTexture() {
     sf::Texture* projectileTexture = Context::getTextureContext()->getTexture("PROJECTILE");
     if (projectileTexture == nullptr) {
         projectileTexture = new sf::Texture();
-        if (!projectileTexture->loadFromFile("src/resources/textures/knightSwordSprite.png")) {
+        if (!projectileTexture->loadFromFile("src/resources/textures/swordSprite.png")) {
             std::cout << "ERROR::GAME::INITTEXTURES::Could not load projectile texture file." << std::endl;
         }
         Context::getTextureContext()->addTexture("PROJECTILE", projectileTexture);
