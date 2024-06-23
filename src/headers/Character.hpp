@@ -26,14 +26,13 @@ class Character : public CombatEntity, public Animated<CharacterAnimationState> 
         Weapon* _weapon;
 
         // Private Functions
-        void initVariables();
+        virtual void initVariables() = 0;
         void initTexture();
         void initSprite();
         void initAnimations();
 
     public:       
         // Constructor and Destructor
-        Character(sf::Vector2f position, std::string textureName, std::string texturePath);
         virtual ~Character();
 
         // Functions

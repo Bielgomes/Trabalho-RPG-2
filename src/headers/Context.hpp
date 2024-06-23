@@ -4,6 +4,7 @@
 #include "EntityContext.hpp"
 #include "TextureContext.hpp"
 #include "TileMapContext.hpp"
+#include "FontContext.hpp"
 
 class Context {
     private:
@@ -11,6 +12,7 @@ class Context {
         static EntityContext* _entityContext;
         static TextureContext* _textureContext;
         static TileMapContext* _tileMapContext;
+        static FontContext* _fontContext;
 
     public:
         Context() = delete;
@@ -20,4 +22,5 @@ class Context {
         static EntityContext* getEntityContext();
         static TextureContext* getTextureContext();
         static TileMapContext* getTileMapContext();
+        static FontContext* getFontContext();
 };

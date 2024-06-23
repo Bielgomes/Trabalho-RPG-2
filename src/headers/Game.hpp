@@ -30,7 +30,7 @@ class Game {
         void initVariables();
         void initWindow();
         void initTileMap();
-        void initCharacter();
+        void initCharacter(int classIndex, std::string name);
         void initEnemies();
 
     public:

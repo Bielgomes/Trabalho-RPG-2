@@ -5,6 +5,7 @@ WindowContext* Context::_windowContext = new WindowContext();
 EntityContext* Context::_entityContext = new EntityContext();
 TextureContext* Context::_textureContext = new TextureContext();
 TileMapContext* Context::_tileMapContext = new TileMapContext();
+FontContext* Context::_fontContext = new FontContext();
 
 // Destructor
 Context::~Context() {
@@ -29,4 +30,8 @@ TextureContext* Context::getTextureContext() {
 
 TileMapContext* Context::getTileMapContext() {
     return _tileMapContext;
+}
+
+FontContext* Context::getFontContext() {
+    return _fontContext;
 }

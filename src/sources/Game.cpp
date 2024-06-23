@@ -1,5 +1,6 @@
 #include "../headers/Context.hpp"
 #include "../headers/Game.hpp"
+#include "../headers/StartMenu.hpp"
 
 #include "../headers/Demon.hpp"
 #include "../headers/BigDemon.hpp"
@@ -218,12 +219,25 @@ void Game::initTileMap() {
     tileMap->addCollision(439, 10, sf::Vector2f(48, 704));
 }
 
-void Game::initCharacter() {
+void Game::initCharacter(int classIndex, std::string name) {
     Context::getEntityContext()->addGroup("CHARACTER");
     Context::getEntityContext()->addGroup("ENEMY");
     Context::getEntityContext()->addGroup("PROJECTILE");
 
-    Character* character = new CharMage(sf::Vector2f(32, 32));
+    Character* character = nullptr;
+
+    switch (classIndex) {
+        case 0:
+            character = new CharKnight(sf::Vector2f(32, 32), name);
+            break;
+        case 1:
+            character = new CharArcher(sf::Vector2f(32, 32), name);
+            break;
+        case 2:
+            character = new CharMage(sf::Vector2f(32, 32), name);
+            break;
+    }
+
     Context::getEntityContext()->addToGroup("CHARACTER", character);
     _camera->bind(character);
 
@@ -255,9 +269,24 @@ void Game::initEnemies() {
 Game::Game() {
     initVariables();
     initWindow();
+
+    StartMenu* startMenu = new StartMenu();
+    while (startMenu->isOpen()) {
+        while (_window->pollEvent(_event))
+            if (_event.type == sf::Event::TextEntered)
+                startMenu->pollEvent(&_event.text);
+
+        _window->clear();
+        startMenu->update();
+        startMenu->render(*_window);
+        _window->display();
+    }
+
     initTileMap();
-    initCharacter();
+    initCharacter(startMenu->getClassIndex(), startMenu->getName());
     initEnemies();
+
+    delete startMenu;
 }
 
 Game::~Game() {
