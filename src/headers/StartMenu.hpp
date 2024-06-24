@@ -31,8 +31,8 @@ class StartMenu : public Menu {
         virtual ~StartMenu();
 
         // Accessors
-        const int getClassIndex() const;
-        const std::string getName() const;
+        int getClassIndex() const;
+        std::string getName() const;
 
         // Functions
         void pollEvent(sf::Event::TextEvent* textEvent);

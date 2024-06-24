@@ -160,7 +160,6 @@ void Demon::updateAnimations() {
 
 void Demon::updateMovement() {
     Character *character = static_cast<Character*>(Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity);
-
     EntityGroupNode* group = Context::getEntityContext()->getEntitiesInGroup("WEAPON");
     if (group != nullptr) {
         Weapon* weapon = static_cast<Weapon*>(group->entity);
@@ -169,13 +168,15 @@ void Demon::updateMovement() {
     }
 
     group = Context::getEntityContext()->getEntitiesInGroup("PROJECTILE");
-    while (group != nullptr) {
+    EntityGroupNode* next = nullptr;
+    while (group != nullptr && _hp > 0) {
+        next = group->next;
         Projectile* projectile = static_cast<Projectile*>(group->entity);
         if (isColliding(projectile->getShape())) {
             takeDamage(projectile->getDamage(), character, character->directionTo(this));
             projectile->listFree();
         }
-        group = group->next;
+        group = next;
     }
     
     if (_hp <= 0)

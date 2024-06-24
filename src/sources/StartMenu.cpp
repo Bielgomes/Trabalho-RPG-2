@@ -19,7 +19,7 @@ void StartMenu::initBackground() {
     _classRectangles.push_back(new sf::RectangleShape(sf::Vector2f(300, 300)));
     _classRectangles.push_back(new sf::RectangleShape(sf::Vector2f(300, 300)));
 
-    for (int i = 0; i < _classRectangles.size(); i++) {
+    for (int i = 0; i < (int) _classRectangles.size(); i++) {
         _classRectangles[i]->setFillColor(sf::Color::Transparent);
         _classRectangles[i]->setOutlineThickness(2);
         _classRectangles[i]->setPosition(130 + i * 360, 360);
@@ -64,18 +64,18 @@ StartMenu::~StartMenu() {
 }
 
 // Accessors
-const int StartMenu::getClassIndex() const {
+int StartMenu::getClassIndex() const {
     return _classIndex;
 }
 
-const std::string StartMenu::getName() const {
+std::string StartMenu::getName() const {
     return _name;
 }
 
 // Functions
 void StartMenu::pollEvent(sf::Event::TextEvent* textEvent) {
     // Letters
-    if (textEvent->unicode >= 65 && textEvent->unicode <= 90 || textEvent->unicode >= 97 && textEvent->unicode <= 122) {
+    if ((textEvent->unicode >= 65 && textEvent->unicode <= 90) || (textEvent->unicode >= 97 && textEvent->unicode <= 122)) {
         if (_name.size() < 15) {
             _name.push_back(static_cast<char>(textEvent->unicode));
             return;
@@ -106,7 +106,7 @@ void StartMenu::update() {
         sf::Vector2f mousePos = Context::getWindowContext()->getMousePosition();
         mousePos = Context::getWindowContext()->getWindow()->mapPixelToCoords(sf::Vector2i(mousePos));
 
-        for (int i = 0; i < _classRectangles.size(); i++) {
+        for (int i = 0; i < (int) _classRectangles.size(); i++) {
             if (_classRectangles[i]->getGlobalBounds().contains(mousePos)) {
                 _classIndex = i;
                 break;
@@ -114,7 +114,7 @@ void StartMenu::update() {
         }
     }
 
-    for (int i = 0; i < _classRectangles.size(); i++) {
+    for (int i = 0; i < (int) _classRectangles.size(); i++) {
         if (i == _classIndex)
             _classRectangles[i]->setOutlineColor(sf::Color::White);
         else

@@ -13,7 +13,8 @@ void TextureContext::addTexture(std::string name, sf::Texture* texture) {
 }
 
 void TextureContext::removeTexture(std::string name) {
-    if (_textureContext.find(name) != _textureContext.end())
+    if (_textureContext.find(name) != _textureContext.end()) {
         delete _textureContext[name];
         _textureContext.erase(name);
+    }
 }
