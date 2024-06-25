@@ -175,6 +175,7 @@ void Demon::updateMovement() {
         if (isColliding(projectile->getShape())) {
             takeDamage(projectile->getDamage(), character, character->directionTo(this));
             projectile->listFree();
+            _bleeding += projectile->getBleeding();
         }
         group = next;
     }
@@ -256,5 +257,9 @@ void Demon::update() {
 };
 
 void Demon::listFree() {
+    Character* character = static_cast<Character*>(Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity);
+    Inventory* Inventory = character->getInventory();
+    Inventory->enqueue(0, 10);
+
     Context::getEntityContext()->removeFromGroup("ENEMY", this);
 }

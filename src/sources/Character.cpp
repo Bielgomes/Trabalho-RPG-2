@@ -67,13 +67,36 @@ void Character::initAnimations() {
 // Constructor and Destructor
 Character::~Character() {
     delete _sprite;
+    delete _inventory;
+    delete _armorStack;
 }
 
-// Functions
+// Accessors
 int Character::getDamage() {
     return getLevel() + _weapon->getDamage() + _dmg;
 }
 
+int Character::getHp() {
+    return _hp;
+}
+
+int Character::getLevel() {
+    return _xp / 100;
+}
+
+std::string Character::getName() {
+    return _name;
+}
+
+Inventory* Character::getInventory() {
+    return _inventory;
+}
+
+ArmorStack* Character::getArmorStack() {
+    return _armorStack;
+}
+
+// Functions
 void Character::takeDamage(int damage, sf::Vector2f direction) {
     if (_invencibilityTimer.getElapsedTime().asSeconds() > 1.5f) {
         _animationState = CharacterAnimationState::HIT;
@@ -87,20 +110,8 @@ void Character::takeDamage(int damage, sf::Vector2f direction) {
     }
 }
 
-int Character::getHp() {
-    return _hp;
-}
-
 void Character::addXp(int xp) {
     _xp += xp;
-}
-
-int Character::getLevel() {
-    return _xp / 100;
-}
-
-std::string Character::getName() {
-    return _name;
 }
 
 void Character::updateAnimations() {

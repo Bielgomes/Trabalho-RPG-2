@@ -1,6 +1,9 @@
 #include "../headers/Context.hpp"
 #include "../headers/Functions.hpp"
 
+#include "../headers/InventoryMenu.hpp"
+#include "../headers/ArmorStack.hpp"
+
 #include "../headers/CharKnight.hpp"
 #include "../headers/WeaponSword.hpp"
 
@@ -49,6 +52,9 @@ void CharKnight::initVariables() {
     _specialAttackTimerMax = 3.f;
 
     _invencibilityTimer.restart();
+
+    _inventory = new Inventory(8);
+    _armorStack = new ArmorStack(8);
 }
 
 void CharKnight::update() {

@@ -1,8 +1,12 @@
 #include "../headers/Context.hpp"
 #include "../headers/Functions.hpp"
 
+#include "../headers/InventoryMenu.hpp"
+#include "../headers/ArmorStack.hpp"
+
 #include "../headers/CharArcher.hpp"
 #include "../headers/WeaponBow.hpp"
+
 #include "../headers/ProjectileArrow.hpp"
 
 // Constructor
@@ -48,6 +52,9 @@ void CharArcher::initVariables() {
     _specialAttackTimerMax = 3.f;
 
     _invencibilityTimer.restart();
+
+    _inventory = new Inventory(8);
+    _armorStack = new ArmorStack(8);
 }
 
 void CharArcher::update() {
@@ -72,7 +79,7 @@ void CharArcher::update() {
             );
 
             Context::getEntityContext()->addToGroup("PROJECTILE", new ProjectileArrow(
-                direction, projectilePoint, rotation, 500, 1.5f
+                direction, projectilePoint, rotation, 500, 1.5f, 3
             ));
         } else {
             _isSpecialAttckButtonPressed = false;

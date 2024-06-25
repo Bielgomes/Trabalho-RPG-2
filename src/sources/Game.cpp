@@ -11,6 +11,8 @@
 #include "../headers/CharKnight.hpp"
 #include "../headers/CharArcher.hpp"
 
+#include "../headers/Chest.hpp"
+
 // Private Functions
 void Game::initVariables() {
     _window = nullptr;
@@ -267,6 +269,9 @@ void Game::initEnemies() {
     Context::getEntityContext()->addToGroup("ENEMY", new Demon(223, 670));
     
     Context::getEntityContext()->addToGroup("BOSS", new BigDemon(223, 959));
+
+    Context::getEntityContext()->addGroup("CHEST");
+    Context::getEntityContext()->addToGroup("CHEST", new Chest(sf::Vector2f(64, 64)));
 }
 
 // Constructor and Destructor
@@ -356,6 +361,8 @@ void Game::update() {
     Context::getTileMapContext()->updateTileMap("BACKGROUND");
 
     Context::getEntityContext()->updateGroup("CHARACTER");
+
+    Context::getEntityContext()->updateGroup("CHEST");
     
     Context::getEntityContext()->updateGroup("ENEMY");
     Context::getEntityContext()->updateGroup("BOSS");
@@ -370,6 +377,8 @@ void Game::render() {
     _window->clear();
 
     Context::getTileMapContext()->renderTileMap("BACKGROUND", *_window);
+
+    Context::getEntityContext()->renderGroup("CHEST", *_window);
 
     Context::getEntityContext()->renderGroup("CHARACTER", *_window);
 

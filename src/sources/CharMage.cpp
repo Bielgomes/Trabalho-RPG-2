@@ -1,6 +1,9 @@
 #include "../headers/Context.hpp"
 #include "../headers/Functions.hpp"
 
+#include "../headers/InventoryMenu.hpp"
+#include "../headers/ArmorStack.hpp"
+
 #include "../headers/CharMage.hpp"
 #include "../headers/WeaponStaff.hpp"
 
@@ -50,6 +53,9 @@ void CharMage::initVariables() {
     _specialAttackTimerMax = 3.f;
 
     _invencibilityTimer.restart();
+
+    _inventory = new Inventory(8);
+    _armorStack = new ArmorStack(8);
 }
 
 void CharMage::update() {

@@ -4,6 +4,22 @@
 #include "../headers/InventoryMenu.hpp"
 #include "../headers/Character.hpp"
 
+const std::string ItemsNames[] = {
+    "Gold Coin",
+    "Iron Elm",
+    "Iron Chestplate",
+    "Iron Boot",
+    "Cloth Glove"
+};
+
+const std::string ItemsTextures[] = {
+    "COIN",
+    "ELM",
+    "CHESTPLATE",
+    "BOOT",
+    "GLOVE"
+};
+
 // Private Functions
 void InventoryMenu::initVariables() {
     _isOpen = false;
@@ -108,4 +124,43 @@ void InventoryMenu::render(sf::RenderTarget& target) {
 
     target.draw(*_characterName);
     target.draw(*_characterLevel);
+
+    sf::RectangleShape item;
+    item.setSize(sf::Vector2f(60.f, 60.f));
+    item.setFillColor(sf::Color::Transparent);
+    item.setOutlineThickness(1.f);
+    item.setOutlineColor(sf::Color::White);
+
+    sf::Sprite sprite;
+    sprite.setScale(4.f, 4.f);
+
+    sf::Text text;
+    text.setFont(*_font);
+
+    Character* character = static_cast<Character*>(Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity);
+    Inventory* inventory = character->getInventory();
+
+    for (unsigned int i = inventory->getStart(); i < inventory->getEnd(); i = (i + 1) % inventory->getCapacity()) {
+        item.setPosition(
+            Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f + 10.f + (i % 5) * 70.f,
+            Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f + 50.f + (i / 5) * 70.f
+        );
+        sprite.setTexture(*Context::getTextureContext()->getTexture(ItemsTextures[inventory->getData()[i].id]));
+        sprite.setPosition(
+            Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f + 10.f + (i % 5) * 70.f + 18.f,
+            Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f + 50.f + (i / 5) * 70.f + 18.f
+        );
+
+        text.setPosition(
+            Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f + 10.f + (i % 5) * 70.f,
+            Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f + 50.f + (i / 5) * 70.f + 50.f
+        );
+        text.setCharacterSize(8);
+        text.setFillColor(sf::Color::White);
+        text.setString(ItemsNames[inventory->getData()[i].id] + " x" + std::to_string(inventory->getData()[i].quantity));
+
+        target.draw(item);
+        target.draw(sprite);
+        target.draw(text);
+    }
 }

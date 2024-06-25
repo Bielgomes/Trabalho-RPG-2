@@ -6,6 +6,9 @@
 #include "CombatEntity.hpp"
 #include "Weapon.hpp"
 
+#include "Inventory.hpp"
+#include "ArmorStack.hpp"
+
 enum CharacterAnimationState {
     IDLE,
     WALKING,
@@ -30,6 +33,10 @@ class Character : public CombatEntity, public Animated<CharacterAnimationState> 
 
         sf::Text* _specialAttackText;
 
+        // Inventory
+        Inventory* _inventory;
+        ArmorStack* _armorStack;
+        
         // Private Functions
         virtual void initVariables() = 0;
         void initTexture();
@@ -41,15 +48,18 @@ class Character : public CombatEntity, public Animated<CharacterAnimationState> 
         // Constructor and Destructor
         virtual ~Character();
 
-        // Functions
+        // Accessors
         int getDamage();
-        void takeDamage(int damage, sf::Vector2f direction);
         int getHp();
         std::string getName();
-
-        void addXp(int xp);
         int getLevel();
-        
+        Inventory* getInventory();
+        ArmorStack* getArmorStack();
+
+        // Functions
+        void takeDamage(int damage, sf::Vector2f direction);
+        void addXp(int xp);
+
         void updateAnimations();
         void updateMovement();
 

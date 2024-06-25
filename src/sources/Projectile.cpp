@@ -14,6 +14,7 @@ void Projectile::initVariables() {
     _dmg = 2;
 
     _direction = sf::Vector2f(0.f, 0.f);
+    _bleeding = 0;
 }
 
 void Projectile::initTexture() {
@@ -45,6 +46,10 @@ Projectile::~Projectile() {
 // Accessors
 int Projectile::getDamage() const {
     return _dmg;
+}
+
+int Projectile::getBleeding() const {
+    return _bleeding;
 }
 
 // Functions

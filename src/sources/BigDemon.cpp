@@ -174,6 +174,7 @@ void BigDemon::updateMovement() {
         if (isColliding(projectile->getShape())) {
             takeDamage(projectile->getDamage(), character, character->directionTo(this));
             projectile->listFree();
+            _bleeding += projectile->getBleeding();
         }
         group = next;
     }
@@ -245,5 +246,9 @@ void BigDemon::update() {
 };
 
 void BigDemon::listFree() {
+    Character* character = static_cast<Character*>(Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity);
+    Inventory* Inventory = character->getInventory();
+    Inventory->enqueue(0, 150);
+
     Context::getEntityContext()->removeFromGroup("BOSS", this);
 }

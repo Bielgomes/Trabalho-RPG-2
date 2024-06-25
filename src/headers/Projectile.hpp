@@ -7,6 +7,7 @@ class Projectile : public Entity {
         float _maxDistance;
         float _distanceTravelled;
         float _speed;
+        int _bleeding;
 
         std::string _textureName;
         std::string _texturePath;
@@ -24,6 +25,7 @@ class Projectile : public Entity {
 
         // Accessors
         int getDamage() const;
+        int getBleeding() const;
 
         // Functions
         void update();
