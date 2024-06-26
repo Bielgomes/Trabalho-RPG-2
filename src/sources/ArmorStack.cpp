@@ -1,5 +1,4 @@
 #include "../headers/ArmorStack.hpp"
-#include <iostream> 
 
 ArmorStack::ArmorStack(unsigned int capacity) {
     _capacity = capacity;
@@ -27,13 +26,9 @@ void ArmorStack::pop() {
 }
 
 unsigned int ArmorStack::getArmor() const {
-    std::cout << "TOP " << _top << std::endl;
     unsigned int def = 0;
-    for (int i = 0; i < (int) _top; i++) {
-        std::cout << "STACK " << _stack[i] << std::endl;
+    for (int i = 0; i < (int) _top; i++)
         def += _stack[i];
-    }
 
-    std::cout << "DEF: " << def << std::endl;
     return def;
 }
