@@ -9,6 +9,8 @@
 
 #include "../headers/ProjectileSword.hpp"
 
+#include "../headers/Chest.hpp"
+
 // Constructor
 CharKnight::CharKnight(sf::Vector2f position, std::string name) {
     _textureName = "CHARKNIGHT";
@@ -21,7 +23,6 @@ CharKnight::CharKnight(sf::Vector2f position, std::string name) {
     initAnimations();
 
     _sprite->setPosition(position);
-
     _name = name;
 }
 
@@ -54,6 +55,7 @@ void CharKnight::initVariables() {
     _invencibilityTimer.restart();
 
     _inventory = new Inventory(8);
+    _inventory->enqueue(0, 0);
     _armorStack = new ArmorStack(8);
 }
 
@@ -83,6 +85,17 @@ void CharKnight::update() {
             ));
         } else {
             _isSpecialAttckButtonPressed = false;
+        }
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+        EntityGroupNode* group = Context::getEntityContext()->getEntitiesInGroup("CHEST");
+        while (group != nullptr && _hp > 0) {
+            Chest* chest = static_cast<Chest*>(group->entity);
+            if (isColliding(chest->getShape()))
+                chest->open();
+
+            group = group->next;
         }
     }
 

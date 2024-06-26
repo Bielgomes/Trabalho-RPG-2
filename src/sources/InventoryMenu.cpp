@@ -5,11 +5,12 @@
 #include "../headers/Character.hpp"
 
 const std::string ItemsNames[] = {
-    "Gold Coin",
-    "Iron Elm",
-    "Iron Chestplate",
-    "Iron Boot",
-    "Cloth Glove"
+    "Coin",
+    "Elm",
+    "Chestplate",
+    "Boot",
+    "Glove",
+    "Flask"
 };
 
 const std::string ItemsTextures[] = {
@@ -17,7 +18,8 @@ const std::string ItemsTextures[] = {
     "ELM",
     "CHESTPLATE",
     "BOOT",
-    "GLOVE"
+    "GLOVE",
+    "FLASK"
 };
 
 // Private Functions
@@ -42,6 +44,7 @@ void InventoryMenu::initFont() {
         }
         Context::getFontContext()->addFont("DEPIXEL", font);
     }
+    font->setSmooth(false);
     _font = font;
 }
 
@@ -128,11 +131,9 @@ void InventoryMenu::render(sf::RenderTarget& target) {
     sf::RectangleShape item;
     item.setSize(sf::Vector2f(60.f, 60.f));
     item.setFillColor(sf::Color::Transparent);
-    item.setOutlineThickness(1.f);
-    item.setOutlineColor(sf::Color::White);
 
     sf::Sprite sprite;
-    sprite.setScale(4.f, 4.f);
+    sprite.setScale(2.f, 2.f);
 
     sf::Text text;
     text.setFont(*_font);
@@ -142,18 +143,18 @@ void InventoryMenu::render(sf::RenderTarget& target) {
 
     for (unsigned int i = inventory->getStart(); i < inventory->getEnd(); i = (i + 1) % inventory->getCapacity()) {
         item.setPosition(
-            Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f + 10.f + (i % 5) * 70.f,
-            Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f + 50.f + (i / 5) * 70.f
+            Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f + 10.f + (i % 4) * 70.f,
+            Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f + 50.f + (i / 4) * 70.f
         );
         sprite.setTexture(*Context::getTextureContext()->getTexture(ItemsTextures[inventory->getData()[i].id]));
         sprite.setPosition(
-            Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f + 10.f + (i % 5) * 70.f + 18.f,
-            Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f + 50.f + (i / 5) * 70.f + 18.f
+            item.getPosition().x + 5.f,
+            item.getPosition().y + 5.f
         );
 
         text.setPosition(
-            Context::getWindowContext()->getView()->getCenter().x - _background.getSize().x / 2.f + 10.f + (i % 5) * 70.f,
-            Context::getWindowContext()->getView()->getCenter().y - _background.getSize().y / 2.f + 50.f + (i / 5) * 70.f + 50.f
+            item.getPosition().x + 5.f,
+            item.getPosition().y + 45.f
         );
         text.setCharacterSize(8);
         text.setFillColor(sf::Color::White);

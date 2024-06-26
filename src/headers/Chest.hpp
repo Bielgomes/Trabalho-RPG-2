@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Collision.hpp"
 #include "Entity.hpp"
 
-class Chest : public Entity {
+class Chest : public Entity, public Collision {
     private:
         // Variables
         bool _opened;
@@ -17,8 +18,8 @@ class Chest : public Entity {
         virtual ~Chest();
 
         // Functions
+        void open();
         void update();
-        void render(sf::RenderTarget* target);
 
         void listFree();
 };

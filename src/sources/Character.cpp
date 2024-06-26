@@ -100,12 +100,12 @@ ArmorStack* Character::getArmorStack() {
 void Character::takeDamage(int damage, sf::Vector2f direction) {
     if (_invencibilityTimer.getElapsedTime().asSeconds() > 1.5f) {
         _animationState = CharacterAnimationState::HIT;
+        damage = damage * damage / (_armorStack->getArmor() + 1);
         _hp -= damage;
         if (_hp < 0)
             _hp = 0;
 
         _velocity = direction * 5.f;
-        
         _invencibilityTimer.restart();
     }
 }

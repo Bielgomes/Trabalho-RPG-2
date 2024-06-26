@@ -1,12 +1,13 @@
-#include "Context.hpp"
-#include "Inventory.hpp"
+#include "../headers/Context.hpp"
+#include "../headers/Inventory.hpp"
 
 enum Items {
     COIN = 0,
     ELM,
     CHESTPLATE,
     BOOT,
-    GLOVE
+    GLOVE,
+    FLASK
 };
 
 // Private Functions

@@ -271,7 +271,7 @@ void Game::initEnemies() {
     Context::getEntityContext()->addToGroup("BOSS", new BigDemon(223, 959));
 
     Context::getEntityContext()->addGroup("CHEST");
-    Context::getEntityContext()->addToGroup("CHEST", new Chest(sf::Vector2f(64, 64)));
+    Context::getEntityContext()->addToGroup("CHEST", new Chest(sf::Vector2f(64, 512)));
 }
 
 // Constructor and Destructor

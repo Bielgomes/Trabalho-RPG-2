@@ -9,6 +9,8 @@
 
 #include "../headers/ProjectileArrow.hpp"
 
+#include "../headers/Chest.hpp"
+
 // Constructor
 CharArcher::CharArcher(sf::Vector2f position, std::string name) {
     _textureName = "CHARARCHER";
@@ -54,6 +56,7 @@ void CharArcher::initVariables() {
     _invencibilityTimer.restart();
 
     _inventory = new Inventory(8);
+    _inventory->enqueue(0, 0);
     _armorStack = new ArmorStack(8);
 }
 
@@ -83,6 +86,17 @@ void CharArcher::update() {
             ));
         } else {
             _isSpecialAttckButtonPressed = false;
+        }
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
+        EntityGroupNode* group = Context::getEntityContext()->getEntitiesInGroup("CHEST");
+        while (group != nullptr && _hp > 0) {
+            Chest* chest = static_cast<Chest*>(group->entity);
+            if (isColliding(chest->getShape()))
+                chest->open();
+
+            group = group->next;
         }
     }
 

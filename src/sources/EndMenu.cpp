@@ -3,6 +3,8 @@
 
 #include "../headers/EndMenu.hpp"
 
+#include "../headers/Inventory.hpp"
+
 // Private Functions
 void EndMenu::initVariables()  {
     _isOpen = true;
@@ -34,7 +36,14 @@ void EndMenu::initText() {
         _endText->setFillColor(sf::Color::Green);
     }
 
-    _scoreText = new sf::Text("Score: 100 Gold", *_font, 20);
+    Inventory* inventory = static_cast<Character*>(Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity)->getInventory();
+    for (unsigned int i = inventory->getStart(); i < inventory->getEnd(); i = (i + 1) % inventory->getCapacity()) {
+        if (inventory->getData()[i].id == 0) {
+            _scoreText = new sf::Text("Score: " + std::to_string(inventory->getData()[i].quantity), *_font, 20);
+            break;
+        }
+    }
+
     _scoreText->setFillColor(sf::Color::Yellow);
 
     _endText->setPosition(

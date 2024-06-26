@@ -1,6 +1,8 @@
 #include "../headers/Context.hpp"
 
 #include "../headers/Chest.hpp"
+#include "../headers/Inventory.hpp"
+#include "../headers/Character.hpp"
 
 // Private Functions
 void Chest::initVariables() {
@@ -39,13 +41,29 @@ Chest::Chest(sf::Vector2f position) {
     initSprite();
 
     _sprite->setPosition(position);
+    _collision.setPosition(_sprite->getPosition());
+    _collision.setSize(sf::Vector2f(16, 16));
+    _collision.setFillColor(sf::Color::Transparent);
 }
 
 Chest::~Chest() {
-
+    delete _sprite;
 }
 
 // Functions
+void Chest::open() {
+    if (_opened)
+        return;
+
+    _opened = true;
+
+    Character* character = static_cast<Character*>(Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity);
+    Inventory* Inventory = character->getInventory();
+    Inventory->enqueue(rand() % 4 + 1, 1);
+
+    character->getArmorStack()->push(1);
+}
+
 void Chest::update() {
     if (_opened)
         _sprite->setTexture(*Context::getTextureContext()->getTexture("OPENNEDCHEST"));
