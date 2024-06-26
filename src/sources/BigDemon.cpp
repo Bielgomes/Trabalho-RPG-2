@@ -248,7 +248,7 @@ void BigDemon::update() {
 void BigDemon::listFree() {
     Character* character = static_cast<Character*>(Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity);
     Inventory* Inventory = character->getInventory();
-    Inventory->enqueue(0, 150);
+    Inventory->enqueue(0, rand() % 51 + 100);
 
     Context::getEntityContext()->removeFromGroup("BOSS", this);
 }

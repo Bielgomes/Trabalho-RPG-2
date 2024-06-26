@@ -259,7 +259,7 @@ void Demon::update() {
 void Demon::listFree() {
     Character* character = static_cast<Character*>(Context::getEntityContext()->getEntitiesInGroup("CHARACTER")->entity);
     Inventory* Inventory = character->getInventory();
-    Inventory->enqueue(0, 10);
+    Inventory->enqueue(0, rand() % 21 + 10);
 
     Context::getEntityContext()->removeFromGroup("ENEMY", this);
 }
