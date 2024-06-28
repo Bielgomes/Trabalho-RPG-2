@@ -44,7 +44,7 @@ void InventoryMenu::initFont() {
         }
         Context::getFontContext()->addFont("DEPIXEL", font);
     }
-    font->setSmooth(false);
+    // font->setSmooth(false);
     _font = font;
 }
 

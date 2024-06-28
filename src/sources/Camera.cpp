@@ -36,7 +36,7 @@ void Camera::unbind() {
 
 // Functions
 void Camera::update() {
-    sf::Vector2f toPosition = sf::Vector2f(_entity->getShape().left + _entity->getShape().width / 2, _entity->getShape().top + _entity->getShape().height / 2);
+    sf::Vector2f toPosition = _entity->getCenter();
     sf::Vector2f interpolatedPosition = Functions::lerp(toPosition.x, toPosition.y, _camera->getCenter().x, _camera->getCenter().y, 0.15f);
 
     _camera->setCenter(interpolatedPosition);

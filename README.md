@@ -10,10 +10,10 @@
 
 - [x] Adicionar Pontuação ao finalizar o jogo
 
-- [ ] Adicionar sistema de inventário
+- [X] Adicionar sistema de inventário
     - [x] Adicionar menu de inventário
 
-- [ ] Criar pilha de armaduras
+- [X] Criar pilha de armaduras
 
 - [x] Fazer menu inicial para escolher nome e classe
 

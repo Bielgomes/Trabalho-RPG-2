@@ -13,7 +13,7 @@ ArmorStack::~ArmorStack() {
 void ArmorStack::push(unsigned int armorSize) {
     if (_top == _capacity)
         return;
-    
+
     _stack[_top] = armorSize;
     _top++;
 }
