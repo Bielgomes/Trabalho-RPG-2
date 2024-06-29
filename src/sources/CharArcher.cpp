@@ -84,9 +84,9 @@ void CharArcher::update() {
             Context::getEntityContext()->addToGroup("PROJECTILE", new ProjectileArrow(
                 direction, projectilePoint, rotation, 500, 1.5f, 3
             ));
-        } else {
-            _isSpecialAttckButtonPressed = false;
         }
+    } else {
+        _isSpecialAttckButtonPressed = false;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::F)) {
